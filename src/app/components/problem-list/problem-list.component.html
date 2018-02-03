@@ -1,0 +1,21 @@
+<app-new-problem></app-new-problem>
+<br>
+<div class="container">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Difficulty</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let problem of problems">
+        <th scope="row">{{problem.id}}</th>
+        <td>{{problem.title}}</td>
+        <td><span class="badge badge-pill badge-secondary">{{problem.difficulty}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
