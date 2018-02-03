@@ -1,24 +1,29 @@
 <div class="container">
-  <form>
+  <form #newProblemForm="ngForm">
     <div class="form-row">
         <div class="form-group col-md-8">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" placeholder="Problem title">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="difficulty">Difficulty</label>
-            <select class="form-control" id="difficulty">
-              <option>Easy</option>
-              <option>Medidum</option>
-              <option>Hard</option>
-            </select>
-          </div>
+          <label for="title">Title</label>
+          <input type="text" class="form-control" 
+                 id="title" placeholder="Problem title" 
+                 required [(ngModel)]="problem.title" name="title">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="difficulty">Difficulty</label>
+          <select class="form-control" id="difficulty" 
+                  required [(ngModel)]="problem.difficulty" name="difficulty">
+            <option *ngFor="let diff of difficulties" [value]="diff">{{diff}}</option>
+          </select>
+        </div>
     </div>
     <div class="form-group">
       <label for="description">Description</label>
-      <textarea class="form-control" id="description" rows="3" placeholder="Describe your problem here"></textarea>
+      <textarea class="form-control" id="description" rows="3" 
+                placeholder="Describe your problem here"
+                required [(ngModel)]="problem.description" name="description">
+      </textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Add Problem</button>
+    <button class="btn btn-primary"
+       (click)="addProblem()" [disabled]="!newProblemForm.form.valid" >Add Problem</button>
   </form>
 
 </div>
