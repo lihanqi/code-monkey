@@ -16,11 +16,13 @@ export class NewProblemComponent implements OnInit {
 
   ngOnInit() {
     this.problem = new Problem();
+    this.problem.difficulty = null; // in order to let <select> placeholder to work, set problem.difficulty to null
   }
 
   addProblem() {
     this.dataService.addProblem(this.problem);
     this.problem = new Problem();
+    this.problem.difficulty = null;
   }
 
 }
