@@ -15,6 +15,7 @@ const getProblems = function() {
 }
 
 const getProblem = function(id) {
+    
     return new Promise((resolve, reject) => {
         ProblemModel.findOne({'id': id}, (err, problem) => {
             if (err) {
@@ -29,12 +30,13 @@ const getProblem = function(id) {
 }
 
 const addNewProblem = function(newProblem) {
+    console.log("add NewProblem get called");
+    console.log(newProblem);
     return new Promise((resolve, reject) => {
         ProblemModel.findOne({'title': newProblem.title}, (err, problem) => {
             if (problem) {
                 reject("ERROR: Cannot add problem, problem exist already(duplicate title)");
             }
-            
             ProblemModel.count((err, count) => {
                 if (err) { reject("ERROR:" + err) };
                 newProblem['id'] = count + 1;

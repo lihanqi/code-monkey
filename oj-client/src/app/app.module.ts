@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
+import { HttpClientModule }    from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ProblemListComponent } from './components/problem-list/problem-list.component';
@@ -22,7 +23,9 @@ import { RoutingModule } from './routing/routing.module';
   ],
   imports: [
     BrowserModule, 
-    FormsModule, RoutingModule
+    FormsModule, 
+    RoutingModule, 
+    HttpClientModule
   ],
   providers: [ DataService ],
   bootstrap: [AppComponent]

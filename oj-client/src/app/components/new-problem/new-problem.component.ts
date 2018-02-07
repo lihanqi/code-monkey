@@ -20,9 +20,13 @@ export class NewProblemComponent implements OnInit {
   }
 
   addProblem() {
-    this.dataService.addProblem(this.problem);
-    this.problem = new Problem();
-    this.problem.difficulty = null;
+    console.log("add program clicked");
+    this.dataService.addProblem(this.problem).subscribe((problem) => {
+      console.log('after add, returned' + JSON.stringify(problem));
+      this.problem = new Problem();
+      this.problem.difficulty = null;
+    });
+    
   }
 
 }

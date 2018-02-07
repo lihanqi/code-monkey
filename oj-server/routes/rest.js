@@ -9,6 +9,7 @@ router.use(bodyParser.json());
 
 // GET api/v1/problems - return problems 
 router.get('/problems', (req, res) => {
+    // console.log("server received request");
     problemService.getProblems()
         .then((problems) => { res.json(problems);})
         .catch((error) => { res.send(error);});
@@ -16,6 +17,7 @@ router.get('/problems', (req, res) => {
 
 // GET api/v1/problems/:id - return problem by id
 router.get('/problems/:id', (req, res) => {
+    console.log("server received request");
     id = +req.params.id;
     problemService.getProblem(id)
         .then((problem) => res.json(problem))
