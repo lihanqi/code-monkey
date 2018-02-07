@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const ProblemModel = require('../models/Problem.model');
 mongoose.connect('mongodb://user:password@ds044689.mlab.com:44689/coj');
 
+
 const getProblems = function() {
     return new Promise((resolve, reject) => {
         ProblemModel.find((err, problems) => {
@@ -15,7 +16,6 @@ const getProblems = function() {
 }
 
 const getProblem = function(id) {
-    
     return new Promise((resolve, reject) => {
         ProblemModel.findOne({'id': id}, (err, problem) => {
             if (err) {
@@ -30,8 +30,6 @@ const getProblem = function(id) {
 }
 
 const addNewProblem = function(newProblem) {
-    console.log("add NewProblem get called");
-    console.log(newProblem);
     return new Promise((resolve, reject) => {
         ProblemModel.findOne({'title': newProblem.title}, (err, problem) => {
             if (problem) {

@@ -22,8 +22,7 @@ router.get('/problems/:id', (req, res) => {
     problemService.getProblem(id)
         .then((problem) => res.json(problem))
         .catch((error) => {
-            res.send(error);
-            console.log(error);
+            res.status(404).send(error);
         });
 })
 
@@ -32,7 +31,7 @@ router.post('/problems', (req, res) => {
     problemService.addNewProblem(req.body).then((problem) => {
         res.json(problem);
     }).catch((error) => {
-        res.send(error);
+        res.status(400).send(error);
     });
 })
 module.exports = router

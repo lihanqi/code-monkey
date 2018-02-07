@@ -318,7 +318,7 @@ var ProblemDetailComponent = /** @class */ (function () {
     ProblemDetailComponent.prototype.getProblem = function () {
         var _this = this;
         var id = +this.route.snapshot.paramMap.get('id');
-        this.dataService.getProblemById(id).subscribe(function (problem) { return _this.problem = problem; });
+        this.dataService.getProblemById(id).subscribe(function (problem) { _this.problem = problem; }, function (error) { return console.log(error); });
     };
     ProblemDetailComponent = __decorate([
         core_1.Component({
@@ -475,8 +475,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var ErrorObservable_1 = __webpack_require__("../../../../rxjs/_esm5/observable/ErrorObservable.js");
 var operators_1 = __webpack_require__("../../../../rxjs/_esm5/operators.js");
-var of_1 = __webpack_require__("../../../../rxjs/_esm5/observable/of.js");
 var httpOptions = {
     headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -491,25 +491,28 @@ var DataService = /** @class */ (function () {
             .pipe(operators_1.tap(function (problems) { return _this.problems = problems; }));
     };
     DataService.prototype.getProblemById = function (id) {
-        return this.http.get(this.url + "/" + id).pipe();
+        return this.http.get(this.url + "/" + id).pipe(operators_1.catchError(this.handleError));
     };
     DataService.prototype.addProblem = function (problem) {
         var _this = this;
-        console.log("data service received the request");
-        console.log(problem);
         return this.http.post(this.url, problem, httpOptions)
-            .pipe(operators_1.tap(function (problem) {
-            _this.problems.push(problem);
-        }));
+            .pipe(operators_1.tap(function (problem) { _this.problems.push(problem); }), operators_1.catchError(this.handleError));
     };
-    // TODO: finished the handle error
-    DataService.prototype.handleError = function (operation, result) {
-        if (operation === void 0) { operation = 'operation'; }
-        return function (error) {
-            console.error(error);
-            return of_1.of(result);
-        };
+    DataService.prototype.handleError = function (error) {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error('An error occurred:', error.error.message);
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error("Backend returned code " + error.status + ", " +
+                ("body was: " + error.error));
+        }
+        // return an ErrorObservable with a user-facing error message
+        return new ErrorObservable_1.ErrorObservable('Something bad happened; please try again later.');
     };
+    ;
     DataService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [http_1.HttpClient])

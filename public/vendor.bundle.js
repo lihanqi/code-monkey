@@ -2167,6 +2167,101 @@ var EmptyObservable = /*@__PURE__*/ (/*@__PURE__*/ function (_super) {
 
 /***/ }),
 
+/***/ "../../../../rxjs/_esm5/observable/ErrorObservable.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ErrorObservable", function() { return ErrorObservable; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
+/** PURE_IMPORTS_START .._Observable PURE_IMPORTS_END */
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b)
+        if (b.hasOwnProperty(p))
+            d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+var ErrorObservable = /*@__PURE__*/ (/*@__PURE__*/ function (_super) {
+    __extends(ErrorObservable, _super);
+    function ErrorObservable(error, scheduler) {
+        _super.call(this);
+        this.error = error;
+        this.scheduler = scheduler;
+    }
+    /**
+     * Creates an Observable that emits no items to the Observer and immediately
+     * emits an error notification.
+     *
+     * <span class="informal">Just emits 'error', and nothing else.
+     * </span>
+     *
+     * <img src="./img/throw.png" width="100%">
+     *
+     * This static operator is useful for creating a simple Observable that only
+     * emits the error notification. It can be used for composing with other
+     * Observables, such as in a {@link mergeMap}.
+     *
+     * @example <caption>Emit the number 7, then emit an error.</caption>
+     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);
+     * result.subscribe(x => console.log(x), e => console.error(e));
+     *
+     * @example <caption>Map and flatten numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>
+     * var interval = Rx.Observable.interval(1000);
+     * var result = interval.mergeMap(x =>
+     *   x === 13 ?
+     *     Rx.Observable.throw('Thirteens are bad') :
+     *     Rx.Observable.of('a', 'b', 'c')
+     * );
+     * result.subscribe(x => console.log(x), e => console.error(e));
+     *
+     * @see {@link create}
+     * @see {@link empty}
+     * @see {@link never}
+     * @see {@link of}
+     *
+     * @param {any} error The particular Error to pass to the error notification.
+     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
+     * the emission of the error notification.
+     * @return {Observable} An error Observable: emits only the error notification
+     * using the given error argument.
+     * @static true
+     * @name throw
+     * @owner Observable
+     */
+    ErrorObservable.create = function (error, scheduler) {
+        return new ErrorObservable(error, scheduler);
+    };
+    ErrorObservable.dispatch = function (arg) {
+        var error = arg.error, subscriber = arg.subscriber;
+        subscriber.error(error);
+    };
+    ErrorObservable.prototype._subscribe = function (subscriber) {
+        var error = this.error;
+        var scheduler = this.scheduler;
+        subscriber.syncErrorThrowable = true;
+        if (scheduler) {
+            return scheduler.schedule(ErrorObservable.dispatch, 0, {
+                error: error, subscriber: subscriber
+            });
+        }
+        else {
+            subscriber.error(error);
+        }
+    };
+    return ErrorObservable;
+}(__WEBPACK_IMPORTED_MODULE_0__Observable__["a" /* Observable */]));
+//# sourceMappingURL=ErrorObservable.js.map 
+
+
+/***/ }),
+
 /***/ "../../../../rxjs/_esm5/observable/ForkJoinObservable.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3155,7 +3250,7 @@ function concat() {
     if (observables.length === 1 || (observables.length === 2 && Object(__WEBPACK_IMPORTED_MODULE_0__util_isScheduler__["a" /* isScheduler */])(observables[1]))) {
         return Object(__WEBPACK_IMPORTED_MODULE_2__from__["a" /* from */])(observables[0]);
     }
-    return Object(__WEBPACK_IMPORTED_MODULE_3__operators_concatAll__["a" /* concatAll */])()(__WEBPACK_IMPORTED_MODULE_1__of__["of"].apply(void 0, observables));
+    return Object(__WEBPACK_IMPORTED_MODULE_3__operators_concatAll__["a" /* concatAll */])()(__WEBPACK_IMPORTED_MODULE_1__of__["a" /* of */].apply(void 0, observables));
 }
 //# sourceMappingURL=concat.js.map 
 
@@ -3310,8 +3405,7 @@ function merge() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "of", function() { return of; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return of; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ArrayObservable__ = __webpack_require__("../../../../rxjs/_esm5/observable/ArrayObservable.js");
 /** PURE_IMPORTS_START ._ArrayObservable PURE_IMPORTS_END */
 
@@ -24873,7 +24967,7 @@ var HttpClient = /** @class */ (function () {
         // includes all interceptors) inside a concatMap(). This way, the handler runs
         // inside an Observable chain, which causes interceptors to be re-run on every
         // subscription (this also makes retries re-run the handler, including interceptors).
-        var /** @type {?} */ events$ = __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_concatMap__["a" /* concatMap */].call(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__["of"])(req), function (req) { return _this.handler.handle(req); });
+        var /** @type {?} */ events$ = __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_concatMap__["a" /* concatMap */].call(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__["a" /* of */])(req), function (req) { return _this.handler.handle(req); });
         // If coming via the API signature which accepts a previously constructed HttpRequest,
         // the only option is to get the event stream. Otherwise, return the event stream if
         // that is what was requested.
@@ -96272,7 +96366,7 @@ function forEach(map$$1, callback) {
  */
 function waitForMap(obj, fn) {
     if (Object.keys(obj).length === 0) {
-        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])({});
+        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])({});
     }
     var /** @type {?} */ waitHead = [];
     var /** @type {?} */ waitTail = [];
@@ -96286,7 +96380,7 @@ function waitForMap(obj, fn) {
             waitTail.push(mapped);
         }
     });
-    var /** @type {?} */ concat$ = __WEBPACK_IMPORTED_MODULE_12_rxjs_operator_concatAll__["a" /* concatAll */].call(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"].apply(void 0, waitHead.concat(waitTail)));
+    var /** @type {?} */ concat$ = __WEBPACK_IMPORTED_MODULE_12_rxjs_operator_concatAll__["a" /* concatAll */].call(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */].apply(void 0, waitHead.concat(waitTail)));
     var /** @type {?} */ last$ = __WEBPACK_IMPORTED_MODULE_17_rxjs_operator_last__["a" /* last */].call(concat$);
     return __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(last$, function () { return res; });
 }
@@ -96315,7 +96409,7 @@ function wrapIntoObservable(value) {
         // change detection.
         return Object(__WEBPACK_IMPORTED_MODULE_15_rxjs_observable_fromPromise__["a" /* fromPromise */])(Promise.resolve(value));
     }
-    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(/** @type {?} */ (value));
+    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(/** @type {?} */ (value));
 }
 
 /**
@@ -97274,12 +97368,12 @@ var ApplyRedirects = /** @class */ (function () {
      */
     function (ngModule, segmentGroup, routes, segments, outlet, allowRedirects) {
         var _this = this;
-        var /** @type {?} */ routes$ = __WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"].apply(void 0, routes);
+        var /** @type {?} */ routes$ = __WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */].apply(void 0, routes);
         var /** @type {?} */ processedRoutes$ = __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(routes$, function (r) {
             var /** @type {?} */ expanded$ = _this.expandSegmentAgainstRoute(ngModule, segmentGroup, routes, r, segments, outlet, allowRedirects);
             return __WEBPACK_IMPORTED_MODULE_11_rxjs_operator_catch__["a" /* _catch */].call(expanded$, function (e) {
                 if (e instanceof NoMatch) {
-                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(null);
+                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(null);
                 }
                 throw e;
             });
@@ -97289,7 +97383,7 @@ var ApplyRedirects = /** @class */ (function () {
         return __WEBPACK_IMPORTED_MODULE_11_rxjs_operator_catch__["a" /* _catch */].call(first$, function (e, _) {
             if (e instanceof __WEBPACK_IMPORTED_MODULE_14_rxjs_util_EmptyError__["a" /* EmptyError */] || e.name === 'EmptyError') {
                 if (_this.noLeftoversInUrl(segmentGroup, segments, outlet)) {
-                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(new UrlSegmentGroup([], {}));
+                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(new UrlSegmentGroup([], {}));
                 }
                 throw new NoMatch(segmentGroup);
             }
@@ -97446,7 +97540,7 @@ var ApplyRedirects = /** @class */ (function () {
                     return new UrlSegmentGroup(segments, {});
                 });
             }
-            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(new UrlSegmentGroup(segments, {}));
+            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(new UrlSegmentGroup(segments, {}));
         }
         var _a = match(rawSegmentGroup, route, segments), matched = _a.matched, consumedSegments = _a.consumedSegments, lastChild = _a.lastChild;
         if (!matched)
@@ -97462,7 +97556,7 @@ var ApplyRedirects = /** @class */ (function () {
                 return __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(expanded$_1, function (children) { return new UrlSegmentGroup(consumedSegments, children); });
             }
             if (childConfig.length === 0 && slicedSegments.length === 0) {
-                return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(new UrlSegmentGroup(consumedSegments, {}));
+                return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(new UrlSegmentGroup(consumedSegments, {}));
             }
             var /** @type {?} */ expanded$ = _this.expandSegment(childModule, segmentGroup, childConfig, slicedSegments, PRIMARY_OUTLET, true);
             return __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(expanded$, function (cs) {
@@ -97484,12 +97578,12 @@ var ApplyRedirects = /** @class */ (function () {
         var _this = this;
         if (route.children) {
             // The children belong to the same module
-            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(new LoadedRouterConfig(route.children, ngModule));
+            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(new LoadedRouterConfig(route.children, ngModule));
         }
         if (route.loadChildren) {
             // lazy children belong to the loaded module
             if (route._loadedConfig !== undefined) {
-                return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(route._loadedConfig);
+                return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(route._loadedConfig);
             }
             return __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(runCanLoadGuard(ngModule.injector, route), function (shouldLoad) {
                 if (shouldLoad) {
@@ -97501,7 +97595,7 @@ var ApplyRedirects = /** @class */ (function () {
                 return canLoadFails(route);
             });
         }
-        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(new LoadedRouterConfig([], ngModule));
+        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(new LoadedRouterConfig([], ngModule));
     };
     /**
      * @param {?} route
@@ -97519,7 +97613,7 @@ var ApplyRedirects = /** @class */ (function () {
         while (true) {
             res = res.concat(c.segments);
             if (c.numberOfChildren === 0) {
-                return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(res);
+                return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(res);
             }
             if (c.numberOfChildren > 1 || !c.children[PRIMARY_OUTLET]) {
                 return namedOutletsRedirect(/** @type {?} */ ((route.redirectTo)));
@@ -97678,7 +97772,7 @@ var ApplyRedirects = /** @class */ (function () {
 function runCanLoadGuard(moduleInjector, route) {
     var /** @type {?} */ canLoad = route.canLoad;
     if (!canLoad || canLoad.length === 0)
-        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(true);
+        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(true);
     var /** @type {?} */ obs = __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(Object(__WEBPACK_IMPORTED_MODULE_10_rxjs_observable_from__["a" /* from */])(canLoad), function (injectionToken) {
         var /** @type {?} */ guard = moduleInjector.get(injectionToken);
         return wrapIntoObservable(guard.canLoad ? guard.canLoad(route) : guard(route));
@@ -99007,10 +99101,10 @@ var PreActivation = /** @class */ (function () {
     function () {
         var _this = this;
         if (!this.isDeactivating() && !this.isActivating()) {
-            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(true);
+            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(true);
         }
         var /** @type {?} */ canDeactivate$ = this.runCanDeactivateChecks();
-        return __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(canDeactivate$, function (canDeactivate) { return canDeactivate ? _this.runCanActivateChecks() : Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(false); });
+        return __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(canDeactivate$, function (canDeactivate) { return canDeactivate ? _this.runCanActivateChecks() : Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(false); });
     };
     /**
      * @param {?} paramsInheritanceStrategy
@@ -99023,7 +99117,7 @@ var PreActivation = /** @class */ (function () {
     function (paramsInheritanceStrategy) {
         var _this = this;
         if (!this.isActivating())
-            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(null);
+            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(null);
         var /** @type {?} */ checks$ = Object(__WEBPACK_IMPORTED_MODULE_10_rxjs_observable_from__["a" /* from */])(this.canActivateChecks);
         var /** @type {?} */ runningChecks$ = __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_concatMap__["a" /* concatMap */].call(checks$, function (check) { return _this.runResolve(check.route, paramsInheritanceStrategy); });
         return __WEBPACK_IMPORTED_MODULE_19_rxjs_operator_reduce__["a" /* reduce */].call(runningChecks$, function (_, __) { return _; });
@@ -99247,7 +99341,7 @@ var PreActivation = /** @class */ (function () {
         if (snapshot !== null && this.forwardEvent) {
             this.forwardEvent(new ActivationStart(snapshot));
         }
-        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(true);
+        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(true);
     };
     /**
      * This should fire off `ChildActivationStart` events for each route being activated at this
@@ -99273,7 +99367,7 @@ var PreActivation = /** @class */ (function () {
         if (snapshot !== null && this.forwardEvent) {
             this.forwardEvent(new ChildActivationStart(snapshot));
         }
-        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(true);
+        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(true);
     };
     /**
      * @param {?} future
@@ -99287,7 +99381,7 @@ var PreActivation = /** @class */ (function () {
         var _this = this;
         var /** @type {?} */ canActivate = future.routeConfig ? future.routeConfig.canActivate : null;
         if (!canActivate || canActivate.length === 0)
-            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(true);
+            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(true);
         var /** @type {?} */ obs = __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(Object(__WEBPACK_IMPORTED_MODULE_10_rxjs_observable_from__["a" /* from */])(canActivate), function (c) {
             var /** @type {?} */ guard = _this.getToken(c, future);
             var /** @type {?} */ observable;
@@ -99359,7 +99453,7 @@ var PreActivation = /** @class */ (function () {
         var _this = this;
         var /** @type {?} */ canDeactivate = curr && curr.routeConfig ? curr.routeConfig.canDeactivate : null;
         if (!canDeactivate || canDeactivate.length === 0)
-            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(true);
+            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(true);
         var /** @type {?} */ canDeactivate$ = __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(Object(__WEBPACK_IMPORTED_MODULE_10_rxjs_observable_from__["a" /* from */])(canDeactivate), function (c) {
             var /** @type {?} */ guard = _this.getToken(c, curr);
             var /** @type {?} */ observable;
@@ -99406,7 +99500,7 @@ var PreActivation = /** @class */ (function () {
         var _this = this;
         var /** @type {?} */ keys = Object.keys(resolve);
         if (keys.length === 0) {
-            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])({});
+            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])({});
         }
         if (keys.length === 1) {
             var /** @type {?} */ key_1 = keys[0];
@@ -99522,7 +99616,7 @@ var Recognizer = /** @class */ (function () {
             var /** @type {?} */ rootNode = new TreeNode(root, children);
             var /** @type {?} */ routeState = new RouterStateSnapshot(this.url, rootNode);
             this.inheritParamsAndData(routeState._root);
-            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(routeState);
+            return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(routeState);
         }
         catch (/** @type {?} */ e) {
             return new __WEBPACK_IMPORTED_MODULE_9_rxjs_Observable__["a" /* Observable */](function (obs) { return obs.error(e); });
@@ -100026,7 +100120,7 @@ var RouterConfigLoader = /** @class */ (function () {
         else {
             return __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(wrapIntoObservable(loadChildren()), function (t) {
                 if (t instanceof __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModuleFactory"]) {
-                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(t);
+                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(t);
                 }
                 else {
                     return Object(__WEBPACK_IMPORTED_MODULE_15_rxjs_observable_fromPromise__["a" /* fromPromise */])(_this.compiler.compileModuleAsync(t));
@@ -100128,7 +100222,7 @@ function defaultErrorHandler(error) {
  * @return {?}
  */
 function defaultRouterHook(snapshot) {
-    return /** @type {?} */ (Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(null));
+    return /** @type {?} */ (Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(null));
 }
 /**
  * \@whatItDoes Provides the navigation and url manipulation capabilities.
@@ -100746,7 +100840,7 @@ var Router = /** @class */ (function () {
                 return nav.promise.catch(function () { });
             }
             else {
-                return /** @type {?} */ (Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(null));
+                return /** @type {?} */ (Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(null));
             }
         })
             .subscribe(function () { });
@@ -100877,7 +100971,7 @@ var Router = /** @class */ (function () {
                 });
             }
             else {
-                urlAndSnapshot$ = Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])({ appliedUrl: url, snapshot: precreatedState });
+                urlAndSnapshot$ = Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])({ appliedUrl: url, snapshot: precreatedState });
             }
             var /** @type {?} */ beforePreactivationDone$ = __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(urlAndSnapshot$, function (p) {
                 return __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(_this.hooks.beforePreactivation(p.snapshot), function () { return p; });
@@ -100894,7 +100988,7 @@ var Router = /** @class */ (function () {
             var /** @type {?} */ preactivationCheckGuards$ = __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(preactivationSetup$, function (_a) {
                 var appliedUrl = _a.appliedUrl, snapshot = _a.snapshot;
                 if (_this.navigationId !== id)
-                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(false);
+                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(false);
                 _this.triggerEvent(new GuardsCheckStart(id, _this.serializeUrl(url), appliedUrl, snapshot));
                 return __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(preActivation.checkGuards(), function (shouldActivate) {
                     _this.triggerEvent(new GuardsCheckEnd(id, _this.serializeUrl(url), appliedUrl, snapshot, shouldActivate));
@@ -100903,7 +100997,7 @@ var Router = /** @class */ (function () {
             });
             var /** @type {?} */ preactivationResolveData$ = __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(preactivationCheckGuards$, function (p) {
                 if (_this.navigationId !== id)
-                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(false);
+                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(false);
                 if (p.shouldActivate && preActivation.isActivating()) {
                     _this.triggerEvent(new ResolveStart(id, _this.serializeUrl(url), p.appliedUrl, p.snapshot));
                     return __WEBPACK_IMPORTED_MODULE_7_rxjs_operator_map__["a" /* map */].call(preActivation.resolveData(_this.paramsInheritanceStrategy), function () {
@@ -100912,7 +101006,7 @@ var Router = /** @class */ (function () {
                     });
                 }
                 else {
-                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(p);
+                    return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(p);
                 }
             });
             var /** @type {?} */ preactivationDone$ = __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_mergeMap__["a" /* mergeMap */].call(preactivationResolveData$, function (p) {
@@ -102261,7 +102355,7 @@ var PreloadAllModules = /** @class */ (function () {
      * @return {?}
      */
     function (route, fn) {
-        return __WEBPACK_IMPORTED_MODULE_11_rxjs_operator_catch__["a" /* _catch */].call(fn(), function () { return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(null); });
+        return __WEBPACK_IMPORTED_MODULE_11_rxjs_operator_catch__["a" /* _catch */].call(fn(), function () { return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(null); });
     };
     return PreloadAllModules;
 }());
@@ -102287,7 +102381,7 @@ var NoPreloading = /** @class */ (function () {
      * @param {?} fn
      * @return {?}
      */
-    function (route, fn) { return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(null); };
+    function (route, fn) { return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(null); };
     return NoPreloading;
 }());
 /**
@@ -102764,7 +102858,7 @@ var RouterInitializer = /** @class */ (function () {
                         // subsequent navigations should not be delayed
                     }
                     else {
-                        return /** @type {?} */ (Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["of"])(null));
+                        return /** @type {?} */ (Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_observable_of__["a" /* of */])(null));
                     }
                 };
                 router.initialNavigation();

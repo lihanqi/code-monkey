@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable} from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
@@ -30,25 +31,32 @@ export class DataService {
   }
 
   getProblemById(id: number): Observable<Problem> {
-    return this.http.get<Problem>(`${this.url}/${id}`).pipe();
+    return this.http.get<Problem>(`${this.url}/${id}`).pipe(
+      catchError(this.handleError)
+    );
   }
 
   addProblem(problem: Problem): Observable<Problem> {
-    console.log("data service received the request");
-    console.log(problem);
     return this.http.post<Problem>(this.url, problem, httpOptions)
       .pipe(
-        tap((problem) => {
-          this.problems.push(problem);
-        })
+        tap((problem) => {this.problems.push(problem);}),
+        catchError(this.handleError)
       );
   }
 
-  // TODO: finished the handle error
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(error);
-      return of(result as T);
-    };
-  }
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // return an ErrorObservable with a user-facing error message
+    return new ErrorObservable(
+      'Something bad happened; please try again later.');
+  };
 }

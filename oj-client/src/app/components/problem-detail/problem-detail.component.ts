@@ -27,7 +27,8 @@ export class ProblemDetailComponent implements OnInit {
   getProblem() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.dataService.getProblemById(id).subscribe(
-      problem => this.problem = problem
+      problem => { this.problem = problem; },
+      error => console.log(error)
     );
   }
 
