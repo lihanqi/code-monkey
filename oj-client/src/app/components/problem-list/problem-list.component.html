@@ -13,7 +13,7 @@
       <tr *ngFor="let problem of problems">
         <th scope="row">{{problem.id}}</th>
         <td><a routerLink="/problems/{{problem.id}}">{{problem.title}}</a></td>
-        <td><span class="badge badge-pill badge-secondary">{{problem.difficulty}}</span></td>
+        <td><span class="badge badge-primary diff-{{problem.difficulty}}">{{problem.difficulty}}</span></td>
       </tr>
     </tbody>
   </table>

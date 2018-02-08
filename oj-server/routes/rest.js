@@ -17,8 +17,7 @@ router.get('/problems', (req, res) => {
 
 // GET api/v1/problems/:id - return problem by id
 router.get('/problems/:id', (req, res) => {
-    console.log("server received request");
-    id = +req.params.id;
+    const id = +req.params.id;
     problemService.getProblem(id)
         .then((problem) => res.json(problem))
         .catch((error) => {
