@@ -11,6 +11,7 @@ import { ProblemDetailComponent } from './components/problem-detail/problem-deta
 
 import { DataService } from './services/data/data.service';
 import { RoutingModule } from './routing/routing.module';
+import { EditorComponent } from './components/editor/editor.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { RoutingModule } from './routing/routing.module';
     NavBarComponent,
     NewProblemComponent,
     ProblemDetailComponent,
+    EditorComponent,
   ],
   imports: [
     BrowserModule, 

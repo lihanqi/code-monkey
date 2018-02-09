@@ -96,6 +96,7 @@ var new_problem_component_1 = __webpack_require__("../../../../../src/app/compon
 var problem_detail_component_1 = __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.ts");
 var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
 var routing_module_1 = __webpack_require__("../../../../../src/app/routing/routing.module.ts");
+var editor_component_1 = __webpack_require__("../../../../../src/app/components/editor/editor.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -107,6 +108,7 @@ var AppModule = /** @class */ (function () {
                 nav_bar_component_1.NavBarComponent,
                 new_problem_component_1.NewProblemComponent,
                 problem_detail_component_1.ProblemDetailComponent,
+                editor_component_1.EditorComponent,
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -121,6 +123,84 @@ var AppModule = /** @class */ (function () {
     return AppModule;
 }());
 exports.AppModule = AppModule;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/editor/editor.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "#editor { \n    margin-top: 15px;\n    height: 600px;\n    font-size: 14px;\n}\n\n.editor-box {\n    margin-top: 25px;\n}\n\n.button-group button {\n    margin-right: 10px;\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/editor/editor.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container editor-box\">\n  <section>\n    <header>\n      <div class=\"button-group row\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n\n    <body>\n      <div id=\"editor\">Hello?</div>\n    </body>\n  </section>\n \n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/editor/editor.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var EditorComponent = /** @class */ (function () {
+    function EditorComponent() {
+        this.languages = ['Java', 'C++', 'Python'];
+        this.language = 'Java';
+    }
+    EditorComponent.prototype.ngOnInit = function () {
+        this.initEditor();
+    };
+    EditorComponent.prototype.initEditor = function () {
+        this.editor = ace.edit("editor");
+        this.editor.setTheme("ace/theme/terminal");
+        this.editor.session.setMode("ace/mode/python");
+        this.editor.getSession().setTabSize(4);
+    };
+    EditorComponent.prototype.reset = function () {
+        this.editor.setValue("the new text here"); // or session.setValue
+    };
+    EditorComponent.prototype.setLanguage = function (language) {
+        console.log('!!');
+        this.language = language;
+        this.reset();
+    };
+    EditorComponent = __decorate([
+        core_1.Component({
+            selector: 'app-editor',
+            template: __webpack_require__("../../../../../src/app/components/editor/editor.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/editor/editor.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], EditorComponent);
+    return EditorComponent;
+}());
+exports.EditorComponent = EditorComponent;
 
 
 /***/ }),
@@ -283,7 +363,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/problem-detail/problem-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"card\" *ngIf=\"problem\">\n    <div class=\"card-header\">\n      <ul class=\"nav nav-tabs card-header-tabs\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link active\" disabled>Description</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" disabled>Link</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" disabled>Disabled</a>\n        </li>\n      </ul>\n    </div>\n    <div class=\"card-body\">\n      <h5 class=\"card-title\">{{problem.title}}</h5>\n      <p class=\"card-text\">{{problem.description}}</p>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"card\" *ngIf=\"problem\">\n    <div class=\"card-header\">\n      <ul class=\"nav nav-tabs card-header-tabs\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link active\" disabled>Description</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" disabled>Link</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" disabled>Disabled</a>\n        </li>\n      </ul>\n    </div>\n    <div class=\"card-body\">\n      <h5 class=\"card-title\">{{problem.title}}</h5>\n      <p class=\"card-text\">{{problem.description}}</p>\n    </div>\n  </div>\n</div>\n\n<app-editor></app-editor>\n"
 
 /***/ }),
 

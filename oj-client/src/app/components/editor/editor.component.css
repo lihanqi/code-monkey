@@ -1,0 +1,13 @@
+#editor { 
+    margin-top: 15px;
+    height: 600px;
+    font-size: 14px;
+}
+
+.editor-box {
+    margin-top: 25px;
+}
+
+.button-group button {
+    margin-right: 10px;
+}
