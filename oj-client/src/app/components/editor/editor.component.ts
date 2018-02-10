@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgModule } from '@angular/core';
+import { CoEditingService } from '../../services/co-editing/co-editing.service'
 declare const ace: any;
+
 
 @Component({
   selector: 'app-editor',
@@ -11,19 +13,24 @@ export class EditorComponent implements OnInit {
 
   editor: any;
   languages: String[] = ['Java', 'C++', 'Python'];
-  language: String = 'Java'
+  language: String = 'Python'
 
-  constructor() { }
+  constructor(private coEditingService: CoEditingService) { }
 
   ngOnInit() {
     this.initEditor();
+    this.coEditingService.registerEditorListener(this.editor);
   }
 
   initEditor() {
     this.editor = ace.edit("editor");
-    this.editor.setTheme("ace/theme/terminal");
+    this.editor.setTheme("ace/theme/textmate");
     this.editor.session.setMode("ace/mode/python");
     this.editor.getSession().setTabSize(4);
+    this.editor.getSession().on('change', (changeInfo) => {
+      this.coEditingService.change(changeInfo);
+    });
+    
   }
   
   reset() {
@@ -31,7 +38,6 @@ export class EditorComponent implements OnInit {
   }
 
   setLanguage(language: String) {
-    console.log('!!');
     this.language = language;
     this.reset();
   }

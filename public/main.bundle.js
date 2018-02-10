@@ -89,14 +89,16 @@ var platform_browser_1 = __webpack_require__("../../../platform-browser/esm5/pla
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
 var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var routing_module_1 = __webpack_require__("../../../../../src/app/routing/routing.module.ts");
 var app_component_1 = __webpack_require__("../../../../../src/app/app.component.ts");
 var problem_list_component_1 = __webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.ts");
 var nav_bar_component_1 = __webpack_require__("../../../../../src/app/components/nav-bar/nav-bar.component.ts");
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
 var problem_detail_component_1 = __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.ts");
-var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
-var routing_module_1 = __webpack_require__("../../../../../src/app/routing/routing.module.ts");
 var editor_component_1 = __webpack_require__("../../../../../src/app/components/editor/editor.component.ts");
+var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
+var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
+var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket/websocket.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -116,7 +118,7 @@ var AppModule = /** @class */ (function () {
                 routing_module_1.RoutingModule,
                 http_1.HttpClientModule
             ],
-            providers: [data_service_1.DataService],
+            providers: [data_service_1.DataService, co_editing_service_1.CoEditingService, websocket_service_1.WebsocketService],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
@@ -168,25 +170,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
 var EditorComponent = /** @class */ (function () {
-    function EditorComponent() {
+    function EditorComponent(coEditingService) {
+        this.coEditingService = coEditingService;
         this.languages = ['Java', 'C++', 'Python'];
-        this.language = 'Java';
+        this.language = 'Python';
     }
     EditorComponent.prototype.ngOnInit = function () {
         this.initEditor();
+        this.coEditingService.registerEditorListener(this.editor);
     };
     EditorComponent.prototype.initEditor = function () {
+        var _this = this;
         this.editor = ace.edit("editor");
-        this.editor.setTheme("ace/theme/terminal");
+        this.editor.setTheme("ace/theme/textmate");
         this.editor.session.setMode("ace/mode/python");
         this.editor.getSession().setTabSize(4);
+        this.editor.getSession().on('change', function (changeInfo) {
+            _this.coEditingService.change(changeInfo);
+        });
     };
     EditorComponent.prototype.reset = function () {
         this.editor.setValue("the new text here"); // or session.setValue
     };
     EditorComponent.prototype.setLanguage = function (language) {
-        console.log('!!');
         this.language = language;
         this.reset();
     };
@@ -196,7 +204,7 @@ var EditorComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/editor/editor.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/editor/editor.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [co_editing_service_1.CoEditingService])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -538,6 +546,48 @@ exports.RoutingModule = RoutingModule;
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/co-editing/co-editing.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var CoEditingService = /** @class */ (function () {
+    // editor: any;
+    function CoEditingService() {
+        this.socket = io();
+    }
+    CoEditingService.prototype.change = function (changeInfo) {
+        this.socket.emit('change', JSON.stringify(changeInfo));
+    };
+    CoEditingService.prototype.registerEditorListener = function (editor) {
+        // this.editor = editor;
+        this.socket.on('change', function (msg) {
+            console.log("msg from server");
+            console.log(msg);
+        });
+    };
+    CoEditingService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [])
+    ], CoEditingService);
+    return CoEditingService;
+}());
+exports.CoEditingService = CoEditingService;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/data/data.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -600,6 +650,36 @@ var DataService = /** @class */ (function () {
     return DataService;
 }());
 exports.DataService = DataService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/websocket/websocket.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var WebsocketService = /** @class */ (function () {
+    function WebsocketService() {
+    }
+    WebsocketService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [])
+    ], WebsocketService);
+    return WebsocketService;
+}());
+exports.WebsocketService = WebsocketService;
 
 
 /***/ }),
