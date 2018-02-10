@@ -7,18 +7,24 @@ declare const io: any;
 
 @Injectable()
 export class CoEditingService {
-  socket = io();
+  socket: any;
   // editor: any;
 
   constructor() { 
-
+    this.socket = io();
+    
   }
 
   change(changeInfo: object): void {
-    this.socket.emit('change', JSON.stringify(changeInfo));
+    console.log(this.socket.id);
+    const changeInfoPack = {
+      "senderId": this.socket.id,
+      "changeInfo": changeInfo
+    }
+    this.socket.emit('change', changeInfoPack);
   }
 
-  registerEditorListener(editor) {
+  registerEditorListener(sessionId: number, editor) {
     // this.editor = editor;
     this.socket.on('change', msg => {
       console.log("msg from server");

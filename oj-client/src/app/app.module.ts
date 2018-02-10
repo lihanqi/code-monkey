@@ -14,6 +14,7 @@ import { EditorComponent } from './components/editor/editor.component';
 import { DataService } from './services/data/data.service';
 import { CoEditingService } from './services/co-editing/co-editing.service';
 import { WebsocketService } from './services/websocket/websocket.service';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { WebsocketService } from './services/websocket/websocket.service';
     NewProblemComponent,
     ProblemDetailComponent,
     EditorComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule, 

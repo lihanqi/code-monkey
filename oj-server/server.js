@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 const restRouter = require('./routes/rest');
 
@@ -23,8 +23,6 @@ app.use(function(req, res, next) {
     res.sendFile('index.html', { root: path.join(__dirname, '../public')});
 });
 
-
-
-http.listen(3000, ()=> {
+server.listen(3000, ()=> {
     console.log('Example app listening on port 3000!');
 })

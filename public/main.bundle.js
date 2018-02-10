@@ -99,6 +99,7 @@ var editor_component_1 = __webpack_require__("../../../../../src/app/components/
 var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
 var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket/websocket.service.ts");
+var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -111,6 +112,7 @@ var AppModule = /** @class */ (function () {
                 new_problem_component_1.NewProblemComponent,
                 problem_detail_component_1.ProblemDetailComponent,
                 editor_component_1.EditorComponent,
+                page_not_found_component_1.PageNotFoundComponent,
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -170,16 +172,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
 var EditorComponent = /** @class */ (function () {
-    function EditorComponent(coEditingService) {
+    function EditorComponent(coEditingService, route) {
         this.coEditingService = coEditingService;
+        this.route = route;
         this.languages = ['Java', 'C++', 'Python'];
         this.language = 'Python';
     }
     EditorComponent.prototype.ngOnInit = function () {
+        var sessionId = +this.route.snapshot.paramMap.get('id');
         this.initEditor();
-        this.coEditingService.registerEditorListener(this.editor);
+        this.coEditingService.registerEditorListener(sessionId, this.editor);
     };
     EditorComponent.prototype.initEditor = function () {
         var _this = this;
@@ -204,7 +209,8 @@ var EditorComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/editor/editor.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/editor/editor.component.css")]
         }),
-        __metadata("design:paramtypes", [co_editing_service_1.CoEditingService])
+        __metadata("design:paramtypes", [co_editing_service_1.CoEditingService,
+            router_1.ActivatedRoute])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -346,6 +352,67 @@ var NewProblemComponent = /** @class */ (function () {
     return NewProblemComponent;
 }());
 exports.NewProblemComponent = NewProblemComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/page-not-found/page-not-found.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/page-not-found/page-not-found.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  page-not-found works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/page-not-found/page-not-found.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var PageNotFoundComponent = /** @class */ (function () {
+    function PageNotFoundComponent() {
+    }
+    PageNotFoundComponent.prototype.ngOnInit = function () {
+    };
+    PageNotFoundComponent = __decorate([
+        core_1.Component({
+            selector: 'app-page-not-found',
+            template: __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], PageNotFoundComponent);
+    return PageNotFoundComponent;
+}());
+exports.PageNotFoundComponent = PageNotFoundComponent;
 
 
 /***/ }),
@@ -525,10 +592,12 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var problem_list_component_1 = __webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.ts");
 var problem_detail_component_1 = __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.ts");
+var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
 var routes = [
-    { path: '', redirectTo: '/problems', pathMatch: 'full' },
-    { path: 'problems', component: problem_list_component_1.ProblemListComponent },
     { path: 'problems/:id', component: problem_detail_component_1.ProblemDetailComponent },
+    { path: 'problems', component: problem_list_component_1.ProblemListComponent },
+    { path: '', redirectTo: '/problems', pathMatch: 'full' },
+    { path: '**', component: page_not_found_component_1.PageNotFoundComponent }
 ];
 var RoutingModule = /** @class */ (function () {
     function RoutingModule() {
@@ -568,9 +637,14 @@ var CoEditingService = /** @class */ (function () {
         this.socket = io();
     }
     CoEditingService.prototype.change = function (changeInfo) {
-        this.socket.emit('change', JSON.stringify(changeInfo));
+        console.log(this.socket.id);
+        var changeInfoPack = {
+            "senderId": this.socket.id,
+            "changeInfo": changeInfo
+        };
+        this.socket.emit('change', changeInfoPack);
     };
-    CoEditingService.prototype.registerEditorListener = function (editor) {
+    CoEditingService.prototype.registerEditorListener = function (sessionId, editor) {
         // this.editor = editor;
         this.socket.on('change', function (msg) {
             console.log("msg from server");
