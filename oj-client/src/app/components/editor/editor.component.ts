@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgModule } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { CoEditingService } from '../../services/co-editing/co-editing.service'
 declare const ace: any;
 
@@ -15,11 +17,15 @@ export class EditorComponent implements OnInit {
   languages: String[] = ['Java', 'C++', 'Python'];
   language: String = 'Python'
 
-  constructor(private coEditingService: CoEditingService) { }
+  constructor(
+    private coEditingService: CoEditingService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    const sessionId = +this.route.snapshot.paramMap.get('id');
     this.initEditor();
-    this.coEditingService.registerEditorListener(this.editor);
+    this.coEditingService.registerEditorListener(sessionId, this.editor);
   }
 
   initEditor() {
