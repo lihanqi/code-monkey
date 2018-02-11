@@ -180,11 +180,14 @@ var EditorComponent = /** @class */ (function () {
         this.route = route;
         this.languages = ['Java', 'C++', 'Python'];
         this.language = 'Python';
+        this.lastChange = null;
     }
     EditorComponent.prototype.ngOnInit = function () {
-        var sessionId = +this.route.snapshot.paramMap.get('id');
-        this.initEditor();
-        this.coEditingService.registerEditorListener(sessionId, this.editor);
+        var _this = this;
+        this.route.paramMap.subscribe(function (paramMap) {
+            _this.initEditor();
+            _this.coEditingService.registerEditorListener(paramMap['id'], _this.editor);
+        });
     };
     EditorComponent.prototype.initEditor = function () {
         var _this = this;
@@ -192,8 +195,11 @@ var EditorComponent = /** @class */ (function () {
         this.editor.setTheme("ace/theme/textmate");
         this.editor.session.setMode("ace/mode/python");
         this.editor.getSession().setTabSize(4);
-        this.editor.getSession().on('change', function (changeInfo) {
-            _this.coEditingService.change(changeInfo);
+        this.editor.getSession().on('change', function (delta) {
+            // this.editor.lastChange = delta;
+            if (_this.editor.lastChange !== delta) {
+                _this.coEditingService.change(delta);
+            }
         });
     };
     EditorComponent.prototype.reset = function () {
@@ -594,8 +600,8 @@ var problem_list_component_1 = __webpack_require__("../../../../../src/app/compo
 var problem_detail_component_1 = __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.ts");
 var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
 var routes = [
-    { path: 'problems/:id', component: problem_detail_component_1.ProblemDetailComponent },
     { path: 'problems', component: problem_list_component_1.ProblemListComponent },
+    { path: 'problems/:id', component: problem_detail_component_1.ProblemDetailComponent },
     { path: '', redirectTo: '/problems', pathMatch: 'full' },
     { path: '**', component: page_not_found_component_1.PageNotFoundComponent }
 ];
@@ -632,23 +638,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var CoEditingService = /** @class */ (function () {
-    // editor: any;
     function CoEditingService() {
+        this.lastChange = null;
         this.socket = io();
     }
-    CoEditingService.prototype.change = function (changeInfo) {
-        console.log(this.socket.id);
+    CoEditingService.prototype.change = function (delta) {
+        // console.log(this.socket.id);
         var changeInfoPack = {
             "senderId": this.socket.id,
-            "changeInfo": changeInfo
+            "delta": delta
         };
+        this.lastChange = delta;
         this.socket.emit('change', changeInfoPack);
     };
     CoEditingService.prototype.registerEditorListener = function (sessionId, editor) {
         // this.editor = editor;
         this.socket.on('change', function (msg) {
-            console.log("msg from server");
             console.log(msg);
+            // if (msg.delta != this.lastChange){
+            //   // editor.getSession().getDocument().applyDeltas([msg.delta]);
+            //   // this.lastChange = msg.delta;
+            // }
+            editor.lastChange = msg.delta;
+            editor.getSession().getDocument().applyDeltas([msg.delta]);
+            // this.lastChange = msg.delta;
         });
     };
     CoEditingService = __decorate([

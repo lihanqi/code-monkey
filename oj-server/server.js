@@ -7,10 +7,12 @@ const io = require('socket.io')(server);
 const restRouter = require('./routes/rest');
 
 io.on('connection', function(socket){
+    // collaboration = {}
+    // participants = {}
     console.log('a user connected');
     socket.on('change', msg => {
         console.log(msg);
-        io.emit('change', msg);
+        socket.broadcast.emit('change', msg);
     })
     socket.on('disconnect', function(){
       console.log('user disconnected');

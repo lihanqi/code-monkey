@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { CoEditingService } from '../../services/co-editing/co-editing.service'
+import { ParamMap } from '@angular/router/src/shared';
 declare const ace: any;
 
 
@@ -16,6 +17,7 @@ export class EditorComponent implements OnInit {
   editor: any;
   languages: String[] = ['Java', 'C++', 'Python'];
   language: String = 'Python'
+  lastChange: object = null;
 
   constructor(
     private coEditingService: CoEditingService,
@@ -23,9 +25,12 @@ export class EditorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const sessionId = +this.route.snapshot.paramMap.get('id');
-    this.initEditor();
-    this.coEditingService.registerEditorListener(sessionId, this.editor);
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.initEditor();
+      this.coEditingService.registerEditorListener(paramMap['id'], this.editor);
+    })
+
   }
 
   initEditor() {
@@ -33,8 +38,12 @@ export class EditorComponent implements OnInit {
     this.editor.setTheme("ace/theme/textmate");
     this.editor.session.setMode("ace/mode/python");
     this.editor.getSession().setTabSize(4);
-    this.editor.getSession().on('change', (changeInfo) => {
-      this.coEditingService.change(changeInfo);
+    this.editor.getSession().on('change', (delta) => {
+        // this.editor.lastChange = delta;
+        if (this.editor.lastChange !== delta) {
+          this.coEditingService.change(delta);
+        }
+        
     });
     
   }
@@ -45,6 +54,15 @@ export class EditorComponent implements OnInit {
 
   setLanguage(language: String) {
     this.language = language;
+
+
+
+
+
+
+
+
+    
     this.reset();
   }
 
