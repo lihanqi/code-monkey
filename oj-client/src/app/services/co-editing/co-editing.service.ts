@@ -24,8 +24,8 @@ export class CoEditingService {
     // this.socket.emit('change', delta);
   }
 
-  registerEditorListener(sessionId: string, editor) {
-    console.log(this.sessionId);
+  attachEditorListener(editor) {
+    // console.log(this.sessionId);
     this.socket.on('change', delta => {
       editor.lastChange = delta;
       editor.getSession().getDocument().applyDeltas([delta]);
@@ -36,4 +36,5 @@ export class CoEditingService {
     this.sessionId = sessionId;
     this.socket.emit('register', sessionId);
   }
+
 }

@@ -188,8 +188,11 @@ var EditorComponent = /** @class */ (function () {
             _this.initEditor();
             // console.log(paramMap.get('id'));
             _this.coEditingService.register(paramMap.get('id'));
-            _this.coEditingService.registerEditorListener(paramMap.get('id'), _this.editor);
+            _this.coEditingService.attachEditorListener(_this.editor);
         });
+    };
+    EditorComponent.prototype.ngOnDestroy = function () {
+        // this.coEditingService.deregister();
     };
     EditorComponent.prototype.initEditor = function () {
         var _this = this;
@@ -652,8 +655,8 @@ var CoEditingService = /** @class */ (function () {
         this.socket.emit('change', changeInfoPack);
         // this.socket.emit('change', delta);
     };
-    CoEditingService.prototype.registerEditorListener = function (sessionId, editor) {
-        console.log(this.sessionId);
+    CoEditingService.prototype.attachEditorListener = function (editor) {
+        // console.log(this.sessionId);
         this.socket.on('change', function (delta) {
             editor.lastChange = delta;
             editor.getSession().getDocument().applyDeltas([delta]);

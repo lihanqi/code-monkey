@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -12,7 +12,7 @@ declare const ace: any;
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.css']
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, OnDestroy {
 
   editor: any;
   languages: String[] = ['Java', 'C++', 'Python'];
@@ -29,9 +29,12 @@ export class EditorComponent implements OnInit {
       this.initEditor();
       // console.log(paramMap.get('id'));
       this.coEditingService.register(paramMap.get('id'));
-      this.coEditingService.registerEditorListener(paramMap.get('id'), this.editor);
+      this.coEditingService.attachEditorListener(this.editor);
     })
+  }
 
+  ngOnDestroy() {
+    // this.coEditingService.deregister();
   }
 
   initEditor() {
