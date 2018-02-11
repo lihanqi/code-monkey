@@ -8,34 +8,32 @@ declare const io: any;
 @Injectable()
 export class CoEditingService {
   socket: any;
-  lastChange: object = null;
+  sessionId: string;
 
   constructor() { 
     this.socket = io();
-    
   }
 
   change(delta: object): void {
     // console.log(this.socket.id);
     const changeInfoPack = {
-      "senderId": this.socket.id,
+      "sessionId": this.sessionId,
       "delta": delta
     }
-    this.lastChange = delta;
     this.socket.emit('change', changeInfoPack);
+    // this.socket.emit('change', delta);
   }
 
   registerEditorListener(sessionId: string, editor) {
-    // this.editor = editor;
-    this.socket.on('change', msg => {
-      console.log(msg);
-      // if (msg.delta != this.lastChange){
-      //   // editor.getSession().getDocument().applyDeltas([msg.delta]);
-      //   // this.lastChange = msg.delta;
-      // }
-      editor.lastChange = msg.delta;
-      editor.getSession().getDocument().applyDeltas([msg.delta]);
-      // this.lastChange = msg.delta;
+    console.log(this.sessionId);
+    this.socket.on('change', delta => {
+      editor.lastChange = delta;
+      editor.getSession().getDocument().applyDeltas([delta]);
     })
+  }
+
+  register(sessionId: string) {
+    this.sessionId = sessionId;
+    this.socket.emit('register', sessionId);
   }
 }

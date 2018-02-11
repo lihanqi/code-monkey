@@ -7,15 +7,22 @@ const io = require('socket.io')(server);
 const restRouter = require('./routes/rest');
 
 io.on('connection', function(socket){
-    // collaboration = {}
-    // participants = {}
-    console.log('a user connected');
-    socket.on('change', msg => {
-        console.log(msg);
-        socket.broadcast.emit('change', msg);
+    const userId = socket.id;
+    console.log(userId + ' connected.');
+    socket.on('register', sessionId => {
+        socket.join(sessionId, () => {
+            console.log(userId + 'joined room ' + sessionId);
+        });
     })
+
+    socket.on('change', msg => {
+        const roomNumber = msg.sessionId;
+        socket.to(roomNumber).broadcast.emit('change', msg.delta);
+    })
+
+
     socket.on('disconnect', function(){
-      console.log('user disconnected');
+      console.log(socket.id + ' disconnected');
     });
   });
 

@@ -25,10 +25,11 @@ export class EditorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.initEditor();
-      this.coEditingService.registerEditorListener(paramMap['id'], this.editor);
+      // console.log(paramMap.get('id'));
+      this.coEditingService.register(paramMap.get('id'));
+      this.coEditingService.registerEditorListener(paramMap.get('id'), this.editor);
     })
 
   }
@@ -39,11 +40,10 @@ export class EditorComponent implements OnInit {
     this.editor.session.setMode("ace/mode/python");
     this.editor.getSession().setTabSize(4);
     this.editor.getSession().on('change', (delta) => {
-        // this.editor.lastChange = delta;
-        if (this.editor.lastChange !== delta) {
-          this.coEditingService.change(delta);
-        }
-        
+      // if applied the change from others, does not emit change event
+      if (this.editor.lastChange !== delta) {
+        this.coEditingService.change(delta);
+      }
     });
     
   }
@@ -54,15 +54,6 @@ export class EditorComponent implements OnInit {
 
   setLanguage(language: String) {
     this.language = language;
-
-
-
-
-
-
-
-
-    
     this.reset();
   }
 

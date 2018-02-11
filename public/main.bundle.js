@@ -186,7 +186,9 @@ var EditorComponent = /** @class */ (function () {
         var _this = this;
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
-            _this.coEditingService.registerEditorListener(paramMap['id'], _this.editor);
+            // console.log(paramMap.get('id'));
+            _this.coEditingService.register(paramMap.get('id'));
+            _this.coEditingService.registerEditorListener(paramMap.get('id'), _this.editor);
         });
     };
     EditorComponent.prototype.initEditor = function () {
@@ -196,7 +198,7 @@ var EditorComponent = /** @class */ (function () {
         this.editor.session.setMode("ace/mode/python");
         this.editor.getSession().setTabSize(4);
         this.editor.getSession().on('change', function (delta) {
-            // this.editor.lastChange = delta;
+            // if applied the change from others, does not emit change event
             if (_this.editor.lastChange !== delta) {
                 _this.coEditingService.change(delta);
             }
@@ -639,30 +641,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var CoEditingService = /** @class */ (function () {
     function CoEditingService() {
-        this.lastChange = null;
         this.socket = io();
     }
     CoEditingService.prototype.change = function (delta) {
         // console.log(this.socket.id);
         var changeInfoPack = {
-            "senderId": this.socket.id,
+            "sessionId": this.sessionId,
             "delta": delta
         };
-        this.lastChange = delta;
         this.socket.emit('change', changeInfoPack);
+        // this.socket.emit('change', delta);
     };
     CoEditingService.prototype.registerEditorListener = function (sessionId, editor) {
-        // this.editor = editor;
-        this.socket.on('change', function (msg) {
-            console.log(msg);
-            // if (msg.delta != this.lastChange){
-            //   // editor.getSession().getDocument().applyDeltas([msg.delta]);
-            //   // this.lastChange = msg.delta;
-            // }
-            editor.lastChange = msg.delta;
-            editor.getSession().getDocument().applyDeltas([msg.delta]);
-            // this.lastChange = msg.delta;
+        console.log(this.sessionId);
+        this.socket.on('change', function (delta) {
+            editor.lastChange = delta;
+            editor.getSession().getDocument().applyDeltas([delta]);
         });
+    };
+    CoEditingService.prototype.register = function (sessionId) {
+        this.sessionId = sessionId;
+        this.socket.emit('register', sessionId);
     };
     CoEditingService = __decorate([
         core_1.Injectable(),
