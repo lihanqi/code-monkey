@@ -18,9 +18,9 @@ export class ProblemListComponent implements OnInit {
   }
 
   getProblems() {
-    this.dataService.getProblems().subscribe(
-      problems => this.problems = problems
-    );
+    this.dataService.getProblems().subscribe((problems) => {
+        this.problems = problems
+    });
   }
 
 }

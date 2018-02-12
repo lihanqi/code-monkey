@@ -10,31 +10,26 @@ export class CoEditingService {
   socket: any;
   sessionId: string;
 
-  constructor() { 
-    this.socket = io();
+  constructor() { }
+
+  init(sessionId: string) {
+    this.sessionId = sessionId;
+    this.socket = io(window.location.origin, {query: {session: sessionId}});
   }
 
   change(delta: object): void {
-    // console.log(this.socket.id);
     const changeInfoPack = {
       "sessionId": this.sessionId,
       "delta": delta
     }
     this.socket.emit('change', changeInfoPack);
-    // this.socket.emit('change', delta);
   }
 
   attachEditorListener(editor) {
-    // console.log(this.sessionId);
     this.socket.on('change', delta => {
       editor.lastChange = delta;
       editor.getSession().getDocument().applyDeltas([delta]);
     })
   }
-
-  register(sessionId: string) {
-    this.sessionId = sessionId;
-    this.socket.emit('register', sessionId);
-  }
-
+  
 }

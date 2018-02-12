@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
 const ProblemModel = require('../models/Problem.model');
-mongoose.connect('mongodb://user:password@ds044689.mlab.com:44689/coj');
 
 
 const getProblems = function() {

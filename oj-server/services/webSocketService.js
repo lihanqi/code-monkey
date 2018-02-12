@@ -1,13 +1,13 @@
 const websocketService = function(io) {
     io.on('connection', function(socket){
         const userId = socket.id;
-        console.log(userId + ' connected.');
-    
-        socket.on('register', sessionId => {
-            socket.join(sessionId, () => {
-                console.log(userId + 'joined room ' + sessionId);
-            });
-        })
+        const sessionId = socket.handshake.query.session;
+        socket.join(sessionId, () => {
+            console.log(userId + 'joined room ' + sessionId);
+            // console.log(userId + ' connected.');
+            console.log('---------------------------');
+        });
+
         
         socket.on('change', msg => {
             const roomNumber = msg.sessionId;

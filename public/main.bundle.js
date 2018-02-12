@@ -186,8 +186,7 @@ var EditorComponent = /** @class */ (function () {
         var _this = this;
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
-            // console.log(paramMap.get('id'));
-            _this.coEditingService.register(paramMap.get('id'));
+            _this.coEditingService.init(paramMap.get('id'));
             _this.coEditingService.attachEditorListener(_this.editor);
         });
     };
@@ -554,7 +553,9 @@ var ProblemListComponent = /** @class */ (function () {
     };
     ProblemListComponent.prototype.getProblems = function () {
         var _this = this;
-        this.dataService.getProblems().subscribe(function (problems) { return _this.problems = problems; });
+        this.dataService.getProblems().subscribe(function (problems) {
+            _this.problems = problems;
+        });
     };
     ProblemListComponent = __decorate([
         core_1.Component({
@@ -644,27 +645,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var CoEditingService = /** @class */ (function () {
     function CoEditingService() {
-        this.socket = io();
     }
+    CoEditingService.prototype.init = function (sessionId) {
+        this.sessionId = sessionId;
+        this.socket = io(window.location.origin, { query: { session: sessionId } });
+    };
     CoEditingService.prototype.change = function (delta) {
-        // console.log(this.socket.id);
         var changeInfoPack = {
             "sessionId": this.sessionId,
             "delta": delta
         };
         this.socket.emit('change', changeInfoPack);
-        // this.socket.emit('change', delta);
     };
     CoEditingService.prototype.attachEditorListener = function (editor) {
-        // console.log(this.sessionId);
         this.socket.on('change', function (delta) {
             editor.lastChange = delta;
             editor.getSession().getDocument().applyDeltas([delta]);
         });
-    };
-    CoEditingService.prototype.register = function (sessionId) {
-        this.sessionId = sessionId;
-        this.socket.emit('register', sessionId);
     };
     CoEditingService = __decorate([
         core_1.Injectable(),

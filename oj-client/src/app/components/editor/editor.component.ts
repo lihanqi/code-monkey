@@ -27,8 +27,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.initEditor();
-      // console.log(paramMap.get('id'));
-      this.coEditingService.register(paramMap.get('id'));
+      this.coEditingService.init(paramMap.get('id'));
       this.coEditingService.attachEditorListener(this.editor);
     })
   }
