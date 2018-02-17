@@ -13,6 +13,12 @@ const websocketService = function(io) {
             const roomNumber = msg.sessionId;
             socket.to(roomNumber).broadcast.emit('change', msg.delta);
         })
+
+        socket.on('cursorMove', cursor => {
+            cursor = JSON.parse(cursor);
+            cursor['ownerId'] = userId;
+            socket.to(sessionId).broadcast.emit('cursorMove', JSON.stringify(cursor));
+        })
     
         socket.on('disconnect', function(){
           console.log(socket.id + ' disconnected');

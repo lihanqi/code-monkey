@@ -139,7 +139,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#editor { \n    margin-top: 15px;\n    height: 600px;\n    font-size: 14px;\n}\n\n.editor-box {\n    margin-top: 25px;\n}\n\n.button-group button {\n    margin-right: 10px;\n}", ""]);
+exports.push([module.i, "#editor { \n    margin-top: 15px;\n    height: 600px;\n    font-size: 14px;\n}\n\n.editor-box {\n    margin-top: 25px;\n}\n\n.button-group button {\n    margin-right: 10px;\n}\n\n/* .MyCursorClass {\n    position:absolute;\n    background: red;\n    z-index:100;\n    width:3px;\n} */", ""]);
 
 // exports
 
@@ -187,7 +187,7 @@ var EditorComponent = /** @class */ (function () {
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
             _this.coEditingService.init(paramMap.get('id'));
-            _this.coEditingService.attachEditorListener(_this.editor);
+            _this.coEditingService.attachEditorListeners(_this.editor);
         });
     };
     EditorComponent.prototype.ngOnDestroy = function () {
@@ -199,11 +199,18 @@ var EditorComponent = /** @class */ (function () {
         this.editor.setTheme("ace/theme/textmate");
         this.editor.session.setMode("ace/mode/python");
         this.editor.getSession().setTabSize(4);
+        this.editor.lastChange = null;
         this.editor.getSession().on('change', function (delta) {
             // if applied the change from others, does not emit change event
             if (_this.editor.lastChange !== delta) {
                 _this.coEditingService.change(delta);
             }
+        });
+        this.editor.session.selection.on('changeCursor', function (e) {
+            // console.log(this.editor.getSession().selection.getCursor());
+            var cursorLoc = _this.editor.getSession().selection.getCursor();
+            // this.coEditingService.cursorMove(JSON.stringify(cursorLoc));
+            _this.coEditingService.cursorMove(cursorLoc);
         });
     };
     EditorComponent.prototype.reset = function () {
@@ -627,6 +634,25 @@ exports.RoutingModule = RoutingModule;
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/co-editing/CURSOR_CULORS.js":
+/***/ (function(module, exports) {
+
+var CURSOR_CULORS = [
+    "#A52A2A",
+    "#00008B",
+    "#B8860B",
+    "#006400",
+    "#FF8C00",
+    "#FF1493",
+    "#20B2AA",
+    "#800080",
+    "#FFFF00"
+];
+module.exports = { CURSOR_CULORS: CURSOR_CULORS };
+//# sourceMappingURL=CURSOR_CULORS.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/co-editing/co-editing.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -643,13 +669,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var CURSOR_CULORS_1 = __webpack_require__("../../../../../src/app/services/co-editing/CURSOR_CULORS.js");
+// should get from server?
+// declare const MAX_NUM_OF_PARTICIPANTS = 20; 
 var CoEditingService = /** @class */ (function () {
     function CoEditingService() {
+        this.colors = CURSOR_CULORS_1.CURSOR_CULORS;
+        this.participants = {};
+        this.clientNum = 0;
+        this.MAX_NUM_OF_PARTICIPANTS = 20;
     }
+    /**
+     * Service Initializer
+     * @param sessionId the co-editing service session
+     */
     CoEditingService.prototype.init = function (sessionId) {
         this.sessionId = sessionId;
         this.socket = io(window.location.origin, { query: { session: sessionId } });
     };
+    /**
+     * emit change event to server, involked when the changing the editor's content
+     * @param delta the object containing infomation about content change
+     */
     CoEditingService.prototype.change = function (delta) {
         var changeInfoPack = {
             "sessionId": this.sessionId,
@@ -657,10 +698,66 @@ var CoEditingService = /** @class */ (function () {
         };
         this.socket.emit('change', changeInfoPack);
     };
-    CoEditingService.prototype.attachEditorListener = function (editor) {
+    /**
+     * emit cursorMove event to server, involed when user moved its own cursor
+     * @param cursor the object containing information about current cursor's location
+     */
+    CoEditingService.prototype.cursorMove = function (cursor) {
+        this.socket.emit('cursorMove', JSON.stringify(cursor));
+    };
+    /**
+     * attach event handlers when received updates from user
+     * @param editor the editor object that needed to update
+     */
+    CoEditingService.prototype.attachEditorListeners = function (editor) {
+        this.listenChange(editor);
+        this.listenCursorMove(editor);
+    };
+    /**
+     * helper: attach event listener to listen 'change' signal
+     * @param editor the editor object that needed to update
+     */
+    CoEditingService.prototype.listenChange = function (editor) {
         this.socket.on('change', function (delta) {
             editor.lastChange = delta;
             editor.getSession().getDocument().applyDeltas([delta]);
+        });
+    };
+    /**
+     * helper: attach event listener to listen 'cursorMove' signal
+     * @param editor the editor object that needed to update
+     */
+    CoEditingService.prototype.listenCursorMove = function (editor) {
+        var _this = this;
+        this.socket.on('cursorMove', function (cursor) {
+            cursor = JSON.parse(cursor);
+            var session = editor.getSession();
+            var x = cursor.row;
+            var y = cursor.column;
+            var participantId = cursor.ownerId;
+            var color = null;
+            if (participantId in _this.participants) {
+                color = _this.participants[participantId].color;
+                session.removeMarker(_this.participants[participantId]['marker']);
+            }
+            else {
+                if (Object.keys(_this.participants).length > _this.MAX_NUM_OF_PARTICIPANTS) {
+                    throw "Number of participants reach the limit.";
+                }
+                _this.participants[participantId] = {};
+                _this.participants[participantId]["color"] = color || _this.colors[_this.clientNum];
+                console.log(_this.participants[participantId]["color"]);
+                // Todo: need to revise
+                var css = document.createElement('style');
+                css.type = 'text/css';
+                css.innerHTML = ".editor_cursor_" + participantId + "\n                        { \n                          position:absolute;\n                          background: " + _this.participants[participantId].color + ";\v\n                          z-index:100;\n                          width:2px !important;\n                        }";
+                document.body.appendChild(css);
+                _this.clientNum++;
+            }
+            var Range = ace.require('ace/range').Range;
+            var range = new Range(x, y, x, y + 1);
+            var newMarker = session.addMarker(range, "editor_cursor_" + participantId, true);
+            _this.participants[participantId]['marker'] = newMarker;
         });
     };
     CoEditingService = __decorate([

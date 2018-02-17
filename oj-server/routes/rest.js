@@ -7,15 +7,17 @@ const problemService = require('../services/problemService');
 // parse application/json
 router.use(bodyParser.json());
 
-// GET api/v1/problems - return problems 
+// GET api/v1/problems
+//  - return problems 
 router.get('/problems', (req, res) => {
     // console.log("server received request");
     problemService.getProblems()
         .then((problems) => { res.json(problems);})
-        .catch((error) => { res.send(error);});
+        .catch((error) => { res.status(500).send(error);});
 })
 
-// GET api/v1/problems/:id - return problem by id
+// GET api/v1/problems/:id
+//   - return problem by id
 router.get('/problems/:id', (req, res) => {
     const id = +req.params.id;
     problemService.getProblem(id)
@@ -25,7 +27,8 @@ router.get('/problems/:id', (req, res) => {
         });
 })
 
-// POST api/v1/problems - add new problems 
+// POST api/v1/problems
+// - add new problems 
 router.post('/problems', (req, res) => {
     problemService.addNewProblem(req.body).then((problem) => {
         res.json(problem);

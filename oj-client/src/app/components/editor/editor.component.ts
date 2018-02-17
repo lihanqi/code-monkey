@@ -28,7 +28,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.initEditor();
       this.coEditingService.init(paramMap.get('id'));
-      this.coEditingService.attachEditorListener(this.editor);
+      this.coEditingService.attachEditorListeners(this.editor);
     })
   }
 
@@ -41,11 +41,21 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.editor.setTheme("ace/theme/textmate");
     this.editor.session.setMode("ace/mode/python");
     this.editor.getSession().setTabSize(4);
+    this.editor.lastChange = null;
+    
     this.editor.getSession().on('change', (delta) => {
       // if applied the change from others, does not emit change event
       if (this.editor.lastChange !== delta) {
         this.coEditingService.change(delta);
       }
+    });
+    
+    this.editor.session.selection.on('changeCursor', (e) => {
+      // console.log(this.editor.getSession().selection.getCursor());
+      let cursorLoc = this.editor.getSession().selection.getCursor();
+      // this.coEditingService.cursorMove(JSON.stringify(cursorLoc));
+      this.coEditingService.cursorMove(cursorLoc);
+
     });
     
   }
