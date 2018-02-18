@@ -634,10 +634,13 @@ exports.RoutingModule = RoutingModule;
 
 /***/ }),
 
-/***/ "../../../../../src/app/services/co-editing/CURSOR_CULORS.js":
-/***/ (function(module, exports) {
+/***/ "../../../../../src/app/services/co-editing/CURSOR_CULORS.ts":
+/***/ (function(module, exports, __webpack_require__) {
 
-var CURSOR_CULORS = [
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CURSOR_CULORS = [
     "#A52A2A",
     "#00008B",
     "#B8860B",
@@ -648,8 +651,9 @@ var CURSOR_CULORS = [
     "#800080",
     "#FFFF00"
 ];
-module.exports = { CURSOR_CULORS: CURSOR_CULORS };
-//# sourceMappingURL=CURSOR_CULORS.js.map
+// module.exports = { CURSOR_CULORS };
+// module.exports = CURSOR_CULORS; 
+
 
 /***/ }),
 
@@ -669,7 +673,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var CURSOR_CULORS_1 = __webpack_require__("../../../../../src/app/services/co-editing/CURSOR_CULORS.js");
+var CURSOR_CULORS_1 = __webpack_require__("../../../../../src/app/services/co-editing/CURSOR_CULORS.ts");
 // should get from server?
 // declare const MAX_NUM_OF_PARTICIPANTS = 20; 
 var CoEditingService = /** @class */ (function () {

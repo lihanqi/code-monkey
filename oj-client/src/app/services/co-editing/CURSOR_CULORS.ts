@@ -1,4 +1,4 @@
-const CURSOR_CULORS = [
+export const CURSOR_CULORS: string[] = [
     "#A52A2A",
     "#00008B",
     "#B8860B",
@@ -10,4 +10,5 @@ const CURSOR_CULORS = [
     "#FFFF00"
 ];
 
-module.exports = { CURSOR_CULORS };
+// module.exports = { CURSOR_CULORS };
+// module.exports = CURSOR_CULORS;
