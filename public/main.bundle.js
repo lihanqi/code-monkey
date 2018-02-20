@@ -175,6 +175,7 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
 var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
+var POP_TIME_OUT = 1500;
 var EditorComponent = /** @class */ (function () {
     function EditorComponent(coEditingService, route) {
         this.coEditingService = coEditingService;
@@ -187,10 +188,10 @@ var EditorComponent = /** @class */ (function () {
         var _this = this;
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
-            _this.coEditingService.init(paramMap.get('id'));
+            _this.coEditingService.init(paramMap.get('id'), _this.editor);
             _this.coEditingService.attachEditorListeners(_this.editor);
             _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) {
-                console.log("subsciption update: " + activity);
+                // console.log("subsciption update: " + activity);
                 _this.popNotify(activity);
             });
         });
@@ -235,6 +236,10 @@ var EditorComponent = /** @class */ (function () {
         this.language = language;
         this.reset();
     };
+    /**
+     * popup notifications of participants status with fade in&out animation
+     * @param activity contains userId and its action(join, left)
+     */
     EditorComponent.prototype.popNotify = function (activity) {
         var notice = document.createElement('div');
         notice.className = 'alert alert-primary';
@@ -242,18 +247,9 @@ var EditorComponent = /** @class */ (function () {
         notice.innerHTML = activity['id'] + activity['action'];
         notice.style.display = "none";
         document.getElementById('notice').appendChild(notice);
-        // $(`${notice.id}`).fadeIn("slow", ()=> {
-        //   // $(notice.id).fadeOut("slow");
-        // });
-        $("#" + notice.id).fadeIn('slow', function () {
-            $("#" + notice.id).fadeOut(1500, function () {
-                notice.remove();
-            });
+        $("#" + notice.id).fadeIn().delay(POP_TIME_OUT).fadeOut(function () {
+            notice.remove();
         });
-        // notice.fadeIn();
-        // setTimeout(() => {
-        //   notice.remove();
-        // }, 1000);
     };
     EditorComponent = __decorate([
         core_1.Component({
@@ -724,20 +720,22 @@ var CoEditingService = /** @class */ (function () {
      * Service Initializer
      * @param sessionId the co-editing service session
      */
-    CoEditingService.prototype.init = function (sessionId) {
+    CoEditingService.prototype.init = function (sessionId, editor) {
         this.sessionId = sessionId;
         this.socket = io(window.location.origin, { query: { session: sessionId } });
+        this.editor = editor;
+        this.restoreBuffer();
     };
     /**
      * emit change event to server, involked when the changing the editor's content
      * @param delta the object containing infomation about content change
      */
     CoEditingService.prototype.change = function (delta) {
-        var changeInfoPack = {
-            "sessionId": this.sessionId,
-            "delta": delta
-        };
-        this.socket.emit('change', changeInfoPack);
+        // const changeInfoPack = {
+        //   "sessionId": this.sessionId,
+        //   "delta": delta
+        // }
+        this.socket.emit('change', JSON.stringify(delta));
     };
     /**
      * emit cursorMove event to server, involed when user moved its own cursor
@@ -751,9 +749,24 @@ var CoEditingService = /** @class */ (function () {
      * @param editor the editor object that needed to update
      */
     CoEditingService.prototype.attachEditorListeners = function (editor) {
+        var _this = this;
         this.listenParticipantsActivities(editor);
         this.listenChange(editor);
         this.listenCursorMove(editor);
+        this.socket.on('restoreBuffer', function (delta) {
+            // console.log('!!!????????????');
+            // console.log(msg);
+            delta = JSON.parse(delta);
+            console.log(JSON.stringify(delta));
+            // console.log(delta);
+            // delta.forEach((change)=> {
+            //   this.editor.getSession().getDocument().applyDeltas([change]);
+            // })
+            _this.editor.getSession().getDocument().applyDeltas([delta]);
+        });
+    };
+    CoEditingService.prototype.restoreBuffer = function () {
+        this.socket.emit('restoreBuffer', this.sessionId);
     };
     /**
      * helper: attach event listener to listen participants' activities
@@ -782,6 +795,7 @@ var CoEditingService = /** @class */ (function () {
      */
     CoEditingService.prototype.listenChange = function (editor) {
         this.socket.on('change', function (delta) {
+            delta = JSON.parse(delta);
             editor.lastChange = delta;
             editor.getSession().getDocument().applyDeltas([delta]);
         });

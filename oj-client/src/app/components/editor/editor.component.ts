@@ -8,6 +8,7 @@ import { not } from '@angular/compiler/src/output/output_ast';
 import * as $ from 'jquery';
 
 declare const ace: any;
+const POP_TIME_OUT: number = 1500;
 
 @Component({
   selector: 'app-editor',
@@ -30,10 +31,10 @@ export class EditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.initEditor();
-      this.coEditingService.init(paramMap.get('id'));
+      this.coEditingService.init(paramMap.get('id'), this.editor);
       this.coEditingService.attachEditorListeners(this.editor);
       this.userAcitivitySubscrpiton = this.coEditingService.userLogin$.subscribe(activity => {
-        console.log("subsciption update: " + activity);
+        // console.log("subsciption update: " + activity);
         this.popNotify(activity);
       });
     })
@@ -86,6 +87,10 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.reset();
   }
 
+  /**
+   * popup notifications of participants status with fade in&out animation 
+   * @param activity contains userId and its action(join, left)
+   */
   popNotify(activity: object) {
     let notice = document.createElement('div');
     notice.className = 'alert alert-primary';
@@ -93,18 +98,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     notice.innerHTML = activity['id'] + activity['action'];
     notice.style.display = "none";
     document.getElementById('notice').appendChild(notice);
-    // $(`${notice.id}`).fadeIn("slow", ()=> {
-
-    //   // $(notice.id).fadeOut("slow");
-    // });
-    $(`#${notice.id}`).fadeIn('slow', () => {
-      $(`#${notice.id}`).fadeOut(1500, () => {
-        notice.remove();
-      });
+    $(`#${notice.id}`).fadeIn().delay(POP_TIME_OUT).fadeOut(() => {
+      notice.remove();
     });
-    // notice.fadeIn();
-    // setTimeout(() => {
-    //   notice.remove();
-    // }, 1000);
   }
 }

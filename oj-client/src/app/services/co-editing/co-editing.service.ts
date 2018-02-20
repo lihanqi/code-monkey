@@ -5,6 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Subject }    from 'rxjs/Subject';
 
 import { CURSOR_CULORS } from './CURSOR_CULORS';
+import { forEach } from '@angular/router/src/utils/collection';
 
 declare const io: any;
 declare const ace: any;
@@ -13,6 +14,7 @@ declare const ace: any;
 
 @Injectable()
 export class CoEditingService {
+  editor: any;
   colors: string[] = CURSOR_CULORS;
   socket: any;
   sessionId: string;
@@ -28,9 +30,11 @@ export class CoEditingService {
    * Service Initializer
    * @param sessionId the co-editing service session
    */
-  init(sessionId: string) {
+  init(sessionId: string, editor: any) {
     this.sessionId = sessionId;
     this.socket = io(window.location.origin, {query: {session: sessionId}});
+    this.editor = editor;
+    this.restoreBuffer();
   }
 
   /**
@@ -38,11 +42,11 @@ export class CoEditingService {
    * @param delta the object containing infomation about content change
    */
   change(delta: object): void {
-    const changeInfoPack = {
-      "sessionId": this.sessionId,
-      "delta": delta
-    }
-    this.socket.emit('change', changeInfoPack);
+    // const changeInfoPack = {
+    //   "sessionId": this.sessionId,
+    //   "delta": delta
+    // }
+    this.socket.emit('change', JSON.stringify(delta));
   }
 
   /**
@@ -61,7 +65,22 @@ export class CoEditingService {
     this.listenParticipantsActivities(editor);
     this.listenChange(editor);
     this.listenCursorMove(editor);
-    
+
+    this.socket.on('restoreBuffer', delta => {
+      // console.log('!!!????????????');
+      // console.log(msg);
+      delta = JSON.parse(delta);
+      console.log(JSON.stringify(delta));
+      // console.log(delta);
+      // delta.forEach((change)=> {
+      //   this.editor.getSession().getDocument().applyDeltas([change]);
+      // })
+      this.editor.getSession().getDocument().applyDeltas([delta]);
+    })
+  }
+
+  private restoreBuffer() {
+    this.socket.emit('restoreBuffer', this.sessionId); 
   }
 
   /**
@@ -91,6 +110,7 @@ export class CoEditingService {
    */
   private listenChange(editor) {
     this.socket.on('change', delta => {
+      delta = JSON.parse(delta);
       editor.lastChange = delta;
       editor.getSession().getDocument().applyDeltas([delta]);
     });
