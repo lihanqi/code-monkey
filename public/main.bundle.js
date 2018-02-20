@@ -152,7 +152,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/editor/editor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container editor-box\">\n  <section>\n    <header>\n      <div class=\"button-group row\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n\n    <body>\n      <div id=\"editor\">Hello?</div>\n    </body>\n  </section>\n \n</div>\n"
+module.exports = "<div class=\"container editor-box\">\n  <section>\n    <header>\n      <div class=\"button-group row\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n\n    <body>\n      <div id=\"notice\"></div>\n      <div id=\"editor\">Hello?</div>\n    </body>\n  </section>\n \n</div>\n"
 
 /***/ }),
 
@@ -174,6 +174,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
+var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
 var EditorComponent = /** @class */ (function () {
     function EditorComponent(coEditingService, route) {
         this.coEditingService = coEditingService;
@@ -188,11 +189,18 @@ var EditorComponent = /** @class */ (function () {
             _this.initEditor();
             _this.coEditingService.init(paramMap.get('id'));
             _this.coEditingService.attachEditorListeners(_this.editor);
+            _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) {
+                console.log("subsciption update: " + activity);
+                _this.popNotify(activity);
+            });
         });
     };
     EditorComponent.prototype.ngOnDestroy = function () {
-        // this.coEditingService.deregister();
+        this.userAcitivitySubscrpiton.unsubscribe();
     };
+    /**
+     * ACE editor initialition
+    */
     EditorComponent.prototype.initEditor = function () {
         var _this = this;
         this.editor = ace.edit("editor");
@@ -200,25 +208,52 @@ var EditorComponent = /** @class */ (function () {
         this.editor.session.setMode("ace/mode/python");
         this.editor.getSession().setTabSize(4);
         this.editor.lastChange = null;
+        // listen for context change
         this.editor.getSession().on('change', function (delta) {
-            // if applied the change from others, does not emit change event
             if (_this.editor.lastChange !== delta) {
+                // emit only if the change is made by the user
                 _this.coEditingService.change(delta);
             }
         });
+        // listen for cursor move 
         this.editor.session.selection.on('changeCursor', function (e) {
-            // console.log(this.editor.getSession().selection.getCursor());
             var cursorLoc = _this.editor.getSession().selection.getCursor();
-            // this.coEditingService.cursorMove(JSON.stringify(cursorLoc));
             _this.coEditingService.cursorMove(cursorLoc);
         });
     };
+    /**
+     * Reset editor to initial state
+    */
     EditorComponent.prototype.reset = function () {
-        this.editor.setValue("the new text here"); // or session.setValue
+        this.editor.setValue("the new text here");
     };
+    /**
+     * Set the programming language for editor syntax highlighting
+     * @param language the programming language to be use
+     */
     EditorComponent.prototype.setLanguage = function (language) {
         this.language = language;
         this.reset();
+    };
+    EditorComponent.prototype.popNotify = function (activity) {
+        var notice = document.createElement('div');
+        notice.className = 'alert alert-primary';
+        notice.id = activity['id'];
+        notice.innerHTML = activity['id'] + activity['action'];
+        notice.style.display = "none";
+        document.getElementById('notice').appendChild(notice);
+        // $(`${notice.id}`).fadeIn("slow", ()=> {
+        //   // $(notice.id).fadeOut("slow");
+        // });
+        $("#" + notice.id).fadeIn('slow', function () {
+            $("#" + notice.id).fadeOut(1500, function () {
+                notice.remove();
+            });
+        });
+        // notice.fadeIn();
+        // setTimeout(() => {
+        //   notice.remove();
+        // }, 1000);
     };
     EditorComponent = __decorate([
         core_1.Component({
@@ -673,6 +708,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
 var CURSOR_CULORS_1 = __webpack_require__("../../../../../src/app/services/co-editing/CURSOR_CULORS.ts");
 // should get from server?
 // declare const MAX_NUM_OF_PARTICIPANTS = 20; 
@@ -682,6 +718,7 @@ var CoEditingService = /** @class */ (function () {
         this.participants = {};
         this.clientNum = 0;
         this.MAX_NUM_OF_PARTICIPANTS = 20;
+        this.userLogin$ = new Subject_1.Subject();
     }
     /**
      * Service Initializer
@@ -714,8 +751,30 @@ var CoEditingService = /** @class */ (function () {
      * @param editor the editor object that needed to update
      */
     CoEditingService.prototype.attachEditorListeners = function (editor) {
+        this.listenParticipantsActivities(editor);
         this.listenChange(editor);
         this.listenCursorMove(editor);
+    };
+    /**
+     * helper: attach event listener to listen participants' activities
+     * @param editor the editor object that needed to update
+     */
+    CoEditingService.prototype.listenParticipantsActivities = function (editor) {
+        var _this = this;
+        this.socket.on('userJoin', function (userId) {
+            var activity = {
+                id: userId,
+                action: "joined"
+            };
+            _this.userLogin$.next(activity);
+        });
+        this.socket.on('userLeft', function (userId) {
+            var activity = {
+                id: userId,
+                action: "left"
+            };
+            _this.userLogin$.next(activity);
+        });
     };
     /**
      * helper: attach event listener to listen 'change' signal

@@ -4,8 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 
 import { CoEditingService } from '../../services/co-editing/co-editing.service'
 import { ParamMap } from '@angular/router/src/shared';
-declare const ace: any;
+import { not } from '@angular/compiler/src/output/output_ast';
+import * as $ from 'jquery';
 
+declare const ace: any;
 
 @Component({
   selector: 'app-editor',
@@ -18,6 +20,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   languages: String[] = ['Java', 'C++', 'Python'];
   language: String = 'Python'
   lastChange: object = null;
+  userAcitivitySubscrpiton: any;
 
   constructor(
     private coEditingService: CoEditingService,
@@ -29,13 +32,20 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.initEditor();
       this.coEditingService.init(paramMap.get('id'));
       this.coEditingService.attachEditorListeners(this.editor);
+      this.userAcitivitySubscrpiton = this.coEditingService.userLogin$.subscribe(activity => {
+        console.log("subsciption update: " + activity);
+        this.popNotify(activity);
+      });
     })
   }
 
   ngOnDestroy() {
-    // this.coEditingService.deregister();
+    this.userAcitivitySubscrpiton.unsubscribe();
   }
 
+  /** 
+   * ACE editor initialition
+  */
   initEditor() {
     this.editor = ace.edit("editor");
     this.editor.setTheme("ace/theme/textmate");
@@ -43,30 +53,58 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.editor.getSession().setTabSize(4);
     this.editor.lastChange = null;
     
+    // listen for context change
     this.editor.getSession().on('change', (delta) => {
-      // if applied the change from others, does not emit change event
       if (this.editor.lastChange !== delta) {
+        // emit only if the change is made by the user
         this.coEditingService.change(delta);
       }
     });
     
+    // listen for cursor move 
     this.editor.session.selection.on('changeCursor', (e) => {
-      // console.log(this.editor.getSession().selection.getCursor());
       let cursorLoc = this.editor.getSession().selection.getCursor();
-      // this.coEditingService.cursorMove(JSON.stringify(cursorLoc));
       this.coEditingService.cursorMove(cursorLoc);
 
     });
     
   }
   
+  /** 
+   * Reset editor to initial state
+  */
   reset() {
-    this.editor.setValue("the new text here"); // or session.setValue
+    this.editor.setValue("the new text here");
   }
 
-  setLanguage(language: String) {
+  /**
+   * Set the programming language for editor syntax highlighting
+   * @param language the programming language to be use
+   */
+  setLanguage(language: string) {
     this.language = language;
     this.reset();
   }
 
+  popNotify(activity: object) {
+    let notice = document.createElement('div');
+    notice.className = 'alert alert-primary';
+    notice.id = activity['id'];
+    notice.innerHTML = activity['id'] + activity['action'];
+    notice.style.display = "none";
+    document.getElementById('notice').appendChild(notice);
+    // $(`${notice.id}`).fadeIn("slow", ()=> {
+
+    //   // $(notice.id).fadeOut("slow");
+    // });
+    $(`#${notice.id}`).fadeIn('slow', () => {
+      $(`#${notice.id}`).fadeOut(1500, () => {
+        notice.remove();
+      });
+    });
+    // notice.fadeIn();
+    // setTimeout(() => {
+    //   notice.remove();
+    // }, 1000);
+  }
 }

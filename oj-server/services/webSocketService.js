@@ -6,6 +6,7 @@ const websocketService = function(io) {
             console.log(userId + 'joined room ' + sessionId);
             // console.log(userId + ' connected.');
             console.log('---------------------------');
+            socket.to(sessionId).broadcast.emit('userJoin', userId);
         });
 
         
@@ -22,6 +23,7 @@ const websocketService = function(io) {
     
         socket.on('disconnect', function(){
           console.log(socket.id + ' disconnected');
+          socket.to(sessionId).broadcast.emit('userLeft', userId);
         });
       });
 }

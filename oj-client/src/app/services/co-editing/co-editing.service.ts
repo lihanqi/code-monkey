@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Subject }    from 'rxjs/Subject';
 
 import { CURSOR_CULORS } from './CURSOR_CULORS';
 
@@ -18,6 +19,7 @@ export class CoEditingService {
   participants: Object = {};
   clientNum: number = 0;
   MAX_NUM_OF_PARTICIPANTS = 20; 
+  userLogin$ = new Subject<Object>();
 
 
   constructor() { }
@@ -56,10 +58,33 @@ export class CoEditingService {
    * @param editor the editor object that needed to update
    */
   public attachEditorListeners(editor) {
+    this.listenParticipantsActivities(editor);
     this.listenChange(editor);
     this.listenCursorMove(editor);
     
   }
+
+  /**
+   * helper: attach event listener to listen participants' activities
+   * @param editor the editor object that needed to update
+   */
+  private listenParticipantsActivities(editor) {
+    this.socket.on('userJoin', userId => {
+      let activity = {
+        id: userId,
+        action: "joined"
+      };
+      this.userLogin$.next(activity);
+    })
+    this.socket.on('userLeft', userId => {
+      let activity = {
+        id: userId,
+        action: "left"
+      };
+      this.userLogin$.next(activity);
+    })
+  }
+
   /**
    * helper: attach event listener to listen 'change' signal
    * @param editor the editor object that needed to update
