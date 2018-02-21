@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, single } from 'rxjs/operators';
 import { Subject }    from 'rxjs/Subject';
 
 import { CURSOR_CULORS } from './CURSOR_CULORS';
@@ -42,10 +42,6 @@ export class CoEditingService {
    * @param delta the object containing infomation about content change
    */
   change(delta: object): void {
-    // const changeInfoPack = {
-    //   "sessionId": this.sessionId,
-    //   "delta": delta
-    // }
     this.socket.emit('change', JSON.stringify(delta));
   }
 
@@ -69,18 +65,30 @@ export class CoEditingService {
     this.socket.on('restoreBuffer', delta => {
       // console.log('!!!????????????');
       // console.log(msg);
-      delta = JSON.parse(delta);
-      console.log(JSON.stringify(delta));
+      // delta = JSON.parse(delta);
+      // console.log(JSON.stringify(delta));
+      // console.log(delta);
       // console.log(delta);
       // delta.forEach((change)=> {
       //   this.editor.getSession().getDocument().applyDeltas([change]);
       // })
-      this.editor.getSession().getDocument().applyDeltas([delta]);
+      // this.editor.getSession().getDocument().applyDeltas([delta]);
+      delta = JSON.parse(delta);
+      for (let changeIndex in delta) {
+        // console.log(delta[changeIndex]);
+        // delta = JSON.parse(delta);
+        // editor.lastChange = delta;
+        // editor.getSession().getDocument().applyDeltas([delta]);
+        let singleChange = JSON.parse(delta[changeIndex]);
+        editor.lastChange = singleChange;
+        editor.getSession().getDocument().applyDeltas([singleChange]);
+      }
+
     })
   }
 
   private restoreBuffer() {
-    this.socket.emit('restoreBuffer', this.sessionId); 
+    this.socket.emit('restoreBuffer', this.sessionId);
   }
 
   /**

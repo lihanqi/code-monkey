@@ -16,7 +16,7 @@ const websocketService = function(io) {
             if (!(sessionId in buffer)) {
                 buffer[sessionId] = [];
             }
-            buffer[sessionId].push(JSON.parse(delta));
+            buffer[sessionId].push(delta);
             // console.log(buffer);
             socket.to(sessionId).broadcast.emit('change', delta);
         })

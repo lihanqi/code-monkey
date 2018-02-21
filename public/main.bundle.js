@@ -731,10 +731,6 @@ var CoEditingService = /** @class */ (function () {
      * @param delta the object containing infomation about content change
      */
     CoEditingService.prototype.change = function (delta) {
-        // const changeInfoPack = {
-        //   "sessionId": this.sessionId,
-        //   "delta": delta
-        // }
         this.socket.emit('change', JSON.stringify(delta));
     };
     /**
@@ -749,20 +745,30 @@ var CoEditingService = /** @class */ (function () {
      * @param editor the editor object that needed to update
      */
     CoEditingService.prototype.attachEditorListeners = function (editor) {
-        var _this = this;
         this.listenParticipantsActivities(editor);
         this.listenChange(editor);
         this.listenCursorMove(editor);
         this.socket.on('restoreBuffer', function (delta) {
             // console.log('!!!????????????');
             // console.log(msg);
-            delta = JSON.parse(delta);
-            console.log(JSON.stringify(delta));
+            // delta = JSON.parse(delta);
+            // console.log(JSON.stringify(delta));
+            // console.log(delta);
             // console.log(delta);
             // delta.forEach((change)=> {
             //   this.editor.getSession().getDocument().applyDeltas([change]);
             // })
-            _this.editor.getSession().getDocument().applyDeltas([delta]);
+            // this.editor.getSession().getDocument().applyDeltas([delta]);
+            delta = JSON.parse(delta);
+            for (var changeIndex in delta) {
+                // console.log(delta[changeIndex]);
+                // delta = JSON.parse(delta);
+                // editor.lastChange = delta;
+                // editor.getSession().getDocument().applyDeltas([delta]);
+                var singleChange = JSON.parse(delta[changeIndex]);
+                editor.lastChange = singleChange;
+                editor.getSession().getDocument().applyDeltas([singleChange]);
+            }
         });
     };
     CoEditingService.prototype.restoreBuffer = function () {
