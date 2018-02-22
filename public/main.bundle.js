@@ -749,22 +749,8 @@ var CoEditingService = /** @class */ (function () {
         this.listenChange(editor);
         this.listenCursorMove(editor);
         this.socket.on('restoreBuffer', function (delta) {
-            // console.log('!!!????????????');
-            // console.log(msg);
-            // delta = JSON.parse(delta);
-            // console.log(JSON.stringify(delta));
-            // console.log(delta);
-            // console.log(delta);
-            // delta.forEach((change)=> {
-            //   this.editor.getSession().getDocument().applyDeltas([change]);
-            // })
-            // this.editor.getSession().getDocument().applyDeltas([delta]);
             delta = JSON.parse(delta);
             for (var changeIndex in delta) {
-                // console.log(delta[changeIndex]);
-                // delta = JSON.parse(delta);
-                // editor.lastChange = delta;
-                // editor.getSession().getDocument().applyDeltas([delta]);
                 var singleChange = JSON.parse(delta[changeIndex]);
                 editor.lastChange = singleChange;
                 editor.getSession().getDocument().applyDeltas([singleChange]);
