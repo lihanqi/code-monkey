@@ -4,6 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://user:password@ds044689.mlab.com:44689/coj');
 
+
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const restRouter = require('./routes/rest');

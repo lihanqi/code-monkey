@@ -180,15 +180,15 @@ var EditorComponent = /** @class */ (function () {
     function EditorComponent(coEditingService, route) {
         this.coEditingService = coEditingService;
         this.route = route;
-        this.languages = ['Java', 'C++', 'Python'];
-        this.language = 'Python';
+        this.languages = ["Java", "C++", "Python"];
+        this.language = "Python";
         this.lastChange = null;
     }
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
-            _this.coEditingService.init(paramMap.get('id'), _this.editor);
+            _this.coEditingService.init(paramMap.get("id"), _this.editor);
             _this.coEditingService.attachEditorListeners(_this.editor);
             _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) {
                 // console.log("subsciption update: " + activity);
@@ -201,7 +201,7 @@ var EditorComponent = /** @class */ (function () {
     };
     /**
      * ACE editor initialition
-    */
+     */
     EditorComponent.prototype.initEditor = function () {
         var _this = this;
         this.editor = ace.edit("editor");
@@ -210,21 +210,21 @@ var EditorComponent = /** @class */ (function () {
         this.editor.getSession().setTabSize(4);
         this.editor.lastChange = null;
         // listen for context change
-        this.editor.getSession().on('change', function (delta) {
+        this.editor.getSession().on("change", function (delta) {
             if (_this.editor.lastChange !== delta) {
                 // emit only if the change is made by the user
                 _this.coEditingService.change(delta);
             }
         });
-        // listen for cursor move 
-        this.editor.session.selection.on('changeCursor', function (e) {
+        // listen for cursor move
+        this.editor.session.selection.on("changeCursor", function (e) {
             var cursorLoc = _this.editor.getSession().selection.getCursor();
             _this.coEditingService.cursorMove(cursorLoc);
         });
     };
     /**
      * Reset editor to initial state
-    */
+     */
     EditorComponent.prototype.reset = function () {
         this.editor.setValue("the new text here");
     };
@@ -241,19 +241,22 @@ var EditorComponent = /** @class */ (function () {
      * @param activity contains userId and its action(join, left)
      */
     EditorComponent.prototype.popNotify = function (activity) {
-        var notice = document.createElement('div');
-        notice.className = 'alert alert-primary';
-        notice.id = activity['id'];
-        notice.innerHTML = activity['id'] + activity['action'];
+        var notice = document.createElement("div");
+        notice.className = "alert alert-primary";
+        notice.id = activity["id"];
+        notice.innerHTML = activity["id"] + activity["action"];
         notice.style.display = "none";
-        document.getElementById('notice').appendChild(notice);
-        $("#" + notice.id).fadeIn().delay(POP_TIME_OUT).fadeOut(function () {
+        document.getElementById("notice").appendChild(notice);
+        $("#" + notice.id)
+            .fadeIn()
+            .delay(POP_TIME_OUT)
+            .fadeOut(function () {
             notice.remove();
         });
     };
     EditorComponent = __decorate([
         core_1.Component({
-            selector: 'app-editor',
+            selector: "app-editor",
             template: __webpack_require__("../../../../../src/app/components/editor/editor.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/editor/editor.component.css")]
         }),
@@ -520,12 +523,14 @@ var ProblemDetailComponent = /** @class */ (function () {
     };
     ProblemDetailComponent.prototype.getProblem = function () {
         var _this = this;
-        var id = +this.route.snapshot.paramMap.get('id');
-        this.dataService.getProblemById(id).subscribe(function (problem) { _this.problem = problem; }, function (error) { return console.log(error); });
+        var id = +this.route.snapshot.paramMap.get("id");
+        this.dataService.getProblemById(id).subscribe(function (problem) {
+            _this.problem = problem;
+        }, function (error) { return console.log(error); });
     };
     ProblemDetailComponent = __decorate([
         core_1.Component({
-            selector: 'app-problem-detail',
+            selector: "app-problem-detail",
             template: __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.css")]
         }),
@@ -548,7 +553,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".diff-Easy {\n    color: #fff;\n    background-color: #28a745;\n}\n\n.diff-Medium {\n    color: #fff;\n    background-color: #ffc107;\n}\n\n.diff-Hard {\n    color: #fff;\n    background-color: #dc3545;\n}\n\na {\n    color: #28594e;\n}\n\na:hover {\n    color :#0e332b;\n    text-decoration: none;\n}", ""]);
+exports.push([module.i, ".diff-Easy {\n  color: #fff;\n  background-color: #28a745;\n}\n\n.diff-Medium {\n  color: #fff;\n  background-color: #ffc107;\n}\n\n.diff-Hard {\n  color: #fff;\n  background-color: #dc3545;\n}\n\na {\n  color: #28594e;\n}\n\na:hover {\n  color: #0e332b;\n  text-decoration: none;\n}\n", ""]);
 
 // exports
 
@@ -597,7 +602,7 @@ var ProblemListComponent = /** @class */ (function () {
     };
     ProblemListComponent = __decorate([
         core_1.Component({
-            selector: 'app-problem-list',
+            selector: "app-problem-list",
             template: __webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.css")]
         }),

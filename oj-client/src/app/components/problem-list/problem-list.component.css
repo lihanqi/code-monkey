@@ -1,23 +1,23 @@
 .diff-Easy {
-    color: #fff;
-    background-color: #28a745;
+  color: #fff;
+  background-color: #28a745;
 }
 
 .diff-Medium {
-    color: #fff;
-    background-color: #ffc107;
+  color: #fff;
+  background-color: #ffc107;
 }
 
 .diff-Hard {
-    color: #fff;
-    background-color: #dc3545;
+  color: #fff;
+  background-color: #dc3545;
 }
 
 a {
-    color: #28594e;
+  color: #28594e;
 }
 
 a:hover {
-    color :#0e332b;
-    text-decoration: none;
+  color: #0e332b;
+  text-decoration: none;
 }
