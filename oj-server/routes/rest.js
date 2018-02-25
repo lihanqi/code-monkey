@@ -52,11 +52,16 @@ router.post("/problems", (req, res) => {
 // POST api/v1/execution
 router.post("/execution", (req, res) => {
 	// console.log("received:" + JSON.stringify(req.body));
-	let fake2 = {
-		build: "????",
-		run: "!!!"
-	}
-	executionService.execute(req.body);
-	res.json(JSON.stringify(fake2));
+	// let fake2 = {
+	// 	build: "????",
+	// 	run: "!!!"
+	// }
+	executionService.execute(req.body)
+		.then(data => {
+			res.json(data);
+		})
+		.catch(error => {
+			res.status(500).send(error);
+		});
 })
 module.exports = router;
