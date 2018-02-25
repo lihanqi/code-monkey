@@ -85,21 +85,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// Modules
 var platform_browser_1 = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
 var http_1 = __webpack_require__("../../../common/esm5/http.js");
 var routing_module_1 = __webpack_require__("../../../../../src/app/routing/routing.module.ts");
+// Components
 var app_component_1 = __webpack_require__("../../../../../src/app/app.component.ts");
 var problem_list_component_1 = __webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.ts");
 var nav_bar_component_1 = __webpack_require__("../../../../../src/app/components/nav-bar/nav-bar.component.ts");
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
 var problem_detail_component_1 = __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.ts");
 var editor_component_1 = __webpack_require__("../../../../../src/app/components/editor/editor.component.ts");
+var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
+// Services
 var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
 var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket/websocket.service.ts");
-var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
+var execution_service_1 = __webpack_require__("../../../../../src/app/services/execution/execution.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -112,15 +116,15 @@ var AppModule = /** @class */ (function () {
                 new_problem_component_1.NewProblemComponent,
                 problem_detail_component_1.ProblemDetailComponent,
                 editor_component_1.EditorComponent,
-                page_not_found_component_1.PageNotFoundComponent,
+                page_not_found_component_1.PageNotFoundComponent
             ],
-            imports: [
-                platform_browser_1.BrowserModule,
-                forms_1.FormsModule,
-                routing_module_1.RoutingModule,
-                http_1.HttpClientModule
+            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, routing_module_1.RoutingModule, http_1.HttpClientModule],
+            providers: [
+                data_service_1.DataService,
+                co_editing_service_1.CoEditingService,
+                websocket_service_1.WebsocketService,
+                execution_service_1.ExecutionService
             ],
-            providers: [data_service_1.DataService, co_editing_service_1.CoEditingService, websocket_service_1.WebsocketService],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
@@ -152,7 +156,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/editor/editor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container editor-box\">\n  <section>\n    <header>\n      <div class=\"button-group row\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n\n    <body>\n      <div id=\"notice\"></div>\n      <div id=\"editor\">Hello?</div>\n    </body>\n  </section>\n \n</div>\n"
+module.exports = "<div class=\"container editor-box\">\n  <section>\n    <header>\n      <div class=\"button-group row\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n    <body>\n      <div id=\"notice\"></div>\n      <div id=\"editor\">Hello?</div>\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"submit()\">Submit</button>\n    </body>\n    <footer>\n      <div id=\"execution-result\"></div>\n    </footer>\n  </section>\n \n</div>\n"
 
 /***/ }),
 
@@ -174,12 +178,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
+var execution_service_1 = __webpack_require__("../../../../../src/app/services/execution/execution.service.ts");
 var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
-var POP_TIME_OUT = 1500;
 var EditorComponent = /** @class */ (function () {
-    function EditorComponent(coEditingService, route) {
+    function EditorComponent(coEditingService, route, executionService) {
         this.coEditingService = coEditingService;
         this.route = route;
+        this.executionService = executionService;
         this.languages = ["Java", "C++", "Python"];
         this.language = "Python";
         this.lastChange = null;
@@ -237,10 +242,25 @@ var EditorComponent = /** @class */ (function () {
         this.reset();
     };
     /**
+     * Submit the code for execution
+     */
+    EditorComponent.prototype.submit = function () {
+        var code = this.editor.getValue();
+        var language = this.language;
+        this.executionService.execute(language, code)
+            .then(function (data) {
+            document.getElementById('execution-result').innerHTML = data;
+        })
+            .catch(function (error) {
+            console.log("error: " + error);
+        });
+    };
+    /**
      * popup notifications of participants status with fade in&out animation
      * @param activity contains userId and its action(join, left)
      */
     EditorComponent.prototype.popNotify = function (activity) {
+        var POP_TIME_OUT = 1500;
         var notice = document.createElement("div");
         notice.className = "alert alert-primary";
         notice.id = activity["id"];
@@ -261,7 +281,8 @@ var EditorComponent = /** @class */ (function () {
             styles: [__webpack_require__("../../../../../src/app/components/editor/editor.component.css")]
         }),
         __metadata("design:paramtypes", [co_editing_service_1.CoEditingService,
-            router_1.ActivatedRoute])
+            router_1.ActivatedRoute,
+            execution_service_1.ExecutionService])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -381,13 +402,16 @@ var NewProblemComponent = /** @class */ (function () {
     }
     NewProblemComponent.prototype.ngOnInit = function () {
         this.problem = new problem_1.Problem();
-        this.problem.difficulty = null; // in order to let <select> placeholder to work, set problem.difficulty to null
+        // in order to let <select> placeholder to work, set problem.difficulty to null
+        this.problem.difficulty = null;
     };
+    /**
+     * Add a new problem
+     */
     NewProblemComponent.prototype.addProblem = function () {
         var _this = this;
         console.log("add program clicked");
         this.dataService.addProblem(this.problem).subscribe(function (problem) {
-            console.log('after add, returned' + JSON.stringify(problem));
             _this.problem = new problem_1.Problem();
             _this.problem.difficulty = null;
         });
@@ -865,41 +889,43 @@ var http_1 = __webpack_require__("../../../common/esm5/http.js");
 var ErrorObservable_1 = __webpack_require__("../../../../rxjs/_esm5/observable/ErrorObservable.js");
 var operators_1 = __webpack_require__("../../../../rxjs/_esm5/operators.js");
 var httpOptions = {
-    headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new http_1.HttpHeaders({ "Content-Type": "application/json" })
 };
 var DataService = /** @class */ (function () {
     function DataService(http) {
         this.http = http;
-        this.url = 'api/v1/problems';
+        this.url = "api/v1/problems";
     }
     DataService.prototype.getProblems = function () {
         var _this = this;
-        return this.http.get(this.url)
-            .pipe(operators_1.tap(function (problems) { return _this.problems = problems; }));
+        return this.http
+            .get(this.url)
+            .pipe(operators_1.tap(function (problems) { return (_this.problems = problems); }));
     };
     DataService.prototype.getProblemById = function (id) {
-        return this.http.get(this.url + "/" + id).pipe(operators_1.catchError(this.handleError));
+        return this.http
+            .get(this.url + "/" + id)
+            .pipe(operators_1.catchError(this.handleError));
     };
     DataService.prototype.addProblem = function (problem) {
         var _this = this;
-        return this.http.post(this.url, problem, httpOptions)
-            .pipe(operators_1.tap(function (problem) { _this.problems.push(problem); }), operators_1.catchError(this.handleError));
+        return this.http.post(this.url, problem, httpOptions).pipe(operators_1.tap(function (problem) {
+            _this.problems.push(problem);
+        }), operators_1.catchError(this.handleError));
     };
     DataService.prototype.handleError = function (error) {
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.
-            console.error('An error occurred:', error.error.message);
+            console.error("An error occurred:", error.error.message);
         }
         else {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
-            console.error("Backend returned code " + error.status + ", " +
-                ("body was: " + error.error));
+            console.error("Backend returned code " + error.status + ", " + ("body was: " + error.error));
         }
         // return an ErrorObservable with a user-facing error message
-        return new ErrorObservable_1.ErrorObservable('Something bad happened; please try again later.');
+        return new ErrorObservable_1.ErrorObservable("Something bad happened; please try again later.");
     };
-    ;
     DataService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [http_1.HttpClient])
@@ -907,6 +933,49 @@ var DataService = /** @class */ (function () {
     return DataService;
 }());
 exports.DataService = DataService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/execution/execution.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var httpOptions = {
+    headers: new http_1.HttpHeaders({ "Content-Type": "application/json" })
+};
+var ExecutionService = /** @class */ (function () {
+    function ExecutionService(http) {
+        this.http = http;
+        this.url = "api/v1/execution";
+    }
+    ExecutionService.prototype.execute = function (language, code) {
+        var codeWithLanguage = {
+            "code": code,
+            "language": language
+        };
+        return this.http.post(this.url, codeWithLanguage, httpOptions).toPromise();
+    };
+    ExecutionService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], ExecutionService);
+    return ExecutionService;
+}());
+exports.ExecutionService = ExecutionService;
 
 
 /***/ }),

@@ -3,7 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 
 const problemService = require("../services/problemService");
-
+const executionService = require("../services/executionService");
 // parse application/json
 router.use(bodyParser.json());
 
@@ -45,4 +45,18 @@ router.post("/problems", (req, res) => {
 			res.status(400).send(error);
 		});
 });
+
+// TODO: NEED TO REVISE THIS PART!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// POST api/v1/execution
+router.post("/execution", (req, res) => {
+	// console.log("received:" + JSON.stringify(req.body));
+	let fake2 = {
+		build: "????",
+		run: "!!!"
+	}
+	executionService.execute(req.body);
+	res.json(JSON.stringify(fake2));
+})
 module.exports = router;

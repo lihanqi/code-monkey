@@ -3,12 +3,13 @@ import { NgModule } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { CoEditingService } from "../../services/co-editing/co-editing.service";
+import { ExecutionService } from "../../services/execution/execution.service";
 import { ParamMap } from "@angular/router/src/shared";
 import { not } from "@angular/compiler/src/output/output_ast";
 import * as $ from "jquery";
 
 declare const ace: any;
-const POP_TIME_OUT: number = 1500;
+
 
 @Component({
   selector: "app-editor",
@@ -17,14 +18,15 @@ const POP_TIME_OUT: number = 1500;
 })
 export class EditorComponent implements OnInit, OnDestroy {
   editor: any;
-  languages: String[] = ["Java", "C++", "Python"];
-  language: String = "Python";
+  languages: string[] = ["Java", "C++", "Python"];
+  language: string = "Python";
   lastChange: object = null;
   userAcitivitySubscrpiton: any;
 
   constructor(
     private coEditingService: CoEditingService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private executionService: ExecutionService
   ) {}
 
   ngOnInit() {
@@ -87,10 +89,26 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Submit the code for execution
+   */
+  submit() {
+    const code = this.editor.getValue();
+    const language = this.language;
+    this.executionService.execute(language, code)
+      .then(data => {
+        document.getElementById('execution-result').innerHTML = data;
+      })
+      .catch(error => {
+        console.log("error: " + error);
+      });
+  }
+
+  /**
    * popup notifications of participants status with fade in&out animation
    * @param activity contains userId and its action(join, left)
    */
   popNotify(activity: object) {
+    const POP_TIME_OUT: number = 1500;
     let notice = document.createElement("div");
     notice.className = "alert alert-primary";
     notice.id = activity["id"];

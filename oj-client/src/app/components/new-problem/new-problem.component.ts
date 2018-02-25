@@ -16,13 +16,17 @@ export class NewProblemComponent implements OnInit {
 
   ngOnInit() {
     this.problem = new Problem();
-    this.problem.difficulty = null; // in order to let <select> placeholder to work, set problem.difficulty to null
+    
+    // in order to let <select> placeholder to work, set problem.difficulty to null
+    this.problem.difficulty = null;
   }
 
+  /**
+   * Add a new problem
+   */
   addProblem() {
     console.log("add program clicked");
     this.dataService.addProblem(this.problem).subscribe((problem) => {
-      console.log('after add, returned' + JSON.stringify(problem));
       this.problem = new Problem();
       this.problem.difficulty = null;
     });
