@@ -6,7 +6,6 @@ var client = new Client();
 client.registerMethod("execute", "http://localhost:5000/execution", "POST");
  
 
-
 function execute(codeAndLanguage) {
     return new Promise((resolve, reject) => {
         const args = {
@@ -15,7 +14,7 @@ function execute(codeAndLanguage) {
         }
         // the data received form execution server will be a json object
         //  - which has properties can be directly accessed
-        let execution = client.methods.execute(args, function (data, response) {
+        client.methods.execute(args, function (data, response) {
             // console.log(typeof data);
             // console.log(data);
             // console.log(data.build);
@@ -23,11 +22,16 @@ function execute(codeAndLanguage) {
             // console.log(JSON.stringify(data));
             // return JSON.stringify(data);
             resolve(JSON.stringify(data));
+        }).on('error', function (err) {
+            console.log('something went wrong on the request', err.request.options);
+            reject("ERROR: something went wrong on the request");
         });
-        execution.on('error', error => {
-            console.log('Execution Eror');
-            reject('Execution Eror');
-        })
+
+        // handling client error events 
+        client.on('error', function (err) {
+            console.error('Something went wrong on the client', err);
+            reject("ERROR: Something went wrong on the client");
+        });
     });
     
 }

@@ -11,8 +11,15 @@ def server():
 
 @app.route("/execution", methods=['POST'])
 def execution():
-    print request.data
-    return jsonify(build = "flask build", run = "flask run")
+    codeAndLanguage = json.loads(request.data)
+    code = codeAndLanguage['code']
+    language = codeAndLanguage['language']
+
+    print code
+    print language
+    # print request.data.build
+    # print request.data.run
+    return jsonify(build = code, run = language)
 
 if __name__ == "__main__":
     app.run(debug=True)
