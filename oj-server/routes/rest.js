@@ -46,22 +46,16 @@ router.post("/problems", (req, res) => {
 		});
 });
 
-// TODO: NEED TO REVISE THIS PART!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // POST api/v1/execution
+// - excute the code
 router.post("/execution", (req, res) => {
-	// console.log("received:" + JSON.stringify(req.body));
-	// let fake2 = {
-	// 	build: "????",
-	// 	run: "!!!"
-	// }
-	executionService.execute(req.body)
+	executionService
+		.execute(req.body)
 		.then(data => {
 			res.json(data);
 		})
 		.catch(error => {
 			res.status(500).send(error);
 		});
-})
+});
 module.exports = router;
