@@ -38,7 +38,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-nav-bar></app-nav-bar>\n<router-outlet></router-outlet>"
+module.exports = "<app-nav-bar></app-nav-bar>\n<div class=\"container\">\n    <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -596,7 +596,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".diff-Easy {\n  color: #fff;\n  background-color: #28a745;\n}\n\n.diff-Medium {\n  color: #fff;\n  background-color: #ffc107;\n}\n\n.diff-Hard {\n  color: #fff;\n  background-color: #dc3545;\n}\n\na {\n  color: #28594e;\n}\n\na:hover {\n  color: #0e332b;\n  text-decoration: none;\n}\n", ""]);
+exports.push([module.i, ".diff-Easy {\n  color: #fff;\n  background-color: #28a745;\n}\n\n.diff-Medium {\n  color: #fff;\n  background-color: #ffc107;\n}\n\n.diff-Hard {\n  color: #fff;\n  background-color: #dc3545;\n}\n\na {\n  color:black;\n}\n\na:hover {\n  color:blue;\n  text-decoration: none;\n}", ""]);
 
 // exports
 
@@ -609,7 +609,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/problem-list/problem-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"container\">\n  <table class=\"table table-striped table-hover\">\n    <thead>\n      <tr>\n        <th scope=\"col\">#</th>\n        <th scope=\"col\">Title</th>\n        <th scope=\"col\">Difficulty</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let problem of problems\">\n        <th scope=\"row\">{{problem.id}}</th>\n        <td><a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a></td>\n        <td><span class=\"badge badge-primary diff-{{problem.difficulty}}\">{{problem.difficulty}}</span></td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n\n"
+module.exports = "<!-- Table -->\n<table class=\"table table-hover\">\n  <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">Name</th>\n      <th scope=\"col\">Difficulty</th>\n      <th scopr='col'>Acc</th>\n      <th scopr='col'>Quality</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let problem of problems\">\n      <th scope=\"row\">{{problem.id}}</th>\n      <td><a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a></td>\n      <td><span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span></td>\n      <td>32.23%</td>\n      <td>Good</td>\n    </tr>\n  </tbody>\n</table>\n\n<!-- Pagination -->\n<nav aria-label=\"Page navigation\">\n  <ul class=\"pagination justify-content-center\">\n    <li class=\"page-item disabled\">\n      <a class=\"page-link\" href=\"#\" tabindex=\"-1\">Previous</a>\n    </li>\n    <!-- <li *ngFor=\"let i of numOfPages\" class=\"page-item\"><a class=\"page-link\" href=\"#\">1</a></li> -->\n    <li class=\"page-item\">\n      <a class=\"page-link\" href=\"#\">Next</a>\n    </li>\n  </ul>\n</nav>\n\n"
 
 /***/ }),
 
@@ -635,12 +635,16 @@ var ProblemListComponent = /** @class */ (function () {
         this.dataService = dataService;
     }
     ProblemListComponent.prototype.ngOnInit = function () {
+        this.rowPerPage = 20;
+        "";
         this.getProblems();
     };
     ProblemListComponent.prototype.getProblems = function () {
         var _this = this;
         this.dataService.getProblems().subscribe(function (problems) {
             _this.problems = problems;
+            var numOfPages = (_this.problems.length / _this.rowPerPage) + 1;
+            _this.paginationPages.fill();
         });
     };
     ProblemListComponent = __decorate([

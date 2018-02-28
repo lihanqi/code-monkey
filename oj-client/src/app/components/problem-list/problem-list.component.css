@@ -14,10 +14,10 @@
 }
 
 a {
-  color: #28594e;
+  color:black;
 }
 
 a:hover {
-  color: #0e332b;
+  color:blue;
   text-decoration: none;
 }
