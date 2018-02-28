@@ -429,7 +429,6 @@ var NewProblemComponent = /** @class */ (function () {
      */
     NewProblemComponent.prototype.addProblem = function () {
         var _this = this;
-        console.log("add program clicked");
         this.dataService.addProblem(this.problem).subscribe(function (problem) {
             _this.problem = new problem_1.Problem();
             _this.problem.difficulty = null;
@@ -931,6 +930,7 @@ var DataService = /** @class */ (function () {
     DataService.prototype.addProblem = function (problem) {
         var _this = this;
         return this.http.post(this.url, problem, httpOptions).pipe(operators_1.tap(function (problem) {
+            console.log("get called" + _this.problems.length);
             _this.problems.push(problem);
         }), operators_1.catchError(this.handleError));
     };

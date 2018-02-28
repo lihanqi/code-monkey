@@ -25,7 +25,6 @@ export class NewProblemComponent implements OnInit {
    * Add a new problem
    */
   addProblem() {
-    console.log("add program clicked");
     this.dataService.addProblem(this.problem).subscribe((problem) => {
       this.problem = new Problem();
       this.problem.difficulty = null;

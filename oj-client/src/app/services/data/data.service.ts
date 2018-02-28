@@ -39,6 +39,7 @@ export class DataService {
   addProblem(problem: Problem): Observable<Problem> {
     return this.http.post<Problem>(this.url, problem, httpOptions).pipe(
       tap(problem => {
+        console.log("get called" + this.problems.length);
         this.problems.push(problem);
       }),
       catchError(this.handleError)
