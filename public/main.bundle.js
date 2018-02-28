@@ -135,6 +135,22 @@ exports.AppModule = AppModule;
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/editor/LANGUAGE_DEFAULT.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LANGUAGE_DEFAULTS = {
+    'Python': 'Python:Type your code here...',
+    'Java': 'Java: Type your code here...',
+    'C++': 'Cpp: Type your code here...',
+    'Alien Language': "hahaha"
+};
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/editor/editor.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -156,7 +172,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/editor/editor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container editor-box\">\n  <section>\n    <header>\n      <div class=\"button-group row\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n    <body>\n      <div id=\"notice\"></div>\n      <div id=\"editor\">Hello?</div>\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"submit()\">Submit</button>\n    </body>\n    <footer>\n      <div id=\"execution-result\"></div>\n    </footer>\n  </section>\n \n</div>\n"
+module.exports = "<div class=\"container editor-box\">\n  <section>\n    <header>\n      <div class=\"button-group row\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n    <body>\n      <div id=\"notice\"></div>\n      <div id=\"editor\">Hello?</div>\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"submit()\">Submit</button>\n    </body>\n    <footer>\n      <div id=\"execution-result\" class=\"alert alert-warning\" *ngIf=\"executionResult\">{{executionResult}}</div>\n    </footer>\n  </section>\n \n</div>\n"
 
 /***/ }),
 
@@ -179,26 +195,24 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
 var execution_service_1 = __webpack_require__("../../../../../src/app/services/execution/execution.service.ts");
+var LANGUAGE_DEFAULT_1 = __webpack_require__("../../../../../src/app/components/editor/LANGUAGE_DEFAULT.ts");
 var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
 var EditorComponent = /** @class */ (function () {
     function EditorComponent(coEditingService, route, executionService) {
         this.coEditingService = coEditingService;
         this.route = route;
         this.executionService = executionService;
-        this.languages = ["Java", "C++", "Python"];
-        this.language = "Python";
-        this.lastChange = null;
     }
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.languages = Object.keys(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS);
+        this.language = "Python";
+        this.executionResult = null;
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
             _this.coEditingService.init(paramMap.get("id"), _this.editor);
             _this.coEditingService.attachEditorListeners(_this.editor);
-            _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) {
-                // console.log("subsciption update: " + activity);
-                _this.popNotify(activity);
-            });
+            _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) { return _this.popNotify(activity); });
         });
     };
     EditorComponent.prototype.ngOnDestroy = function () {
@@ -215,9 +229,9 @@ var EditorComponent = /** @class */ (function () {
         this.editor.getSession().setTabSize(4);
         this.editor.lastChange = null;
         // listen for context change
-        this.editor.getSession().on("change", function (delta) {
+        // emit the change onoly if the change is made by the user
+        this.editor.session.on("change", function (delta) {
             if (_this.editor.lastChange !== delta) {
-                // emit only if the change is made by the user
                 _this.coEditingService.change(delta);
             }
         });
@@ -231,7 +245,9 @@ var EditorComponent = /** @class */ (function () {
      * Reset editor to initial state
      */
     EditorComponent.prototype.reset = function () {
-        this.editor.setValue("the new text here");
+        var placeHolder = LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS[this.language];
+        this.editor.setValue(placeHolder);
+        this.executionResult = null;
     };
     /**
      * Set the programming language for editor syntax highlighting
@@ -245,11 +261,14 @@ var EditorComponent = /** @class */ (function () {
      * Submit the code for execution
      */
     EditorComponent.prototype.submit = function () {
-        var code = this.editor.getValue();
+        var _this = this;
+        // todo: add animation for running
+        this.executionResult = "running";
         var language = this.language;
+        var code = this.editor.getValue();
         this.executionService.execute(language, code)
             .then(function (data) {
-            document.getElementById('execution-result').innerHTML = data;
+            _this.executionResult = data;
         })
             .catch(function (error) {
             console.log("error: " + error);

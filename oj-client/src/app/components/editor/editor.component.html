@@ -43,7 +43,7 @@
       <button type="button" class="btn btn-primary" (click)="submit()">Submit</button>
     </body>
     <footer>
-      <div id="execution-result"></div>
+      <div id="execution-result" class="alert alert-warning" *ngIf="executionResult">{{executionResult}}</div>
     </footer>
   </section>
  

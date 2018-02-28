@@ -6,6 +6,8 @@ import { CoEditingService } from "../../services/co-editing/co-editing.service";
 import { ExecutionService } from "../../services/execution/execution.service";
 import { ParamMap } from "@angular/router/src/shared";
 import { not } from "@angular/compiler/src/output/output_ast";
+
+import { LANGUAGE_DEFAULTS } from "./LANGUAGE_DEFAULT";
 import * as $ from "jquery";
 
 declare const ace: any;
@@ -18,10 +20,10 @@ declare const ace: any;
 })
 export class EditorComponent implements OnInit, OnDestroy {
   editor: any;
-  languages: string[] = ["Java", "C++", "Python"];
-  language: string = "Python";
-  lastChange: object = null;
+  languages: string[];
+  language: string;
   userAcitivitySubscrpiton: any;
+  executionResult: string;
 
   constructor(
     private coEditingService: CoEditingService,
@@ -30,15 +32,15 @@ export class EditorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.languages = Object.keys(LANGUAGE_DEFAULTS);
+    this.language = "Python";
+    this.executionResult = null;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.initEditor();
       this.coEditingService.init(paramMap.get("id"), this.editor);
       this.coEditingService.attachEditorListeners(this.editor);
       this.userAcitivitySubscrpiton = this.coEditingService.userLogin$.subscribe(
-        activity => {
-          // console.log("subsciption update: " + activity);
-          this.popNotify(activity);
-        }
+        activity => this.popNotify(activity)
       );
     });
   }
@@ -58,9 +60,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.editor.lastChange = null;
 
     // listen for context change
-    this.editor.getSession().on("change", delta => {
+    // emit the change onoly if the change is made by the user
+    this.editor.session.on("change", delta => {
       if (this.editor.lastChange !== delta) {
-        // emit only if the change is made by the user
         this.coEditingService.change(delta);
       }
     });
@@ -76,7 +78,9 @@ export class EditorComponent implements OnInit, OnDestroy {
    * Reset editor to initial state
    */
   reset() {
-    this.editor.setValue("the new text here");
+    const placeHolder = LANGUAGE_DEFAULTS[this.language];
+    this.editor.setValue(placeHolder);
+    this.executionResult = null;
   }
 
   /**
@@ -92,11 +96,13 @@ export class EditorComponent implements OnInit, OnDestroy {
    * Submit the code for execution
    */
   submit() {
-    const code = this.editor.getValue();
+    // todo: add animation for running
+    this.executionResult = "running";
     const language = this.language;
+    const code = this.editor.getValue();
     this.executionService.execute(language, code)
       .then(data => {
-        document.getElementById('execution-result').innerHTML = data;
+        this.executionResult = data;
       })
       .catch(error => {
         console.log("error: " + error);
