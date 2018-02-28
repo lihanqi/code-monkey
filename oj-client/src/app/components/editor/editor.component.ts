@@ -58,6 +58,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.editor.session.setMode("ace/mode/python");
     this.editor.getSession().setTabSize(4);
     this.editor.lastChange = null;
+    this.editor.setValue(LANGUAGE_DEFAULTS[this.language]);
 
     // listen for context change
     // emit the change onoly if the change is made by the user

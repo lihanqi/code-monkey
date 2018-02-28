@@ -18,9 +18,7 @@ const getProblem = function(id) {
 			if (err) {
 				reject("ERROR: Cannot get problem from database - " + err);
 			} else if (problem == null) {
-				reject(
-					"ERROR: Cannot get problem from database, problem does not exist"
-				);
+				reject("ERROR: Problem does not exist in database");
 			} else {
 				resolve(problem);
 			}
