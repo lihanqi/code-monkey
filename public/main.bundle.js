@@ -609,7 +609,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/problem-list/problem-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Table -->\n<table class=\"table table-hover\">\n  <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">Name</th>\n      <th scope=\"col\">Difficulty</th>\n      <th scopr='col'>Acc</th>\n      <th scopr='col'>Quality</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let problem of problemsDisplay\">\n      <th scope=\"row\">{{problem.id}}</th>\n      <td><a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a></td>\n      <td><span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span></td>\n      <td>32.23%</td>\n      <td>Good</td>\n    </tr>\n  </tbody>\n</table>\n\n<!-- Pagination -->\n<nav aria-label=\"Page navigation\">\n  <ul class=\"pagination justify-content-center\">\n    <li class=\"page-item \">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage - 1)\">Previous</a>\n    </li>\n    <li *ngFor=\"let i of paginationPages\" class=\"page-item\"><a class=\"page-link\" href=\"#\" (click)=\"showPage(i)\">{{i}}</a></li>\n    <li class=\"page-item\">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage + 1)\">Next</a>\n    </li>\n  </ul>\n</nav>\n\n"
+module.exports = "<!-- Table -->\n<table class=\"table table-hover\">\n  <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">Name</th>\n      <th scope=\"col\">Difficulty</th>\n      <th scopr='col'>Acc</th>\n      <th scopr='col'>Quality</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let problem of problemsDisplay\">\n      <th scope=\"row\">{{problem.id}}</th>\n      <td><a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a></td>\n      <td><span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span></td>\n      <td>32.23%</td>\n      <td>Good</td>\n    </tr>\n  </tbody>\n</table>\n\n<!-- Pagination -->\n<nav aria-label=\"Page navigation\">\n  <label>row per page:</label>\n  <select [(ngModel)]=\"rowPerPage\" (change)=\"changeRowPerPage()\">\n    <option value=\"10\">10</option>\n    <option value=\"20\">20</option>\n    <option value=\"50\">50</option>\n  </select>\n  <ul class=\"pagination justify-content-center\">\n    <li class=\"page-item \">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage - 1)\">Previous</a>\n    </li>\n    <li *ngFor=\"let i of paginationPages\" class=\"page-item\"><a class=\"page-link\" href=\"#\" (click)=\"showPage(i)\">{{i}}</a></li>\n    <li class=\"page-item\">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage + 1)\">Next</a>\n    </li>\n  </ul>\n</nav>\n\n"
 
 /***/ }),
 
@@ -636,7 +636,7 @@ var ProblemListComponent = /** @class */ (function () {
     }
     ProblemListComponent.prototype.ngOnInit = function () {
         this.currentPage = 1;
-        this.rowPerPage = 10;
+        this.rowPerPage = 5;
         this.problemsDisplay = [];
         this.getProblems();
     };
@@ -644,25 +644,46 @@ var ProblemListComponent = /** @class */ (function () {
         var _this = this;
         this.dataService.getProblems().subscribe(function (problems) {
             _this.problems = problems;
-            var numOfPages = (_this.problems.length / _this.rowPerPage) + 1;
+            _this.numOfPages = Math.floor(_this.problems.length / _this.rowPerPage) + 1;
             // todo: should have one line solution:
-            _this.paginationPages = [];
-            for (var i = 1; i <= numOfPages; i++) {
-                _this.paginationPages.push(i);
-            }
             _this.problemsDisplay = _this.problems.slice(0, _this.rowPerPage);
+            // console.log(this.numOfPages);
+            _this.paginationPages = _this.getPageNumberTabs(0, 5);
         });
     };
     ProblemListComponent.prototype.showPage = function (page) {
-        if (page < 1 || page > (this.problems.length / this.rowPerPage + 1)) {
+        if (page === void 0) { page = 1; }
+        if (page <= 0 || page > this.numOfPages) {
             return false;
         }
         this.currentPage = page;
-        var rpp = this.rowPerPage;
-        var startIndex = (page - 1) * rpp;
-        var endIndex = page * rpp;
+        var startIndex = (page - 1) * this.rowPerPage;
+        var endIndex = page * this.rowPerPage;
         this.problemsDisplay = this.problems.slice(startIndex, endIndex);
+        this.paginationPages = this.getPageNumberTabs(page, 5);
         return false;
+    };
+    ProblemListComponent.prototype.changeRowPerPage = function () {
+        this.numOfPages = Math.floor(this.problems.length / this.rowPerPage) + 1;
+        console.log(this.numOfPages);
+        this.showPage();
+    };
+    /**
+     * Helper: get the appropriate pagination tabs
+     * @param currentPage the current page should be the center of tabs
+     * @param maxPageTabs the maximum pag tabs showed
+     * Example: when currentPage is 5 and the maxPageTabs is 3
+     * - the tabs should be [4,5,6] where 5 is the center
+     */
+    ProblemListComponent.prototype.getPageNumberTabs = function (currentPage, maxPageTabs) {
+        var pages = [];
+        var totalPages = this.numOfPages;
+        var start = Math.max(1, currentPage - Math.floor(maxPageTabs / 2));
+        var end = Math.min(start + maxPageTabs - 1, totalPages);
+        for (var i = start; i <= end; i++) {
+            pages.push(i);
+        }
+        return pages;
     };
     ProblemListComponent = __decorate([
         core_1.Component({

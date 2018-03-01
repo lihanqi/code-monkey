@@ -22,6 +22,12 @@
 
 <!-- Pagination -->
 <nav aria-label="Page navigation">
+  <label>row per page:</label>
+  <select [(ngModel)]="rowPerPage" (change)="changeRowPerPage()">
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+  </select>
   <ul class="pagination justify-content-center">
     <li class="page-item ">
       <a class="page-link" href="#" (click)="showPage(currentPage - 1)">Previous</a>
