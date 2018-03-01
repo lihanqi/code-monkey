@@ -532,7 +532,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/problem-detail/problem-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"card\" *ngIf=\"problem\">\n    <div class=\"card-header\">\n      <ul class=\"nav nav-tabs card-header-tabs\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link active\" disabled>Description</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" disabled>Link</a>\n        </li>\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" disabled>Disabled</a>\n        </li>\n      </ul>\n    </div>\n    <div class=\"card-body\">\n      <h5 class=\"card-title\">{{problem.title}}</h5>\n      <p class=\"card-text\">{{problem.description}}</p>\n    </div>\n  </div>\n</div>\n\n<app-editor></app-editor>\n"
+module.exports = "\n<div class=\"card\" *ngIf=\"problem\">\n  <div class=\"card-header\">\n    <ul class=\"nav nav-tabs card-header-tabs\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link active\" disabled>Description</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Link</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Disabled</a>\n      </li>\n    </ul>\n  </div>\n  <div class=\"card-body\">\n    <h5 class=\"card-title\">{{problem.title}}</h5>\n    <p class=\"card-text\">{{problem.description}}</p>\n  </div>\n</div>\n\n<app-editor></app-editor>\n"
 
 /***/ }),
 
@@ -609,7 +609,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/problem-list/problem-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Table -->\n<table class=\"table table-hover\">\n  <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">Name</th>\n      <th scope=\"col\">Difficulty</th>\n      <th scopr='col'>Acc</th>\n      <th scopr='col'>Quality</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let problem of problemsDisplay\">\n      <th scope=\"row\">{{problem.id}}</th>\n      <td><a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a></td>\n      <td><span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span></td>\n      <td>32.23%</td>\n      <td>Good</td>\n    </tr>\n  </tbody>\n</table>\n\n<!-- Pagination -->\n<nav aria-label=\"Page navigation\">\n  <label>row per page:</label>\n  <select [(ngModel)]=\"rowPerPage\" (change)=\"changeRowPerPage()\">\n    <option value=\"10\">10</option>\n    <option value=\"20\">20</option>\n    <option value=\"50\">50</option>\n  </select>\n  <ul *ngIf=\"numOfPages != 1\" class=\"pagination justify-content-center\">\n    <li class=\"page-item \">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage - 1)\">Previous</a>\n    </li>\n    <li *ngFor=\"let i of paginationPages\" class=\"page-item\"><a class=\"page-link\" href=\"#\" (click)=\"showPage(i)\">{{i}}</a></li>\n    <li class=\"page-item\">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage + 1)\">Next</a>\n    </li>\n  </ul>\n</nav>\n\n"
+module.exports = "<!-- Table -->\n<table class=\"table table-hover\">\n  <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">Name</th>\n      <th scope=\"col\">Difficulty</th>\n      <th scopr='col'>Acc</th>\n      <th scopr='col'>Quality</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let problem of problemsDisplay\">\n      <th scope=\"row\">{{problem.id}}</th>\n      <td><a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a></td>\n      <td><span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span></td>\n      <td>32.23%</td>\n      <td>Good</td>\n    </tr>\n  </tbody>\n</table>\n\n<!-- Pagination -->\n<nav aria-label=\"Page navigation\">\n  <!-- Row per page settings -->\n  <label>row per page:</label>\n  <select [(ngModel)]=\"rowPerPage\" (change)=\"changeRowPerPage()\">\n    <option value=\"10\">10</option>\n    <option value=\"20\">20</option>\n    <option value=\"50\">50</option>\n  </select>\n\n  <ul *ngIf=\"numOfPages != 1\" class=\"pagination justify-content-center\">\n    <!-- Previous Link -->\n    <li class=\"page-item \">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage - 1)\">Previous</a>\n    </li>\n    <!-- Dynamic changed page links -->\n    <li *ngFor=\"let i of paginationPages\" class=\"page-item\" [class.active]=\"i==currentPage\">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(i)\">{{i}}</a>\n    </li>\n    <!-- Next Link -->\n    <li class=\"page-item\">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage + 1)\">Next</a>\n    </li>\n  </ul>\n</nav>\n\n"
 
 /***/ }),
 
@@ -633,10 +633,12 @@ var data_service_1 = __webpack_require__("../../../../../src/app/services/data/d
 var ProblemListComponent = /** @class */ (function () {
     function ProblemListComponent(dataService) {
         this.dataService = dataService;
+        this.DEFAULT_NUM_OF_TAGS = 5;
     }
     ProblemListComponent.prototype.ngOnInit = function () {
+        var DEFAULT_ROW_PER_PAGE = 20;
         this.currentPage = 1;
-        this.rowPerPage = 5;
+        this.rowPerPage = DEFAULT_ROW_PER_PAGE;
         this.problemsDisplay = [];
         this.getProblems();
     };
@@ -648,7 +650,7 @@ var ProblemListComponent = /** @class */ (function () {
             // todo: should have one line solution:
             _this.problemsDisplay = _this.problems.slice(0, _this.rowPerPage);
             // console.log(this.numOfPages);
-            _this.paginationPages = _this.getPageNumberTabs(0, 5);
+            _this.paginationPages = _this.getPageNumberTabs(0, _this.DEFAULT_NUM_OF_TAGS);
         });
     };
     ProblemListComponent.prototype.showPage = function (page) {
@@ -660,7 +662,7 @@ var ProblemListComponent = /** @class */ (function () {
         var startIndex = (page - 1) * this.rowPerPage;
         var endIndex = page * this.rowPerPage;
         this.problemsDisplay = this.problems.slice(startIndex, endIndex);
-        this.paginationPages = this.getPageNumberTabs(page, 5);
+        this.paginationPages = this.getPageNumberTabs(page, this.DEFAULT_NUM_OF_TAGS);
         return false;
     };
     ProblemListComponent.prototype.changeRowPerPage = function () {

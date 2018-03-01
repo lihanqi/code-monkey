@@ -22,17 +22,24 @@
 
 <!-- Pagination -->
 <nav aria-label="Page navigation">
+  <!-- Row per page settings -->
   <label>row per page:</label>
   <select [(ngModel)]="rowPerPage" (change)="changeRowPerPage()">
     <option value="10">10</option>
     <option value="20">20</option>
     <option value="50">50</option>
   </select>
+
   <ul *ngIf="numOfPages != 1" class="pagination justify-content-center">
+    <!-- Previous Link -->
     <li class="page-item ">
       <a class="page-link" href="#" (click)="showPage(currentPage - 1)">Previous</a>
     </li>
-    <li *ngFor="let i of paginationPages" class="page-item"><a class="page-link" href="#" (click)="showPage(i)">{{i}}</a></li>
+    <!-- Dynamic changed page links -->
+    <li *ngFor="let i of paginationPages" class="page-item" [class.active]="i==currentPage">
+      <a class="page-link" href="#" (click)="showPage(i)">{{i}}</a>
+    </li>
+    <!-- Next Link -->
     <li class="page-item">
       <a class="page-link" href="#" (click)="showPage(currentPage + 1)">Next</a>
     </li>

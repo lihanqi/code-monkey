@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Problem } from "../../models/problem";
 import { DataService } from "../../services/data/data.service";
+
 @Component({
   selector: "app-problem-list",
   templateUrl: "./problem-list.component.html",
@@ -13,14 +14,14 @@ export class ProblemListComponent implements OnInit {
   currentPage: number;
   rowPerPage: number;           // Pagination config: problems each page
   numOfPages: number;
-  
-
+  DEFAULT_NUM_OF_TAGS = 5;
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
+    const DEFAULT_ROW_PER_PAGE = 20;
     this.currentPage = 1;
-    this.rowPerPage = 5;
+    this.rowPerPage = DEFAULT_ROW_PER_PAGE;
     this.problemsDisplay = [];
     this.getProblems();
     
@@ -33,7 +34,7 @@ export class ProblemListComponent implements OnInit {
       // todo: should have one line solution:
       this.problemsDisplay = this.problems.slice(0, this.rowPerPage);
       // console.log(this.numOfPages);
-      this.paginationPages = this.getPageNumberTabs(0, 5);
+      this.paginationPages = this.getPageNumberTabs(0, this.DEFAULT_NUM_OF_TAGS);
     });
   }
 
@@ -45,7 +46,7 @@ export class ProblemListComponent implements OnInit {
     let startIndex = (page - 1) * this.rowPerPage;
     let endIndex = page * this.rowPerPage;
     this.problemsDisplay = this.problems.slice(startIndex, endIndex);
-    this.paginationPages = this.getPageNumberTabs(page, 5);
+    this.paginationPages = this.getPageNumberTabs(page, this.DEFAULT_NUM_OF_TAGS);
     return false;
   }
 
