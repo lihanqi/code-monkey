@@ -1,18 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'
-import { ProgressDashboardComponent } from './progress-dashboard/progress-dashboard.component';
-import { ProblemsComponent } from './problems/problems.component';
-import { ProblemRoutingModule } from '../problem/problem-routing.module';
-import { ProblemListComponent } from '../problem/problem-list/problem-list.component';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { ProgressDashboardComponent } from "./components/progress-dashboard/progress-dashboard.component";
+import { ProblemsComponent } from "./problems/problems.component";
+import { ProblemRoutingModule } from "../problem/problem-routing.module";
+import { ProblemListComponent } from "./components/problem-list/problem-list.component";
+import { ProblemDetailComponent } from "../problem/components/problem-detail/problem-detail.component";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ProblemRoutingModule
+  imports: [CommonModule, FormsModule, ProblemRoutingModule],
+  declarations: [
+    ProblemsComponent,
+    ProgressDashboardComponent,
+    ProblemListComponent,
+    ProblemDetailComponent
   ],
-  declarations: [ProgressDashboardComponent, ProblemsComponent, ProblemListComponent],
-  exports: [ProblemsComponent, ProgressDashboardComponent]
+  exports: [ProblemsComponent]
 })
-export class ProblemModule { }
+export class ProblemModule {}
