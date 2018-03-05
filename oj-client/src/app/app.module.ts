@@ -4,6 +4,8 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { RoutingModule } from "./routing/routing.module";
+// Feature Modules
+import { ProblemModule } from "./problem/problem.module";
 // Components
 import { AppComponent } from "./app.component";
 import { ProblemListComponent } from "./components/problem-list/problem-list.component";
@@ -18,7 +20,6 @@ import { CoEditingService } from "./services/co-editing/co-editing.service";
 import { WebsocketService } from "./services/websocket/websocket.service";
 import { ExecutionService } from "./services/execution/execution.service";
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +30,7 @@ import { ExecutionService } from "./services/execution/execution.service";
     EditorComponent,
     PageNotFoundComponent
   ],
-  imports: [BrowserModule, FormsModule, RoutingModule, HttpClientModule],
+  imports: [BrowserModule, FormsModule, RoutingModule, HttpClientModule, ProblemModule],
   providers: [
     DataService,
     CoEditingService,
