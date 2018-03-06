@@ -25,6 +25,7 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   getProblems(): Observable<Problem[]> {
+    //console.log("fetching");
     return this.http
       .get<Problem[]>(this.url)
       .pipe(tap(problems => (this.problems = problems)));

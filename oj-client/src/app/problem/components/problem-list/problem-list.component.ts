@@ -29,7 +29,9 @@ export class ProblemListComponent implements OnInit {
   }
 
   getProblems() {
+    // console.log("loading");
     this.dataService.getProblems().subscribe(problems => {
+      // console.log("?");
       this.problems = problems;
       this.numOfPages = Math.floor(this.problems.length / this.rowPerPage) + 1;
       // todo: should have one line solution:

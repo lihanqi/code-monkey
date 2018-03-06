@@ -1,3 +1,22 @@
-<p>
-  problem-detail works!
-</p>
+
+<div class="card" *ngIf="problem">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" disabled>Description</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" disabled>Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" disabled>Disabled</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{problem.title}}</h5>
+    <p class="card-text">{{problem.description}}</p>
+  </div>
+</div>
+
+<!-- <app-editor></app-editor> -->

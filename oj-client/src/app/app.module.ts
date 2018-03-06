@@ -3,7 +3,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
-import { RoutingModule } from "./routing/routing.module";
+import { RoutingModule } from "./app-routing.module";
 // Feature Modules
 import { ProblemModule } from "./problem/problem.module";
 // Components

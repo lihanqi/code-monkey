@@ -6,6 +6,7 @@ import { ProblemsComponent } from "./problems/problems.component";
 import { ProblemRoutingModule } from "../problem/problem-routing.module";
 import { ProblemListComponent } from "./components/problem-list/problem-list.component";
 import { ProblemDetailComponent } from "../problem/components/problem-detail/problem-detail.component";
+import { ProblemRootComponent } from '../problem/problem-root.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ProblemRoutingModule],
@@ -13,7 +14,8 @@ import { ProblemDetailComponent } from "../problem/components/problem-detail/pro
     ProblemsComponent,
     ProgressDashboardComponent,
     ProblemListComponent,
-    ProblemDetailComponent
+    ProblemDetailComponent,
+    ProblemRootComponent
   ],
   exports: [ProblemsComponent]
 })
