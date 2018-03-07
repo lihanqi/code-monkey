@@ -8,11 +8,8 @@ import { RoutingModule } from "./app-routing.module";
 import { ProblemModule } from "./problem/problem.module";
 // Components
 import { AppComponent } from "./app.component";
-// import { ProblemListComponent } from "./components/problem-list/problem-list.component";
 import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
 import { NewProblemComponent } from "./components/new-problem/new-problem.component";
-// import { ProblemDetailComponent } from "./components/problem-detail/problem-detail.component";
-import { EditorComponent } from "./components/editor/editor.component";
 import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 // Services
 import { DataService } from "./services/data/data.service";
@@ -23,11 +20,8 @@ import { ExecutionService } from "./services/execution/execution.service";
 @NgModule({
   declarations: [
     AppComponent,
-    // ProblemListComponent,
     NavBarComponent,
     NewProblemComponent,
-    // ProblemDetailComponent,
-    EditorComponent,
     PageNotFoundComponent
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, ProblemModule, RoutingModule],

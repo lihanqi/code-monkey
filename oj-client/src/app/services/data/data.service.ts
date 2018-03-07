@@ -10,8 +10,7 @@ import { ErrorObservable } from "rxjs/observable/ErrorObservable";
 import { catchError, map, tap } from "rxjs/operators";
 import { of } from "rxjs/observable/of";
 
-import { Problem } from "../../models/problem";
-import { PROBLEMS } from "../../models/mock-problems";
+import { Problem } from "../../shared/models/problem";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -24,6 +23,7 @@ export class DataService {
 
   constructor(private http: HttpClient) {}
 
+  // todo: may be can optimized for tracking/ lazy-loding purpose;
   getProblems(): Observable<Problem[]> {
     //console.log("fetching");
     return this.http

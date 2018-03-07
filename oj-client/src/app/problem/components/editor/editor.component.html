@@ -1,7 +1,7 @@
-<div class="container editor-box">
+<div class="editor-box">
   <section>
     <header>
-      <div class="button-group row">
+      <div class="header-btn-group">
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#resetModal">
           Reset
@@ -40,7 +40,11 @@
     <body>
       <div id="notice"></div>
       <div id="editor"></div>
-      <button type="button" class="btn btn-primary" (click)="submit()">Submit</button>
+      <div id="execute-run-btn">
+          <button id="run-button" type="button" class="btn btn-primary" (click)="submit()">Run</button>
+          <button id="submit-button" type="button" class="btn btn-primary" (click)="submit()">Submit</button>
+      </div>
+      
     </body>
     <footer>
       <div id="execution-result" class="alert alert-warning" *ngIf="executionResult">{{executionResult}}</div>

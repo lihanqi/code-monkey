@@ -1,0 +1,47 @@
+.editor-box {
+    margin-top: 25px;
+}
+
+.header-btn-group {
+    /* float: left; */
+    display: flex;
+}
+.header-btn-group button {
+    margin-right: 5px;
+}
+
+#editor { 
+    margin-top: 15px;
+    height: 600px;
+    font-size: 14px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.125);;
+}
+
+/* #submit-button {
+    float: right;
+    right: 0px;
+    margin-top: 15px;
+} */
+
+
+
+#execute-run-btn {
+    float: right;
+    margin-top: 15px;
+}
+#execute-run-btn button {
+    margin-left: 5px;
+}
+
+
+/* .button-group button {
+    margin-right: 10px;
+} */
+
+/* .MyCursorClass {
+    position:absolute;
+    background: red;
+    z-index:100;
+    width:3px;
+} */

@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NgModule } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
-import { CoEditingService } from "../../services/co-editing/co-editing.service";
-import { ExecutionService } from "../../services/execution/execution.service";
+import { CoEditingService } from "../../../services/co-editing/co-editing.service";
+import { ExecutionService } from "../../../services/execution/execution.service";
 import { ParamMap } from "@angular/router/src/shared";
 import { not } from "@angular/compiler/src/output/output_ast";
 

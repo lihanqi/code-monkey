@@ -2,11 +2,12 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ProgressDashboardComponent } from "./components/progress-dashboard/progress-dashboard.component";
-import { ProblemsComponent } from "./problems/problems.component";
+import { ProblemsComponent } from "./components/problems/problems.component";
 import { ProblemRoutingModule } from "../problem/problem-routing.module";
 import { ProblemListComponent } from "./components/problem-list/problem-list.component";
 import { ProblemDetailComponent } from "../problem/components/problem-detail/problem-detail.component";
-import { ProblemRootComponent } from '../problem/problem-root.component';
+import { ProblemComponent } from '../problem/problem.component';
+import { EditorComponent } from './components/editor/editor.component'
 
 @NgModule({
   imports: [CommonModule, FormsModule, ProblemRoutingModule],
@@ -15,8 +16,8 @@ import { ProblemRootComponent } from '../problem/problem-root.component';
     ProgressDashboardComponent,
     ProblemListComponent,
     ProblemDetailComponent,
-    ProblemRootComponent
-  ],
-  exports: [ProblemsComponent]
+    ProblemComponent,
+    EditorComponent
+  ]
 })
 export class ProblemModule {}
