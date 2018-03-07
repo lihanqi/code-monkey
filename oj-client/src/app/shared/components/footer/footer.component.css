@@ -1,0 +1,13 @@
+p {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    color: white;
+    text-align: center;
+    height: 56px;
+    line-height: 56px; /* <-- this is what you must define */
+    background: #D50F25;
+    /* line-height: 56px; */
+}
