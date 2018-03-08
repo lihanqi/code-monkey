@@ -25,7 +25,6 @@ export class DataService {
 
   // todo: may be can optimized for tracking/ lazy-loding purpose;
   getProblems(): Observable<Problem[]> {
-    //console.log("fetching");
     return this.http
       .get<Problem[]>(this.url)
       .pipe(tap(problems => (this.problems = problems)));

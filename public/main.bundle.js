@@ -17,6 +17,47 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 
 /***/ }),
 
+/***/ "../../../../../src/app/app-routing.module.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+// import { ProblemListComponent } from '../components/problem-list/problem-list.component';
+// import { ProblemDetailComponent } from '../components/problem-detail/problem-detail.component';
+var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
+var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
+var routes = [
+    // { path: 'problems', component: ProblemListComponent },
+    // { path: 'problems/:id', component: ProblemDetailComponent },
+    { path: 'contribute', component: new_problem_component_1.NewProblemComponent },
+    { path: '', redirectTo: '/problems', pathMatch: 'full' },
+    { path: '**', component: page_not_found_component_1.PageNotFoundComponent }
+];
+var RoutingModule = /** @class */ (function () {
+    function RoutingModule() {
+    }
+    RoutingModule = __decorate([
+        core_1.NgModule({
+            imports: [router_1.RouterModule.forRoot(routes)],
+            exports: [router_1.RouterModule]
+        })
+    ], RoutingModule);
+    return RoutingModule;
+}());
+exports.RoutingModule = RoutingModule;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/app.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25,7 +66,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".page-body {\n    /* background: linear-gradient(to bottom, #18453b, #97A2A2); */\n}", ""]);
 
 // exports
 
@@ -38,7 +79,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-nav-bar></app-nav-bar>\n<div class=\"container\">\n    <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<app-nav-bar></app-nav-bar>\n<!-- <app-problems></app-problems> -->\n<div class=\"page-body\">\n    <div class=\"container\">\n        <router-outlet></router-outlet>\n    </div>\n</div>\n<app-footer></app-footer>"
 
 /***/ }),
 
@@ -90,20 +131,20 @@ var platform_browser_1 = __webpack_require__("../../../platform-browser/esm5/pla
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
 var http_1 = __webpack_require__("../../../common/esm5/http.js");
-var routing_module_1 = __webpack_require__("../../../../../src/app/routing/routing.module.ts");
+var app_routing_module_1 = __webpack_require__("../../../../../src/app/app-routing.module.ts");
+// Feature Modules
+var problem_module_1 = __webpack_require__("../../../../../src/app/problem/problem.module.ts");
 // Components
 var app_component_1 = __webpack_require__("../../../../../src/app/app.component.ts");
-var problem_list_component_1 = __webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.ts");
 var nav_bar_component_1 = __webpack_require__("../../../../../src/app/components/nav-bar/nav-bar.component.ts");
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
-var problem_detail_component_1 = __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.ts");
-var editor_component_1 = __webpack_require__("../../../../../src/app/components/editor/editor.component.ts");
 var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
 // Services
 var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
 var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket/websocket.service.ts");
 var execution_service_1 = __webpack_require__("../../../../../src/app/services/execution/execution.service.ts");
+var footer_component_1 = __webpack_require__("../../../../../src/app/shared/components/footer/footer.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -111,14 +152,12 @@ var AppModule = /** @class */ (function () {
         core_1.NgModule({
             declarations: [
                 app_component_1.AppComponent,
-                problem_list_component_1.ProblemListComponent,
                 nav_bar_component_1.NavBarComponent,
                 new_problem_component_1.NewProblemComponent,
-                problem_detail_component_1.ProblemDetailComponent,
-                editor_component_1.EditorComponent,
-                page_not_found_component_1.PageNotFoundComponent
+                page_not_found_component_1.PageNotFoundComponent,
+                footer_component_1.FooterComponent
             ],
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, routing_module_1.RoutingModule, http_1.HttpClientModule],
+            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpClientModule, problem_module_1.ProblemModule, app_routing_module_1.RoutingModule],
             providers: [
                 data_service_1.DataService,
                 co_editing_service_1.CoEditingService,
@@ -135,182 +174,6 @@ exports.AppModule = AppModule;
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/editor/LANGUAGE_DEFAULT.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.LANGUAGE_DEFAULTS = {
-    'Python': 'Python:Type your code here...',
-    'Java': 'Java: Type your code here...',
-    'C++': 'Cpp: Type your code here...',
-    'Alien Language': "hahaha"
-};
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/editor/editor.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "#editor { \n    margin-top: 15px;\n    height: 600px;\n    font-size: 14px;\n}\n\n.editor-box {\n    margin-top: 25px;\n}\n\n.button-group button {\n    margin-right: 10px;\n}\n\n/* .MyCursorClass {\n    position:absolute;\n    background: red;\n    z-index:100;\n    width:3px;\n} */", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/editor/editor.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container editor-box\">\n  <section>\n    <header>\n      <div class=\"button-group row\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n    <body>\n      <div id=\"notice\"></div>\n      <div id=\"editor\"></div>\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"submit()\">Submit</button>\n    </body>\n    <footer>\n      <div id=\"execution-result\" class=\"alert alert-warning\" *ngIf=\"executionResult\">{{executionResult}}</div>\n    </footer>\n  </section>\n \n</div>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/editor/editor.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
-var execution_service_1 = __webpack_require__("../../../../../src/app/services/execution/execution.service.ts");
-var LANGUAGE_DEFAULT_1 = __webpack_require__("../../../../../src/app/components/editor/LANGUAGE_DEFAULT.ts");
-var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
-var EditorComponent = /** @class */ (function () {
-    function EditorComponent(coEditingService, route, executionService) {
-        this.coEditingService = coEditingService;
-        this.route = route;
-        this.executionService = executionService;
-    }
-    EditorComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.languages = Object.keys(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS);
-        this.language = "Python";
-        this.executionResult = null;
-        this.route.paramMap.subscribe(function (paramMap) {
-            _this.initEditor();
-            _this.coEditingService.init(paramMap.get("id"), _this.editor);
-            _this.coEditingService.attachEditorListeners(_this.editor);
-            _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) { return _this.popNotify(activity); });
-        });
-    };
-    EditorComponent.prototype.ngOnDestroy = function () {
-        this.userAcitivitySubscrpiton.unsubscribe();
-    };
-    /**
-     * ACE editor initialition
-     */
-    EditorComponent.prototype.initEditor = function () {
-        var _this = this;
-        this.editor = ace.edit("editor");
-        this.editor.setTheme("ace/theme/textmate");
-        this.editor.session.setMode("ace/mode/python");
-        this.editor.getSession().setTabSize(4);
-        this.editor.lastChange = null;
-        this.editor.setValue(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS[this.language]);
-        // listen for context change
-        // emit the change onoly if the change is made by the user
-        this.editor.session.on("change", function (delta) {
-            if (_this.editor.lastChange !== delta) {
-                _this.coEditingService.change(delta);
-            }
-        });
-        // listen for cursor move
-        this.editor.session.selection.on("changeCursor", function (e) {
-            var cursorLoc = _this.editor.getSession().selection.getCursor();
-            _this.coEditingService.cursorMove(cursorLoc);
-        });
-    };
-    /**
-     * Reset editor to initial state
-     */
-    EditorComponent.prototype.reset = function () {
-        var placeHolder = LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS[this.language];
-        this.editor.setValue(placeHolder);
-        this.executionResult = null;
-    };
-    /**
-     * Set the programming language for editor syntax highlighting
-     * @param language the programming language to be use
-     */
-    EditorComponent.prototype.setLanguage = function (language) {
-        this.language = language;
-        this.reset();
-    };
-    /**
-     * Submit the code for execution
-     */
-    EditorComponent.prototype.submit = function () {
-        var _this = this;
-        // todo: add animation for running
-        this.executionResult = "running";
-        var language = this.language;
-        var code = this.editor.getValue();
-        this.executionService.execute(language, code)
-            .then(function (data) {
-            _this.executionResult = data;
-        })
-            .catch(function (error) {
-            console.log("error: " + error);
-        });
-    };
-    /**
-     * popup notifications of participants status with fade in&out animation
-     * @param activity contains userId and its action(join, left)
-     */
-    EditorComponent.prototype.popNotify = function (activity) {
-        var POP_TIME_OUT = 1500;
-        var notice = document.createElement("div");
-        notice.className = "alert alert-primary";
-        notice.id = activity["id"];
-        notice.innerHTML = activity["id"] + activity["action"];
-        notice.style.display = "none";
-        document.getElementById("notice").appendChild(notice);
-        $("#" + notice.id)
-            .fadeIn()
-            .delay(POP_TIME_OUT)
-            .fadeOut(function () {
-            notice.remove();
-        });
-    };
-    EditorComponent = __decorate([
-        core_1.Component({
-            selector: "app-editor",
-            template: __webpack_require__("../../../../../src/app/components/editor/editor.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/editor/editor.component.css")]
-        }),
-        __metadata("design:paramtypes", [co_editing_service_1.CoEditingService,
-            router_1.ActivatedRoute,
-            execution_service_1.ExecutionService])
-    ], EditorComponent);
-    return EditorComponent;
-}());
-exports.EditorComponent = EditorComponent;
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/components/nav-bar/nav-bar.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -319,7 +182,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".navbar {\n    padding-left: 100px;\n    background: #24292e;\n    \n}\n.navbar a {\n    /* color: #97A2A2; */\n    color: rgba(255,255,255,0.75);\n    /* font-f   amily: 'Gotham SSm A', 'Gotham SSm B'; */\n    /* font-family: 'Gotham SSm A', 'Gotham SSm B'; */\n    /* font-style: normal; */\n}\n.navbar a:hover {\n    color: white;\n}\n.navbar .navbar-brand img{\n    margin-right: 15px;\n}\n.login-out {\n    margin-right: 100px;\n}\n/* #split {\n    color: white;\n    margin: 0 8px;\n} */", ""]);
 
 // exports
 
@@ -332,7 +195,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/nav-bar/nav-bar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-faded\">\n  <a class=\"navbar-brand\" href=\"#\">\n    <img src=\"../../../assets/code-monkey.png\" width=\"50\" height=\"50\">\n    Codecola\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item active\">\n        <a class=\"nav-link\" href=\"#\">Home <span class=\"sr-only\">(current)</span></a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" routerLink=\"/problems\">Problems</a>\n      </li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/contribute\">Contribution</a></li>\n    </ul>\n    <form class=\"form-inline my-2 my-lg-0\">\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\n      <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n    </form>\n  </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-faded\">\n  <a class=\"navbar-brand\" href=\"#\">\n    [codecola]\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\">Home</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/problems\">Problems</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Sets</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Discussion</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Articles</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Contest</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/contribute\">Contribution</a></li>\n    </ul>\n  </div>\n  <div class=\"login-out\">\n    <a href=\"#\">Login</a>\n    <span id=\"split\">|</span>\n    <a href=\"#\">Register</a>\n  </div>\n</nav>"
 
 /***/ }),
 
@@ -511,7 +374,39 @@ exports.PageNotFoundComponent = PageNotFoundComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/problem-detail/problem-detail.component.css":
+/***/ "../../../../../src/app/models/problem.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Problem = /** @class */ (function () {
+    function Problem() {
+    }
+    return Problem;
+}());
+exports.Problem = Problem;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LANGUAGE_DEFAULTS = {
+    'Python': 'Python:Type your code here...',
+    'Java': 'Java: Type your code here...',
+    'C++': 'Cpp: Type your code here...',
+    'Alien Language': "hahaha"
+};
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/editor/editor.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -519,7 +414,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".editor-box {\n    margin-top: 25px;\n}\n.header-btn-group {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.header-btn-group button {\n    margin-right: 5px;\n}\n#editor { \n    margin-top: 15px;\n    height: 600px;\n    font-size: 14px;\n    border-radius: 3px;\n    border: 1px solid rgba(0, 0, 0, 0.125);;\n}\n#execute-run-btn {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n    /* flex-basis:  */\n    margin-top: 15px;\n}\n#execute-run-btn button {\n    margin-left: 5px;\n}", ""]);
 
 // exports
 
@@ -529,14 +424,251 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/problem-detail/problem-detail.component.html":
+/***/ "../../../../../src/app/problem/components/editor/editor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"card\" *ngIf=\"problem\">\n  <div class=\"card-header\">\n    <ul class=\"nav nav-tabs card-header-tabs\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link active\" disabled>Description</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Link</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Disabled</a>\n      </li>\n    </ul>\n  </div>\n  <div class=\"card-body\">\n    <h5 class=\"card-title\">{{problem.title}}</h5>\n    <p class=\"card-text\">{{problem.description}}</p>\n  </div>\n</div>\n\n<app-editor></app-editor>\n"
+module.exports = "<div class=\"editor-box\">\n  <section>\n    <header>\n      <div class=\"header-btn-group\">\n        <!-- Button trigger modal -->\n        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#resetModal\">\n          Reset\n        </button>\n        <!-- Button for selecting language -->\n        <div class=\"dropdown\">\n          <button class=\"btn btn-primary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" [value]=\"language\">\n            {{language}}\n          </button>\n          <div class=\"dropdown-menu\">\n            <button type=\"button\" class=\"dropdown-item\" *ngFor=\"let lang of languages\" (click)=\"setLanguage(lang)\">{{lang}}</button>\n          </div>\n        </div>\n      </div>\n    \n      <!-- Modal -->\n      <div class=\"modal fade\" id=\"resetModal\">\n        <div class=\"modal-dialog modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"resetModalLabel\">Reset</h5>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\">\n              <span>&times;</span>\n            </button>\n          </div>\n          <div class=\"modal-body\">\n            Reset will loose all current codes, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" (click)=\"reset()\">Reset</button>\n          </div>\n        </div>\n      </div>\n    </header>\n\n    <body>\n      <div id=\"notice\"></div>\n      <div id=\"editor\"></div>\n      <div id=\"execute-run-btn\">\n          <button id=\"run-button\" type=\"button\" class=\"btn btn-primary\" (click)=\"submit()\">Run</button>\n          <button id=\"submit-button\" type=\"button\" class=\"btn btn-primary\" (click)=\"submit()\">Submit</button>\n      </div>\n      \n    </body>\n    <!-- execution result -->\n    <footer *ngIf=\"executionDisplay\">\n      <app-execution-result [status]=\"executionResult.build\" [result]=\"executionResult.run || executionResult.error\"></app-execution-result>\n    </footer>\n  </section>\n \n</div>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/problem-detail/problem-detail.component.ts":
+/***/ "../../../../../src/app/problem/components/editor/editor.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
+var execution_service_1 = __webpack_require__("../../../../../src/app/services/execution/execution.service.ts");
+var LANGUAGE_DEFAULT_1 = __webpack_require__("../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts");
+var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
+var EditorComponent = /** @class */ (function () {
+    function EditorComponent(coEditingService, route, executionService) {
+        this.coEditingService = coEditingService;
+        this.route = route;
+        this.executionService = executionService;
+        this.executionDisplay = false;
+    }
+    EditorComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.languages = Object.keys(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS);
+        this.language = "Python";
+        this.route.paramMap.subscribe(function (paramMap) {
+            _this.initEditor();
+            _this.coEditingService.init(paramMap.get("id"), _this.editor);
+            _this.coEditingService.attachEditorListeners(_this.editor);
+            _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) { return _this.popNotify(activity); });
+        });
+    };
+    EditorComponent.prototype.ngOnDestroy = function () {
+        this.userAcitivitySubscrpiton.unsubscribe();
+    };
+    /**
+     * ACE editor initialition
+     */
+    EditorComponent.prototype.initEditor = function () {
+        var _this = this;
+        this.editor = ace.edit("editor");
+        this.editor.setTheme("ace/theme/textmate");
+        this.editor.session.setMode("ace/mode/python");
+        this.editor.getSession().setTabSize(4);
+        this.editor.lastChange = null;
+        this.editor.setValue(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS[this.language]);
+        // listen for context change
+        // emit the change onoly if the change is made by the user
+        this.editor.session.on("change", function (delta) {
+            if (_this.editor.lastChange !== delta) {
+                _this.coEditingService.change(delta);
+            }
+        });
+        // listen for cursor move
+        this.editor.session.selection.on("changeCursor", function (e) {
+            var cursorLoc = _this.editor.getSession().selection.getCursor();
+            _this.coEditingService.cursorMove(cursorLoc);
+        });
+    };
+    /**
+     * Reset editor to initial state
+     */
+    EditorComponent.prototype.reset = function () {
+        var placeHolder = LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS[this.language];
+        this.editor.setValue(placeHolder);
+        this.executionResult = null;
+    };
+    /**
+     * Set the programming language for editor syntax highlighting
+     * @param language the programming language to be use
+     */
+    EditorComponent.prototype.setLanguage = function (language) {
+        this.language = language;
+        this.reset();
+    };
+    /**
+     * Submit the code for execution
+     */
+    EditorComponent.prototype.submit = function () {
+        var _this = this;
+        this.executionDisplay = true;
+        this.executionResult = {};
+        // todo: add animation for running
+        this.executionResult['build'] = "running";
+        // this.executionResult.setProperty()
+        var language = this.language;
+        var code = this.editor.getValue();
+        this.executionService.execute(language, code)
+            .then(function (data) {
+            _this.executionResult = JSON.parse(data);
+        })
+            .catch(function (error) {
+            console.log("error: " + error);
+        });
+    };
+    /**
+     * popup notifications of participants status with fade in&out animation
+     * @param activity contains userId and its action(join, left)
+     */
+    EditorComponent.prototype.popNotify = function (activity) {
+        var POP_TIME_OUT = 1500;
+        var notice = document.createElement("div");
+        notice.className = "alert alert-primary";
+        notice.id = activity["id"];
+        notice.innerHTML = activity["id"] + activity["action"];
+        notice.style.display = "none";
+        document.getElementById("notice").appendChild(notice);
+        $("#" + notice.id)
+            .fadeIn()
+            .delay(POP_TIME_OUT)
+            .fadeOut(function () {
+            notice.remove();
+        });
+    };
+    EditorComponent = __decorate([
+        core_1.Component({
+            selector: "app-editor",
+            template: __webpack_require__("../../../../../src/app/problem/components/editor/editor.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/problem/components/editor/editor.component.css")]
+        }),
+        __metadata("design:paramtypes", [co_editing_service_1.CoEditingService,
+            router_1.ActivatedRoute,
+            execution_service_1.ExecutionService])
+    ], EditorComponent);
+    return EditorComponent;
+}());
+exports.EditorComponent = EditorComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/execution-result/execution-result.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".card {\n    margin: 15px 0;\n}\n\n#execution-status {\n    color: red;\n    font-size: 20px;\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/execution-result/execution-result.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"card\">\n    <div class=\"card-header\">\n        Run Code Status: <span id=\"execution-status\">{{status}}</span>\n    </div>\n    <div class=\"card-body\">\n      <h5 class=\"card-title\">Your answer</h5>\n      <p class=\"card-text\">{{result}}</p>\n    </div>\n  </div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/execution-result/execution-result.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var ExecutionResultComponent = /** @class */ (function () {
+    function ExecutionResultComponent() {
+        // @Output() resultDisplay: boolean;
+        // status: string;
+        // output: string;
+        this.status = 'Default_status';
+        this.result = 'Default_result';
+    }
+    ExecutionResultComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ExecutionResultComponent.prototype, "status", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ExecutionResultComponent.prototype, "result", void 0);
+    ExecutionResultComponent = __decorate([
+        core_1.Component({
+            selector: 'app-execution-result',
+            template: __webpack_require__("../../../../../src/app/problem/components/execution-result/execution-result.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/problem/components/execution-result/execution-result.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ExecutionResultComponent);
+    return ExecutionResultComponent;
+}());
+exports.ExecutionResultComponent = ExecutionResultComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/problem-detail/problem-detail.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".card{\n    /* padding-top: 20px; */\n    margin-top: 20px;\n}\n\n#seperate-line {\n    max-width: 100%;\n    height: 2px;\n    background: rgba(0, 0, 0, 0.125);\n    margin-top: 20px;\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/problem-detail/problem-detail.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "\n<div class=\"card\" *ngIf=\"problem\">\n  <div class=\"card-header\">\n    <ul class=\"nav nav-tabs card-header-tabs\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link active\" disabled>Description</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Link</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Disabled</a>\n      </li>\n    </ul>\n  </div>\n  <div class=\"card-body\">\n    <h5 class=\"card-title\">{{problem.title}}</h5>\n    <p class=\"card-text\">{{problem.description}}</p>\n  </div>\n</div>\n<!-- <div id=\"seperate-line\"></div> -->\n<app-editor></app-editor>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/problem-detail/problem-detail.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -574,8 +706,8 @@ var ProblemDetailComponent = /** @class */ (function () {
     ProblemDetailComponent = __decorate([
         core_1.Component({
             selector: "app-problem-detail",
-            template: __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.css")]
+            template: __webpack_require__("../../../../../src/app/problem/components/problem-detail/problem-detail.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/problem/components/problem-detail/problem-detail.component.css")]
         }),
         __metadata("design:paramtypes", [data_service_1.DataService,
             router_1.ActivatedRoute,
@@ -588,7 +720,7 @@ exports.ProblemDetailComponent = ProblemDetailComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/problem-list/problem-list.component.css":
+/***/ "../../../../../src/app/problem/components/problem-list/problem-list.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -596,7 +728,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".diff-Easy {\n  color: #fff;\n  background-color: #28a745;\n}\n\n.diff-Medium {\n  color: #fff;\n  background-color: #ffc107;\n}\n\n.diff-Hard {\n  color: #fff;\n  background-color: #dc3545;\n}\n\na {\n  color:black;\n}\n\na:hover {\n  color:blue;\n  text-decoration: none;\n}", ""]);
+exports.push([module.i, ".diff-Easy {\n  color: #fff;\n  background-color: #28a745;\n}\n\n.diff-Medium {\n  color: #fff;\n  background-color: #ffc107;\n}\n\n.diff-Hard {\n  color: #fff;\n  background-color: #dc3545;\n}\n\na {\n  color: black;\n}\n\na:hover {\n  color: blue;\n  text-decoration: none;\n}\n\n.loader-wrapper {\n  width: 100%;\n  height: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n\n.loader {\n  border: 4px solid #f3f3f3; /* Light grey */\n  border-top: 4px solid #555; /* Blue */\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  -webkit-animation: spin 2s linear infinite;\n          animation: spin 2s linear infinite;\n  text-align: center;\n}\n\n@-webkit-keyframes spin {\n  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\n  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\n}\n\n@keyframes spin {\n  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\n  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\n}\n", ""]);
 
 // exports
 
@@ -606,14 +738,14 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/problem-list/problem-list.component.html":
+/***/ "../../../../../src/app/problem/components/problem-list/problem-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Table -->\n<table class=\"table table-hover\">\n  <thead>\n    <tr>\n      <th scope=\"col\">#</th>\n      <th scope=\"col\">Name</th>\n      <th scope=\"col\">Difficulty</th>\n      <th scopr='col'>Acc</th>\n      <th scopr='col'>Quality</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let problem of problemsDisplay\">\n      <th scope=\"row\">{{problem.id}}</th>\n      <td><a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a></td>\n      <td><span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span></td>\n      <td>32.23%</td>\n      <td>Good</td>\n    </tr>\n  </tbody>\n</table>\n\n<!-- Pagination -->\n<nav aria-label=\"Page navigation\">\n  <!-- Row per page settings -->\n  <label>row per page:</label>\n  <select [(ngModel)]=\"rowPerPage\" (change)=\"changeRowPerPage()\">\n    <option value=\"10\">10</option>\n    <option value=\"20\">20</option>\n    <option value=\"50\">50</option>\n  </select>\n\n  <ul *ngIf=\"numOfPages != 1\" class=\"pagination justify-content-center\">\n    <!-- Previous Link -->\n    <li class=\"page-item \">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage - 1)\">Previous</a>\n    </li>\n    <!-- Dynamic changed page links -->\n    <li *ngFor=\"let i of paginationPages\" class=\"page-item\" [class.active]=\"i==currentPage\">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(i)\">{{i}}</a>\n    </li>\n    <!-- Next Link -->\n    <li class=\"page-item\">\n      <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage + 1)\">Next</a>\n    </li>\n  </ul>\n</nav>\n\n"
+module.exports = "\n<div *ngIf=\"!loadingComplete\" class=\"loader-wrapper\">\n    <div class=\"loader\"></div>\n</div>\n<!-- Table -->\n<div *ngIf=\"loadingComplete\">\n  <table class=\"table table-hover\">\n    <thead>\n      <tr>\n        <th scope=\"col\">#</th>\n        <th scope=\"col\">Name</th>\n        <th scope=\"col\">Difficulty</th>\n        <th scopr=\"col\">Acc</th>\n        <th scopr=\"col\">Quality</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let problem of problemsDisplay\">\n        <th scope=\"row\">{{problem.id}}</th>\n        <td>\n          <a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a>\n        </td>\n        <td>\n          <span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span>\n        </td>\n        <td>32.23%</td>\n        <td>Good</td>\n      </tr>\n    </tbody>\n  </table>\n\n  <!-- Pagination -->\n  <nav aria-label=\"Page navigation\">\n    <!-- Row per page settings -->\n    <label>row per page:</label>\n    <select [(ngModel)]=\"rowPerPage\" (change)=\"changeRowPerPage()\">\n      <!-- <select> -->\n      <option value=\"10\">10</option>\n      <option value=\"20\">20</option>\n      <option value=\"50\">50</option>\n    </select>\n\n    <ul *ngIf=\"numOfPages != 1\" class=\"pagination justify-content-center\">\n      <!-- Previous Link -->\n      <li class=\"page-item \">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage - 1)\">Previous</a>\n      </li>\n      <!-- Dynamic changed page links -->\n      <li *ngFor=\"let i of paginationPages\" class=\"page-item\" [class.active]=\"i==currentPage\">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(i)\">{{i}}</a>\n      </li>\n      <!-- Next Link -->\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage + 1)\">Next</a>\n      </li>\n    </ul>\n  </nav>\n</div>"
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/problem-list/problem-list.component.ts":
+/***/ "../../../../../src/app/problem/components/problem-list/problem-list.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -633,18 +765,27 @@ var data_service_1 = __webpack_require__("../../../../../src/app/services/data/d
 var ProblemListComponent = /** @class */ (function () {
     function ProblemListComponent(dataService) {
         this.dataService = dataService;
+        this.loadingComplete = false;
         this.DEFAULT_NUM_OF_TAGS = 5;
     }
     ProblemListComponent.prototype.ngOnInit = function () {
+        var _this = this;
         var DEFAULT_ROW_PER_PAGE = 20;
         this.currentPage = 1;
         this.rowPerPage = DEFAULT_ROW_PER_PAGE;
         this.problemsDisplay = [];
-        this.getProblems();
+        // todo: remove this in the future
+        setTimeout(function () {
+            _this.getProblems();
+        }, 500);
+        // this.getProblems();
     };
     ProblemListComponent.prototype.getProblems = function () {
         var _this = this;
+        console.log("loading");
         this.dataService.getProblems().subscribe(function (problems) {
+            _this.loadingComplete = true;
+            // console.log("loading complete" + this.lodingComplete);
             _this.problems = problems;
             _this.numOfPages = Math.floor(_this.problems.length / _this.rowPerPage) + 1;
             // todo: should have one line solution:
@@ -689,9 +830,9 @@ var ProblemListComponent = /** @class */ (function () {
     };
     ProblemListComponent = __decorate([
         core_1.Component({
-            selector: "app-problem-list",
-            template: __webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.css")]
+            selector: 'app-problem-list',
+            template: __webpack_require__("../../../../../src/app/problem/components/problem-list/problem-list.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/problem/components/problem-list/problem-list.component.css")]
         }),
         __metadata("design:paramtypes", [data_service_1.DataService])
     ], ProblemListComponent);
@@ -702,23 +843,129 @@ exports.ProblemListComponent = ProblemListComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/models/problem.ts":
+/***/ "../../../../../src/app/problem/components/problems/problems.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".container {\n    padding-top: 50px;\n    margin-bottom: 150px;\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px;\n    /* max-width: 300px; */\n    margin-right: 15px;\n    \n}\n.progress-dashboard {\n    color: blueviolet;\n    background: aqua;\n    max-height: 400px;\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    border: 1px solid black ;\n    border-radius: 5px;\n    text-align: center;\n    line-height: 400px;\n    /* vertical-align: center; */\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/problems/problems.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n    <div class=\"row justify-content-md-center\">\n        <div class=\"col problem-list\">\n            <app-problem-list></app-problem-list>\n        </div>\n        <div class=\"col-lg-3 progress-dashboard align-items-center\">\n            <app-progress-dashboard></app-progress-dashboard>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/problems/problems.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var Problem = /** @class */ (function () {
-    function Problem() {
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var ProblemsComponent = /** @class */ (function () {
+    function ProblemsComponent() {
     }
-    return Problem;
+    ProblemsComponent.prototype.ngOnInit = function () {
+    };
+    ProblemsComponent = __decorate([
+        core_1.Component({
+            selector: 'app-problems',
+            template: __webpack_require__("../../../../../src/app/problem/components/problems/problems.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/problem/components/problems/problems.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ProblemsComponent);
+    return ProblemsComponent;
 }());
-exports.Problem = Problem;
+exports.ProblemsComponent = ProblemsComponent;
 
 
 /***/ }),
 
-/***/ "../../../../../src/app/routing/routing.module.ts":
+/***/ "../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  48% - 32 todo\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var ProgressDashboardComponent = /** @class */ (function () {
+    function ProgressDashboardComponent() {
+    }
+    ProgressDashboardComponent.prototype.ngOnInit = function () {
+    };
+    ProgressDashboardComponent = __decorate([
+        core_1.Component({
+            selector: 'app-progress-dashboard',
+            template: __webpack_require__("../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ProgressDashboardComponent);
+    return ProgressDashboardComponent;
+}());
+exports.ProgressDashboardComponent = ProgressDashboardComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/problem-routing.module.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -732,29 +979,115 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var problem_list_component_1 = __webpack_require__("../../../../../src/app/components/problem-list/problem-list.component.ts");
-var problem_detail_component_1 = __webpack_require__("../../../../../src/app/components/problem-detail/problem-detail.component.ts");
-var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
-var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
-var routes = [
-    { path: 'problems', component: problem_list_component_1.ProblemListComponent },
-    { path: 'problems/:id', component: problem_detail_component_1.ProblemDetailComponent },
-    { path: 'contribute', component: new_problem_component_1.NewProblemComponent },
-    { path: '', redirectTo: '/problems', pathMatch: 'full' },
-    { path: '**', component: page_not_found_component_1.PageNotFoundComponent }
-];
-var RoutingModule = /** @class */ (function () {
-    function RoutingModule() {
+var problem_component_1 = __webpack_require__("../../../../../src/app/problem/problem.component.ts");
+var problem_detail_component_1 = __webpack_require__("../../../../../src/app/problem/components/problem-detail/problem-detail.component.ts");
+var problems_component_1 = __webpack_require__("../../../../../src/app/problem/components/problems/problems.component.ts");
+var problemRoutes = [
+    {
+        path: 'problems',
+        component: problem_component_1.ProblemComponent,
+        children: [
+            {
+                path: ':id', component: problem_detail_component_1.ProblemDetailComponent
+            },
+            {
+                path: '', component: problems_component_1.ProblemsComponent
+            }
+        ]
     }
-    RoutingModule = __decorate([
+];
+var ProblemRoutingModule = /** @class */ (function () {
+    function ProblemRoutingModule() {
+    }
+    ProblemRoutingModule = __decorate([
         core_1.NgModule({
-            imports: [router_1.RouterModule.forRoot(routes)],
+            imports: [router_1.RouterModule.forChild(problemRoutes)],
             exports: [router_1.RouterModule]
         })
-    ], RoutingModule);
-    return RoutingModule;
+    ], ProblemRoutingModule);
+    return ProblemRoutingModule;
 }());
-exports.RoutingModule = RoutingModule;
+exports.ProblemRoutingModule = ProblemRoutingModule;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/problem.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+// This is the root component of the Problem module
+var ProblemComponent = /** @class */ (function () {
+    function ProblemComponent() {
+    }
+    ProblemComponent = __decorate([
+        core_1.Component({
+            template: "\n    <router-outlet></router-outlet>\n  "
+        }),
+        __metadata("design:paramtypes", [])
+    ], ProblemComponent);
+    return ProblemComponent;
+}());
+exports.ProblemComponent = ProblemComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/problem.module.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var common_1 = __webpack_require__("../../../common/esm5/common.js");
+var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
+var progress_dashboard_component_1 = __webpack_require__("../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.ts");
+var problems_component_1 = __webpack_require__("../../../../../src/app/problem/components/problems/problems.component.ts");
+var problem_routing_module_1 = __webpack_require__("../../../../../src/app/problem/problem-routing.module.ts");
+var problem_list_component_1 = __webpack_require__("../../../../../src/app/problem/components/problem-list/problem-list.component.ts");
+var problem_detail_component_1 = __webpack_require__("../../../../../src/app/problem/components/problem-detail/problem-detail.component.ts");
+var problem_component_1 = __webpack_require__("../../../../../src/app/problem/problem.component.ts");
+var editor_component_1 = __webpack_require__("../../../../../src/app/problem/components/editor/editor.component.ts");
+var execution_result_component_1 = __webpack_require__("../../../../../src/app/problem/components/execution-result/execution-result.component.ts");
+var ProblemModule = /** @class */ (function () {
+    function ProblemModule() {
+    }
+    ProblemModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule, forms_1.FormsModule, problem_routing_module_1.ProblemRoutingModule],
+            declarations: [
+                problems_component_1.ProblemsComponent,
+                progress_dashboard_component_1.ProgressDashboardComponent,
+                problem_list_component_1.ProblemListComponent,
+                problem_detail_component_1.ProblemDetailComponent,
+                problem_component_1.ProblemComponent,
+                editor_component_1.EditorComponent,
+                execution_result_component_1.ExecutionResultComponent
+            ]
+        })
+    ], ProblemModule);
+    return ProblemModule;
+}());
+exports.ProblemModule = ProblemModule;
 
 
 /***/ }),
@@ -961,6 +1294,7 @@ var DataService = /** @class */ (function () {
         this.http = http;
         this.url = "api/v1/problems";
     }
+    // todo: may be can optimized for tracking/ lazy-loding purpose;
     DataService.prototype.getProblems = function () {
         var _this = this;
         return this.http
@@ -1072,6 +1406,67 @@ var WebsocketService = /** @class */ (function () {
     return WebsocketService;
 }());
 exports.WebsocketService = WebsocketService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/footer/footer.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "p {\n    /* position:absolute; */\n    /* bottom:0; */\n    margin-top: 40px;\n    width:100%;\n    /* margin-bottom: 0; */\n    /* padding-bottom: 0; */\n    color: white;\n    text-align: center;\n    height: 56px;\n    line-height: 56px; /* <-- this is what you must define */\n    background: #24292e;\n    /* line-height: 56px; */\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/footer/footer.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  Copyright© By Hanqi Li\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/footer/footer.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var FooterComponent = /** @class */ (function () {
+    function FooterComponent() {
+    }
+    FooterComponent.prototype.ngOnInit = function () {
+    };
+    FooterComponent = __decorate([
+        core_1.Component({
+            selector: 'app-footer',
+            template: __webpack_require__("../../../../../src/app/shared/components/footer/footer.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/shared/components/footer/footer.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], FooterComponent);
+    return FooterComponent;
+}());
+exports.FooterComponent = FooterComponent;
 
 
 /***/ }),

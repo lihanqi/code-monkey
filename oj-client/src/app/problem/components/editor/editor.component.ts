@@ -23,7 +23,8 @@ export class EditorComponent implements OnInit, OnDestroy {
   languages: string[];
   language: string;
   userAcitivitySubscrpiton: any;
-  executionResult: string;
+  executionResult: object;
+  executionDisplay: boolean = false;
 
   constructor(
     private coEditingService: CoEditingService,
@@ -34,7 +35,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.languages = Object.keys(LANGUAGE_DEFAULTS);
     this.language = "Python";
-    this.executionResult = null;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.initEditor();
       this.coEditingService.init(paramMap.get("id"), this.editor);
@@ -97,13 +97,16 @@ export class EditorComponent implements OnInit, OnDestroy {
    * Submit the code for execution
    */
   submit() {
+    this.executionDisplay = true;
+    this.executionResult = {};
     // todo: add animation for running
-    this.executionResult = "running";
+    this.executionResult['build'] = "running";
+    // this.executionResult.setProperty()
     const language = this.language;
     const code = this.editor.getValue();
     this.executionService.execute(language, code)
       .then(data => {
-        this.executionResult = data;
+        this.executionResult = JSON.parse(data);
       })
       .catch(error => {
         console.log("error: " + error);

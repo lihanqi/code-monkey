@@ -1,14 +1,17 @@
 .navbar {
     padding-left: 100px;
-    background: #D50F25;
+    background: #24292e;
     
 }
 .navbar a {
     /* color: #97A2A2; */
-    color: white;
+    color: rgba(255,255,255,0.75);
     /* font-f   amily: 'Gotham SSm A', 'Gotham SSm B'; */
     /* font-family: 'Gotham SSm A', 'Gotham SSm B'; */
     /* font-style: normal; */
+}
+.navbar a:hover {
+    color: white;
 }
 
 .navbar .navbar-brand img{
@@ -18,7 +21,7 @@
 .login-out {
     margin-right: 100px;
 }
-#split {
+/* #split {
     color: white;
     margin: 0 8px;
-}
+} */

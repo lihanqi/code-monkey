@@ -1,49 +1,58 @@
+
+<div *ngIf="!loadingComplete" class="loader-wrapper">
+    <div class="loader"></div>
+</div>
 <!-- Table -->
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Difficulty</th>
-      <th scopr="col">Acc</th>
-      <th scopr="col">Quality</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let problem of problemsDisplay">
-      <th scope="row">{{problem.id}}</th>
-      <td><a routerLink="/problems/{{problem.id}}">{{problem.title}}</a></td>
-      <td><span class="badge diff-{{problem.difficulty}}">{{problem.difficulty}}</span></td>
-      <td>32.23%</td>
-      <td>Good</td>
-    </tr>
-  </tbody>
-</table>
+<div *ngIf="loadingComplete">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Difficulty</th>
+        <th scopr="col">Acc</th>
+        <th scopr="col">Quality</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let problem of problemsDisplay">
+        <th scope="row">{{problem.id}}</th>
+        <td>
+          <a routerLink="/problems/{{problem.id}}">{{problem.title}}</a>
+        </td>
+        <td>
+          <span class="badge diff-{{problem.difficulty}}">{{problem.difficulty}}</span>
+        </td>
+        <td>32.23%</td>
+        <td>Good</td>
+      </tr>
+    </tbody>
+  </table>
 
-<!-- Pagination -->
-<nav aria-label="Page navigation">
-  <!-- Row per page settings -->
-  <label>row per page:</label>
-  <select [(ngModel)]="rowPerPage" (change)="changeRowPerPage()">
-    <!-- <select> -->
-    <option value="10">10</option>
-    <option value="20">20</option>
-    <option value="50">50</option>
-  </select>
+  <!-- Pagination -->
+  <nav aria-label="Page navigation">
+    <!-- Row per page settings -->
+    <label>row per page:</label>
+    <select [(ngModel)]="rowPerPage" (change)="changeRowPerPage()">
+      <!-- <select> -->
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+    </select>
 
-  <ul *ngIf="numOfPages != 1" class="pagination justify-content-center">
-    <!-- Previous Link -->
-    <li class="page-item ">
-      <a class="page-link" href="#" (click)="showPage(currentPage - 1)">Previous</a>
-    </li>
-    <!-- Dynamic changed page links -->
-    <li *ngFor="let i of paginationPages" class="page-item" [class.active]="i==currentPage">
-      <a class="page-link" href="#" (click)="showPage(i)">{{i}}</a>
-    </li>
-    <!-- Next Link -->
-    <li class="page-item">
-      <a class="page-link" href="#" (click)="showPage(currentPage + 1)">Next</a>
-    </li>
-  </ul>
-</nav>
-
+    <ul *ngIf="numOfPages != 1" class="pagination justify-content-center">
+      <!-- Previous Link -->
+      <li class="page-item ">
+        <a class="page-link" href="#" (click)="showPage(currentPage - 1)">Previous</a>
+      </li>
+      <!-- Dynamic changed page links -->
+      <li *ngFor="let i of paginationPages" class="page-item" [class.active]="i==currentPage">
+        <a class="page-link" href="#" (click)="showPage(i)">{{i}}</a>
+      </li>
+      <!-- Next Link -->
+      <li class="page-item">
+        <a class="page-link" href="#" (click)="showPage(currentPage + 1)">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

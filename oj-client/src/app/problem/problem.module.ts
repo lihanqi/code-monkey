@@ -7,7 +7,8 @@ import { ProblemRoutingModule } from "../problem/problem-routing.module";
 import { ProblemListComponent } from "./components/problem-list/problem-list.component";
 import { ProblemDetailComponent } from "../problem/components/problem-detail/problem-detail.component";
 import { ProblemComponent } from '../problem/problem.component';
-import { EditorComponent } from './components/editor/editor.component'
+import { EditorComponent } from './components/editor/editor.component';
+import { ExecutionResultComponent } from '../problem/components/execution-result/execution-result.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ProblemRoutingModule],
@@ -17,7 +18,8 @@ import { EditorComponent } from './components/editor/editor.component'
     ProblemListComponent,
     ProblemDetailComponent,
     ProblemComponent,
-    EditorComponent
+    EditorComponent,
+    ExecutionResultComponent
   ]
 })
 export class ProblemModule {}

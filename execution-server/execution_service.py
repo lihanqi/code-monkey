@@ -74,7 +74,8 @@ def build_and_run(code, lang):
         result['build'] = 'OK'
     except ContainerError as e:
         print 'build failed'
-        result['build'] = e.stderr
+        result['build'] = 'ERROR'
+        result['error'] = e.stderr
         shutil.rmtree(source_file_host_dir)
         return result
     # run

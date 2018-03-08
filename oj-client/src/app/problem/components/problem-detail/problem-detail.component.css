@@ -2,3 +2,10 @@
     /* padding-top: 20px; */
     margin-top: 20px;
 }
+
+#seperate-line {
+    max-width: 100%;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.125);
+    margin-top: 20px;
+}

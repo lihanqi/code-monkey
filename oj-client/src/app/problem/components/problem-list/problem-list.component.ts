@@ -14,6 +14,7 @@ export class ProblemListComponent implements OnInit {
   currentPage: number;
   rowPerPage: number;           // Pagination config: problems each page
   numOfPages: number;
+  loadingComplete: boolean = false;
   DEFAULT_NUM_OF_TAGS = 5;
 
 
@@ -24,14 +25,20 @@ export class ProblemListComponent implements OnInit {
     this.currentPage = 1;
     this.rowPerPage = DEFAULT_ROW_PER_PAGE;
     this.problemsDisplay = [];
-    this.getProblems();
-    
+    // todo: remove this in the future
+    setTimeout(() => {
+      this.getProblems();
+    }, 500);
+    // this.getProblems();
   }
 
+  
+
   getProblems() {
-    // console.log("loading");
+    console.log("loading");
     this.dataService.getProblems().subscribe(problems => {
-      // console.log("?");
+      this.loadingComplete = true;
+      // console.log("loading complete" + this.lodingComplete);
       this.problems = problems;
       this.numOfPages = Math.floor(this.problems.length / this.rowPerPage) + 1;
       // todo: should have one line solution:

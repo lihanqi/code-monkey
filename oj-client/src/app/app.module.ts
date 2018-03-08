@@ -16,13 +16,15 @@ import { DataService } from "./services/data/data.service";
 import { CoEditingService } from "./services/co-editing/co-editing.service";
 import { WebsocketService } from "./services/websocket/websocket.service";
 import { ExecutionService } from "./services/execution/execution.service";
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     NewProblemComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FooterComponent
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, ProblemModule, RoutingModule],
   providers: [

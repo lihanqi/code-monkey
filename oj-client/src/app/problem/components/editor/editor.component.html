@@ -46,8 +46,9 @@
       </div>
       
     </body>
-    <footer>
-      <div id="execution-result" class="alert alert-warning" *ngIf="executionResult">{{executionResult}}</div>
+    <!-- execution result -->
+    <footer *ngIf="executionDisplay">
+      <app-execution-result [status]="executionResult.build" [result]="executionResult.run || executionResult.error"></app-execution-result>
     </footer>
   </section>
  
