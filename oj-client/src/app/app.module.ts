@@ -8,15 +8,16 @@ import { RoutingModule } from "./app-routing.module";
 import { ProblemModule } from "./problem/problem.module";
 // Components
 import { AppComponent } from "./app.component";
-import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
+import { NavBarComponent } from "./shared/components/nav-bar/nav-bar.component";
 import { NewProblemComponent } from "./components/new-problem/new-problem.component";
-import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
+import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
+import { FooterComponent } from './shared/components/footer/footer.component';
 // Services
 import { DataService } from "./services/data/data.service";
 import { CoEditingService } from "./services/co-editing/co-editing.service";
 import { WebsocketService } from "./services/websocket/websocket.service";
 import { ExecutionService } from "./services/execution/execution.service";
-import { FooterComponent } from './shared/components/footer/footer.component';
+import { AuthService } from './shared/services/auth/auth.service'
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
     DataService,
     CoEditingService,
     WebsocketService,
-    ExecutionService
+    ExecutionService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

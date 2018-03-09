@@ -18,8 +18,7 @@
     </ul>
   </div>
   <div class="login-out">
-    <a href="#">Login</a>
-    <span id="split">|</span>
-    <a href="#">Register</a>
+    <a *ngIf="!auth.isAuthenticated()" href="#" (click)="login()">Login | Register</a>
+    <a *ngIf="auth.isAuthenticated()" href="#" (click)="logout();">Log out</a>
   </div>
 </nav>
