@@ -20,6 +20,10 @@
   </div>
   <div class="login-out">
     <a *ngIf="!auth.isLoggedin" href="#" (click)="login()">Login | Register</a>
-    <a *ngIf="auth.isLoggedin" href="#" (click)="logout();">Log out</a>
+    <div *ngIf="auth.isLoggedin">
+      <img *ngIf="auth.userProfile" [src]="auth.userProfile.picture">
+      <a href="#" (click)="logout();">Log out</a>
+    </div>
+    
   </div>
 </nav>

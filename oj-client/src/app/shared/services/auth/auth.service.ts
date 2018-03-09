@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { HttpService } from '../http/http.service'
 import * as auth0 from 'auth0-js';
+import { promise } from 'protractor';
 
 @Injectable()
 export class AuthService {
@@ -15,10 +16,11 @@ export class AuthService {
     responseType: 'token id_token',
     audience: 'https://lihanqi.auth0.com/userinfo',
     redirectUri: 'http://localhost:3000',
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   isLoggedin: boolean = false;
+  userProfile: any;
 
   constructor(public router: Router, private http: HttpService) {}
 
@@ -36,6 +38,7 @@ export class AuthService {
         this.setSession(authResult);
         this.router.navigate(['/']);
         this.isLoggedin = true;
+        this.getProfile();
       } else if (err) {
         this.router.navigate(['/']);
         console.log(err);
@@ -70,6 +73,20 @@ export class AuthService {
     return new Date().getTime() < expiresAt;
   }
 
+  public getProfile(): void {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      throw new Error('Access Token must exist to fetch profile');
+    }
+
+    this.auth0.client.userInfo(accessToken, (err, profile) => {
+      if (profile) {
+        this.userProfile = profile;
+      }
+    })
+  }
+
+
   public getPhotoUrl(): string {
     if (!this.isAuthenticated() || !localStorage.getItem('access_token')) {
       return "ERROR: not authenticated";
@@ -84,7 +101,16 @@ export class AuthService {
 
   public test() {
     console.log("new test");
-    console.log("test: " + this.getPhotoUrl());
+    // // this.getPhotoUrl();
+    // if (this.userProfile) {
+    //   console.log(JSON.stringify(this.userProfile));
+    // } else {
+    //   this.getProfile((err, profile) => {
+    //     console.log(JSON.stringify(this.userProfile));
+    //   })
+    // }
+    console.log(this.userProfile.picture);
+    // console.log("test: " + this.getPhotoUrl());
   }
 
 
