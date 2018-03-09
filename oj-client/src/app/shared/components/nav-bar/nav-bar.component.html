@@ -15,10 +15,11 @@
       <li class="nav-item"><a class="nav-link" routerLink="/">Articles</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/">Contest</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/contribute">Contribution</a></li>
+      <li class="nav-item"><button (click)="auth.test()">Test</button></li>
     </ul>
   </div>
   <div class="login-out">
-    <a *ngIf="!auth.isAuthenticated()" href="#" (click)="login()">Login | Register</a>
-    <a *ngIf="auth.isAuthenticated()" href="#" (click)="logout();">Log out</a>
+    <a *ngIf="!auth.isLoggedin" href="#" (click)="login()">Login | Register</a>
+    <a *ngIf="auth.isLoggedin" href="#" (click)="logout();">Log out</a>
   </div>
 </nav>

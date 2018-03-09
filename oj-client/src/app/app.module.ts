@@ -17,6 +17,7 @@ import { DataService } from "./services/data/data.service";
 import { CoEditingService } from "./services/co-editing/co-editing.service";
 import { WebsocketService } from "./services/websocket/websocket.service";
 import { ExecutionService } from "./services/execution/execution.service";
+import { HttpService } from './shared/services/http/http.service';
 import { AuthService } from './shared/services/auth/auth.service'
 
 @NgModule({
@@ -33,6 +34,7 @@ import { AuthService } from './shared/services/auth/auth.service'
     CoEditingService,
     WebsocketService,
     ExecutionService,
+    HttpService,
     AuthService
   ],
   bootstrap: [AppComponent]

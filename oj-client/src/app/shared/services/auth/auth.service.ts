@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { HttpService } from '../http/http.service'
 import * as auth0 from 'auth0-js';
 
 @Injectable()
@@ -17,7 +18,9 @@ export class AuthService {
     scope: 'openid'
   });
 
-  constructor(public router: Router) {}
+  isLoggedin: boolean = false;
+
+  constructor(public router: Router, private http: HttpService) {}
 
   public login() {
     this.auth0.authorize();
@@ -32,6 +35,7 @@ export class AuthService {
         window.location.hash = '';
         this.setSession(authResult);
         this.router.navigate(['/']);
+        this.isLoggedin = true;
       } else if (err) {
         this.router.navigate(['/']);
         console.log(err);
@@ -54,6 +58,7 @@ export class AuthService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
     // Go back to the home route
+    this.isLoggedin = false;
     this.router.navigate(['/']);
   }
 
@@ -61,9 +66,25 @@ export class AuthService {
     // Check whether the current time is past the
     // Access Token's expiry time
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    console.log(new Date().getTime() < expiresAt);
+    // console.log(new Date().getTime() < expiresAt);
     return new Date().getTime() < expiresAt;
-    
+  }
+
+  public getPhotoUrl(): string {
+    if (!this.isAuthenticated() || !localStorage.getItem('access_token')) {
+      return "ERROR: not authenticated";
+    }
+    const url = "https://lihanqi.auth0.com/userinfo";
+    const headers = {
+      'Content-Type':  'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+    }
+    this.http.get(url, headers).subscribe(data => { console.log(data); return data; });
+  }
+
+  public test() {
+    console.log("new test");
+    console.log("test: " + this.getPhotoUrl());
   }
 
 
