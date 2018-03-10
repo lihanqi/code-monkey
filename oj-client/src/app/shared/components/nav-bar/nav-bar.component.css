@@ -21,6 +21,12 @@
 .login-out {
     margin-right: 100px;
 }
+
+#user-picture {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%
+}
 /* #split {
     color: white;
     margin: 0 8px;

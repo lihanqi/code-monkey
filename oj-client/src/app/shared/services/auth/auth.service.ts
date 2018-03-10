@@ -22,14 +22,25 @@ export class AuthService {
   isLoggedin: boolean = false;
   userProfile: any;
 
-  constructor(public router: Router, private http: HttpService) {}
+  constructor(public router: Router, private http: HttpService) {
+    
+  }
 
   public login() {
     this.auth0.authorize();
     // return false;
   }
 
-  // Looks for the result of authentication in the URL hash. 
+  public initService() {
+    if (this.isAuthenticated()) {
+      this.isLoggedin = true;
+      this.getProfile();
+    } else {
+      this.handleAuthentication();
+    }
+  }
+
+  // Looks for the result of authentication in the URL has  h. 
   // Then, the result is processed with the parseHash method from auth0.js.
   public handleAuthentication(): void {
     this.auth0.parseHash((err, authResult) => {
@@ -66,9 +77,13 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
+
     // Check whether the current time is past the
     // Access Token's expiry time
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    if (!expiresAt) {
+      return false;
+    }
     // console.log(new Date().getTime() < expiresAt);
     return new Date().getTime() < expiresAt;
   }
@@ -84,19 +99,6 @@ export class AuthService {
         this.userProfile = profile;
       }
     })
-  }
-
-
-  public getPhotoUrl(): string {
-    if (!this.isAuthenticated() || !localStorage.getItem('access_token')) {
-      return "ERROR: not authenticated";
-    }
-    const url = "https://lihanqi.auth0.com/userinfo";
-    const headers = {
-      'Content-Type':  'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-    }
-    this.http.get(url, headers).subscribe(data => { console.log(data); return data; });
   }
 
   public test() {

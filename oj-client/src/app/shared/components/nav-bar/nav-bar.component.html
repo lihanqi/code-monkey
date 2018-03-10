@@ -15,13 +15,13 @@
       <li class="nav-item"><a class="nav-link" routerLink="/">Articles</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/">Contest</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="/contribute">Contribution</a></li>
-      <li class="nav-item"><button (click)="auth.test()">Test</button></li>
+      <!-- <li class="nav-item"><button (click)="auth.test()">Test</button></li> -->
     </ul>
   </div>
   <div class="login-out">
     <a *ngIf="!auth.isLoggedin" href="#" (click)="login()">Login | Register</a>
     <div *ngIf="auth.isLoggedin">
-      <img *ngIf="auth.userProfile" [src]="auth.userProfile.picture">
+      <img *ngIf="auth.userProfile" id="user-picture" [src]="auth.userProfile.picture">
       <a href="#" (click)="logout();">Log out</a>
     </div>
     

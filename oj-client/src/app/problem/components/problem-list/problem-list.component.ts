@@ -35,7 +35,6 @@ export class ProblemListComponent implements OnInit {
   
 
   getProblems() {
-    console.log("loading");
     this.dataService.getProblems().subscribe(problems => {
       this.loadingComplete = true;
       // console.log("loading complete" + this.lodingComplete);
