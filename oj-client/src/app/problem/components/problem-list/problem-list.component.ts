@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Problem } from "../../../shared/models/problem";
-import { DataService } from "../../../services/data/data.service";
+import { DataService } from "../../services/data/data.service";
 
 @Component({
   selector: 'app-problem-list',

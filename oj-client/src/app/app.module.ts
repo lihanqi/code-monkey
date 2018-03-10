@@ -13,10 +13,6 @@ import { NewProblemComponent } from "./components/new-problem/new-problem.compon
 import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
 import { FooterComponent } from './shared/components/footer/footer.component';
 // Services
-import { DataService } from "./services/data/data.service";
-import { CoEditingService } from "./services/co-editing/co-editing.service";
-import { WebsocketService } from "./services/websocket/websocket.service";
-import { ExecutionService } from "./services/execution/execution.service";
 import { HttpService } from './shared/services/http/http.service';
 import { AuthService } from './shared/services/auth/auth.service'
 
@@ -30,10 +26,7 @@ import { AuthService } from './shared/services/auth/auth.service'
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, ProblemModule, RoutingModule],
   providers: [
-    DataService,
-    CoEditingService,
-    WebsocketService,
-    ExecutionService,
+
     HttpService,
     AuthService
   ],

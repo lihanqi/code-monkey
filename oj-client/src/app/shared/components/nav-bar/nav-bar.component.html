@@ -22,7 +22,7 @@
     <a *ngIf="!auth.isLoggedin" href="#" (click)="login()">Login | Register</a>
     <div *ngIf="auth.isLoggedin">
       <img *ngIf="auth.userProfile" id="user-picture" [src]="auth.userProfile.picture">
-      <a href="#" (click)="logout();">Log out</a>
+      <a href="#" (click)="logout();">{{auth.userProfile.name}}</a>
     </div>
     
   </div>
