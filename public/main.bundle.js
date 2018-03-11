@@ -33,7 +33,7 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 // import { ProblemListComponent } from '../components/problem-list/problem-list.component';
 // import { ProblemDetailComponent } from '../components/problem-detail/problem-detail.component';
-var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
+var page_not_found_component_1 = __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts");
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
 var routes = [
     // { path: 'problems', component: ProblemListComponent },
@@ -94,18 +94,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
 var AppComponent = /** @class */ (function () {
-    function AppComponent() {
+    function AppComponent(auth) {
+        this.auth = auth;
         this.title = 'app';
+        // auth.handleAuthentication();
+        auth.initService();
     }
     AppComponent = __decorate([
         core_1.Component({
             selector: 'app-root',
             template: __webpack_require__("../../../../../src/app/app.component.html"),
             styles: [__webpack_require__("../../../../../src/app/app.component.css")]
-        })
+        }),
+        __metadata("design:paramtypes", [auth_service_1.AuthService])
     ], AppComponent);
     return AppComponent;
 }());
@@ -134,17 +142,16 @@ var http_1 = __webpack_require__("../../../common/esm5/http.js");
 var app_routing_module_1 = __webpack_require__("../../../../../src/app/app-routing.module.ts");
 // Feature Modules
 var problem_module_1 = __webpack_require__("../../../../../src/app/problem/problem.module.ts");
+var profile_module_1 = __webpack_require__("../../../../../src/app/profile/profile.module.ts");
 // Components
 var app_component_1 = __webpack_require__("../../../../../src/app/app.component.ts");
-var nav_bar_component_1 = __webpack_require__("../../../../../src/app/components/nav-bar/nav-bar.component.ts");
+var nav_bar_component_1 = __webpack_require__("../../../../../src/app/shared/components/nav-bar/nav-bar.component.ts");
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
-var page_not_found_component_1 = __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.ts");
-// Services
-var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
-var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
-var websocket_service_1 = __webpack_require__("../../../../../src/app/services/websocket/websocket.service.ts");
-var execution_service_1 = __webpack_require__("../../../../../src/app/services/execution/execution.service.ts");
+var page_not_found_component_1 = __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts");
 var footer_component_1 = __webpack_require__("../../../../../src/app/shared/components/footer/footer.component.ts");
+// Services
+var http_service_1 = __webpack_require__("../../../../../src/app/shared/services/http/http.service.ts");
+var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -157,80 +164,22 @@ var AppModule = /** @class */ (function () {
                 page_not_found_component_1.PageNotFoundComponent,
                 footer_component_1.FooterComponent
             ],
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpClientModule, problem_module_1.ProblemModule, app_routing_module_1.RoutingModule],
-            providers: [
-                data_service_1.DataService,
-                co_editing_service_1.CoEditingService,
-                websocket_service_1.WebsocketService,
-                execution_service_1.ExecutionService
+            imports: [
+                platform_browser_1.BrowserModule,
+                forms_1.FormsModule,
+                http_1.HttpClientModule,
+                problem_module_1.ProblemModule,
+                profile_module_1.ProfileModule,
+                // WARNING: Dont move! (RoutingModule must stay the last.)
+                app_routing_module_1.RoutingModule
             ],
+            providers: [http_service_1.HttpService, auth_service_1.AuthService],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
     return AppModule;
 }());
 exports.AppModule = AppModule;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/nav-bar/nav-bar.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".navbar {\n    padding-left: 100px;\n    background: #24292e;\n    \n}\n.navbar a {\n    /* color: #97A2A2; */\n    color: rgba(255,255,255,0.75);\n    /* font-f   amily: 'Gotham SSm A', 'Gotham SSm B'; */\n    /* font-family: 'Gotham SSm A', 'Gotham SSm B'; */\n    /* font-style: normal; */\n}\n.navbar a:hover {\n    color: white;\n}\n.navbar .navbar-brand img{\n    margin-right: 15px;\n}\n.login-out {\n    margin-right: 100px;\n}\n/* #split {\n    color: white;\n    margin: 0 8px;\n} */", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/nav-bar/nav-bar.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-faded\">\n  <a class=\"navbar-brand\" href=\"#\">\n    [codecola]\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\">Home</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/problems\">Problems</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Sets</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Discussion</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Articles</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Contest</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/contribute\">Contribution</a></li>\n    </ul>\n  </div>\n  <div class=\"login-out\">\n    <a href=\"#\">Login</a>\n    <span id=\"split\">|</span>\n    <a href=\"#\">Register</a>\n  </div>\n</nav>"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/nav-bar/nav-bar.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var NavBarComponent = /** @class */ (function () {
-    function NavBarComponent() {
-    }
-    NavBarComponent.prototype.ngOnInit = function () {
-    };
-    NavBarComponent = __decorate([
-        core_1.Component({
-            selector: 'app-nav-bar',
-            template: __webpack_require__("../../../../../src/app/components/nav-bar/nav-bar.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/nav-bar/nav-bar.component.css")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], NavBarComponent);
-    return NavBarComponent;
-}());
-exports.NavBarComponent = NavBarComponent;
 
 
 /***/ }),
@@ -277,7 +226,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
-var problem_1 = __webpack_require__("../../../../../src/app/models/problem.ts");
+var problem_1 = __webpack_require__("../../../../../src/app/shared/models/problem.ts");
 var NewProblemComponent = /** @class */ (function () {
     function NewProblemComponent(dataService) {
         this.dataService = dataService;
@@ -313,83 +262,6 @@ exports.NewProblemComponent = NewProblemComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/components/page-not-found/page-not-found.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/page-not-found/page-not-found.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n  page-not-found works!\n</p>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/components/page-not-found/page-not-found.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var PageNotFoundComponent = /** @class */ (function () {
-    function PageNotFoundComponent() {
-    }
-    PageNotFoundComponent.prototype.ngOnInit = function () {
-    };
-    PageNotFoundComponent = __decorate([
-        core_1.Component({
-            selector: 'app-page-not-found',
-            template: __webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.html"),
-            styles: [__webpack_require__("../../../../../src/app/components/page-not-found/page-not-found.component.css")]
-        }),
-        __metadata("design:paramtypes", [])
-    ], PageNotFoundComponent);
-    return PageNotFoundComponent;
-}());
-exports.PageNotFoundComponent = PageNotFoundComponent;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/models/problem.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Problem = /** @class */ (function () {
-    function Problem() {
-    }
-    return Problem;
-}());
-exports.Problem = Problem;
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -414,7 +286,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".editor-box {\n    margin-top: 25px;\n}\n.header-btn-group {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.header-btn-group button {\n    margin-right: 5px;\n}\n#editor { \n    margin-top: 15px;\n    height: 600px;\n    font-size: 14px;\n    border-radius: 3px;\n    border: 1px solid rgba(0, 0, 0, 0.125);;\n}\n#execute-run-btn {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n    /* flex-basis:  */\n    margin-top: 15px;\n}\n#execute-run-btn button {\n    margin-left: 5px;\n}", ""]);
+exports.push([module.i, ".editor-box {\n    margin-top: 25px;\n}\n.header-btn-group {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.header-btn-group button {\n    margin-right: 5px;\n}\n#editor { \n    margin-top: 15px;\n    height: 600px;\n    font-size: 14px;\n    border-radius: 3px;\n    border: 1px solid rgba(0, 0, 0, 0.125);;\n}\n#execute-run-btn {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n    /* flex-basis:  */\n    margin-top: 15px;\n}\n#execute-run-btn button {\n    margin-left: 5px;\n}\n", ""]);
 
 // exports
 
@@ -448,8 +320,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var co_editing_service_1 = __webpack_require__("../../../../../src/app/services/co-editing/co-editing.service.ts");
-var execution_service_1 = __webpack_require__("../../../../../src/app/services/execution/execution.service.ts");
+var co_editing_service_1 = __webpack_require__("../../../../../src/app/problem/services/co-editing/co-editing.service.ts");
+var execution_service_1 = __webpack_require__("../../../../../src/app/problem/services/execution/execution.service.ts");
 var LANGUAGE_DEFAULT_1 = __webpack_require__("../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts");
 var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
 var EditorComponent = /** @class */ (function () {
@@ -520,9 +392,8 @@ var EditorComponent = /** @class */ (function () {
         var _this = this;
         this.executionDisplay = true;
         this.executionResult = {};
-        // todo: add animation for running
+        // TODO: add animation for running
         this.executionResult['build'] = "running";
-        // this.executionResult.setProperty()
         var language = this.language;
         var code = this.editor.getValue();
         this.executionService.execute(language, code)
@@ -538,12 +409,16 @@ var EditorComponent = /** @class */ (function () {
      * @param activity contains userId and its action(join, left)
      */
     EditorComponent.prototype.popNotify = function (activity) {
+        // TODO: this part will be update using Angular animation
+        // jQuery will be depricated in this project
         var POP_TIME_OUT = 1500;
         var notice = document.createElement("div");
         notice.className = "alert alert-primary";
         notice.id = activity["id"];
         notice.innerHTML = activity["id"] + activity["action"];
         notice.style.display = "none";
+        notice.style.marginTop = "5px";
+        notice.style.marginBottom = "5px";
         document.getElementById("notice").appendChild(notice);
         $("#" + notice.id)
             .fadeIn()
@@ -686,7 +561,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var common_1 = __webpack_require__("../../../common/esm5/common.js");
-var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
+var data_service_1 = __webpack_require__("../../../../../src/app/problem/services/data/data.service.ts");
 var ProblemDetailComponent = /** @class */ (function () {
     function ProblemDetailComponent(dataService, route, location) {
         this.dataService = dataService;
@@ -761,7 +636,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var data_service_1 = __webpack_require__("../../../../../src/app/services/data/data.service.ts");
+var data_service_1 = __webpack_require__("../../../../../src/app/problem/services/data/data.service.ts");
 var ProblemListComponent = /** @class */ (function () {
     function ProblemListComponent(dataService) {
         this.dataService = dataService;
@@ -782,7 +657,6 @@ var ProblemListComponent = /** @class */ (function () {
     };
     ProblemListComponent.prototype.getProblems = function () {
         var _this = this;
-        console.log("loading");
         this.dataService.getProblems().subscribe(function (problems) {
             _this.loadingComplete = true;
             // console.log("loading complete" + this.lodingComplete);
@@ -1060,14 +934,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var common_1 = __webpack_require__("../../../common/esm5/common.js");
 var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
-var progress_dashboard_component_1 = __webpack_require__("../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.ts");
-var problems_component_1 = __webpack_require__("../../../../../src/app/problem/components/problems/problems.component.ts");
 var problem_routing_module_1 = __webpack_require__("../../../../../src/app/problem/problem-routing.module.ts");
-var problem_list_component_1 = __webpack_require__("../../../../../src/app/problem/components/problem-list/problem-list.component.ts");
-var problem_detail_component_1 = __webpack_require__("../../../../../src/app/problem/components/problem-detail/problem-detail.component.ts");
+// Root-Component
 var problem_component_1 = __webpack_require__("../../../../../src/app/problem/problem.component.ts");
+// Sub-root component
+var problems_component_1 = __webpack_require__("../../../../../src/app/problem/components/problems/problems.component.ts");
+var problem_detail_component_1 = __webpack_require__("../../../../../src/app/problem/components/problem-detail/problem-detail.component.ts");
+// sub components:
+var progress_dashboard_component_1 = __webpack_require__("../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.ts");
+var problem_list_component_1 = __webpack_require__("../../../../../src/app/problem/components/problem-list/problem-list.component.ts");
 var editor_component_1 = __webpack_require__("../../../../../src/app/problem/components/editor/editor.component.ts");
 var execution_result_component_1 = __webpack_require__("../../../../../src/app/problem/components/execution-result/execution-result.component.ts");
+// Feature module services
+var data_service_1 = __webpack_require__("../../../../../src/app/problem/services/data/data.service.ts");
+var co_editing_service_1 = __webpack_require__("../../../../../src/app/problem/services/co-editing/co-editing.service.ts");
+var websocket_service_1 = __webpack_require__("../../../../../src/app/problem/services/websocket/websocket.service.ts");
+var execution_service_1 = __webpack_require__("../../../../../src/app/problem/services/execution/execution.service.ts");
 var ProblemModule = /** @class */ (function () {
     function ProblemModule() {
     }
@@ -1082,6 +964,12 @@ var ProblemModule = /** @class */ (function () {
                 problem_component_1.ProblemComponent,
                 editor_component_1.EditorComponent,
                 execution_result_component_1.ExecutionResultComponent
+            ],
+            providers: [
+                data_service_1.DataService,
+                co_editing_service_1.CoEditingService,
+                websocket_service_1.WebsocketService,
+                execution_service_1.ExecutionService
             ]
         })
     ], ProblemModule);
@@ -1092,7 +980,7 @@ exports.ProblemModule = ProblemModule;
 
 /***/ }),
 
-/***/ "../../../../../src/app/services/co-editing/CURSOR_CULORS.ts":
+/***/ "../../../../../src/app/problem/services/co-editing/CURSOR_CULORS.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1115,7 +1003,7 @@ exports.CURSOR_CULORS = [
 
 /***/ }),
 
-/***/ "../../../../../src/app/services/co-editing/co-editing.service.ts":
+/***/ "../../../../../src/app/problem/services/co-editing/co-editing.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1132,7 +1020,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
-var CURSOR_CULORS_1 = __webpack_require__("../../../../../src/app/services/co-editing/CURSOR_CULORS.ts");
+var CURSOR_CULORS_1 = __webpack_require__("../../../../../src/app/problem/services/co-editing/CURSOR_CULORS.ts");
 // should get from server?
 // declare const MAX_NUM_OF_PARTICIPANTS = 20; 
 var CoEditingService = /** @class */ (function () {
@@ -1267,6 +1155,181 @@ exports.CoEditingService = CoEditingService;
 
 /***/ }),
 
+/***/ "../../../../../src/app/problem/services/data/data.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var ErrorObservable_1 = __webpack_require__("../../../../rxjs/_esm5/observable/ErrorObservable.js");
+var operators_1 = __webpack_require__("../../../../rxjs/_esm5/operators.js");
+var httpOptions = {
+    headers: new http_1.HttpHeaders({ "Content-Type": "application/json" })
+};
+var DataService = /** @class */ (function () {
+    function DataService(http) {
+        this.http = http;
+        this.url = "api/v1/problems";
+    }
+    // todo: may be can optimized for tracking/ lazy-loding purpose;
+    DataService.prototype.getProblems = function () {
+        var _this = this;
+        return this.http
+            .get(this.url)
+            .pipe(operators_1.tap(function (problems) { return (_this.problems = problems); }));
+    };
+    DataService.prototype.getProblemById = function (id) {
+        return this.http
+            .get(this.url + "/" + id)
+            .pipe(operators_1.catchError(this.handleError));
+    };
+    DataService.prototype.addProblem = function (problem) {
+        var _this = this;
+        return this.http.post(this.url, problem, httpOptions).pipe(operators_1.tap(function (problem) {
+            console.log("get called" + _this.problems.length);
+            _this.problems.push(problem);
+        }), operators_1.catchError(this.handleError));
+    };
+    DataService.prototype.handleError = function (error) {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error("An error occurred:", error.error.message);
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error("Backend returned code " + error.status + ", " + ("body was: " + error.error));
+        }
+        // return an ErrorObservable with a user-facing error message
+        return new ErrorObservable_1.ErrorObservable("Something bad happened; please try again later.");
+    };
+    DataService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], DataService);
+    return DataService;
+}());
+exports.DataService = DataService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/services/execution/execution.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var httpOptions = {
+    headers: new http_1.HttpHeaders({ "Content-Type": "application/json" })
+};
+var ExecutionService = /** @class */ (function () {
+    function ExecutionService(http) {
+        this.http = http;
+        this.url = "api/v1/execution";
+    }
+    ExecutionService.prototype.execute = function (language, code) {
+        var codeWithLanguage = {
+            "code": code,
+            "language": language
+        };
+        return this.http.post(this.url, codeWithLanguage, httpOptions).toPromise();
+    };
+    ExecutionService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], ExecutionService);
+    return ExecutionService;
+}());
+exports.ExecutionService = ExecutionService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/services/websocket/websocket.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var WebsocketService = /** @class */ (function () {
+    function WebsocketService() {
+    }
+    WebsocketService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [])
+    ], WebsocketService);
+    return WebsocketService;
+}());
+exports.WebsocketService = WebsocketService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/profile/profile.module.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var common_1 = __webpack_require__("../../../common/esm5/common.js");
+var ProfileModule = /** @class */ (function () {
+    function ProfileModule() {
+    }
+    ProfileModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule
+            ],
+            declarations: []
+        })
+    ], ProfileModule);
+    return ProfileModule;
+}());
+exports.ProfileModule = ProfileModule;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/data/data.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1337,79 +1400,6 @@ exports.DataService = DataService;
 
 /***/ }),
 
-/***/ "../../../../../src/app/services/execution/execution.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var http_1 = __webpack_require__("../../../common/esm5/http.js");
-var httpOptions = {
-    headers: new http_1.HttpHeaders({ "Content-Type": "application/json" })
-};
-var ExecutionService = /** @class */ (function () {
-    function ExecutionService(http) {
-        this.http = http;
-        this.url = "api/v1/execution";
-    }
-    ExecutionService.prototype.execute = function (language, code) {
-        var codeWithLanguage = {
-            "code": code,
-            "language": language
-        };
-        return this.http.post(this.url, codeWithLanguage, httpOptions).toPromise();
-    };
-    ExecutionService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], ExecutionService);
-    return ExecutionService;
-}());
-exports.ExecutionService = ExecutionService;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/services/websocket/websocket.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var WebsocketService = /** @class */ (function () {
-    function WebsocketService() {
-    }
-    WebsocketService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [])
-    ], WebsocketService);
-    return WebsocketService;
-}());
-exports.WebsocketService = WebsocketService;
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/shared/components/footer/footer.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1467,6 +1457,346 @@ var FooterComponent = /** @class */ (function () {
     return FooterComponent;
 }());
 exports.FooterComponent = FooterComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/nav-bar/nav-bar.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".navbar {\n    padding-left: 100px;\n    background: #24292e;\n    \n}\n.navbar a {\n    /* color: #97A2A2; */\n    font-family: Helvetica,Arial,sans-serif;\n    color: rgba(255,255,255,0.75);\n    /* font-f   amily: 'Gotham SSm A', 'Gotham SSm B'; */\n    /* font-family: 'Gotham SSm A', 'Gotham SSm B'; */\n    /* font-style: normal; */\n}\n.navbar a:hover {\n    color: white;\n}\n.navbar .navbar-brand img{\n    margin-right: 15px;\n}\n.login-out {\n    margin-right: 100px;\n}\n#user-picture {\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    height: 36px;\n    width: 36px;\n    border-radius: 50%\n}\n#user-picture:hover {\n    border: 1px solid lightgray;\n}\n#user-name {\n    color: rgba(255,255,255,0.75);\n    cursor: default;\n}\n/* #split {\n    color: white;\n    margin: 0 8px;\n} */", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/nav-bar/nav-bar.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-faded\">\n  <a class=\"navbar-brand\" href=\"#\">\n    [codecola]\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\">Home</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/problems\">Problems</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Sets</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Discussion</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Articles</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/\">Contest</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/contribute\">Contribution</a></li>\n      <!-- <li class=\"nav-item\"><button (click)=\"auth.test()\">Test</button></li> -->\n    </ul>\n  </div>\n  <div class=\"login-out\">\n    <a *ngIf=\"!auth.isLoggedin\" href=\"#\" (click)=\"login()\">Login | Register</a>\n    <div *ngIf=\"auth.isLoggedin\" class=\"nav-item dropdown\">\n      <img id=\"user-picture\" [src]=\"auth.userProfile?.picture\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n      <a class=\"nav-item\" id=\"user-name\">{{auth.userProfile?.name}}</a>\n        <div class=\"dropdown-menu\">\n          <button class=\"dropdown-item\" type=\"button\">Profile</button>\n          <button class=\"dropdown-item\" type=\"button\" (click)=\"logout();\">Logout</button>\n        </div>\n      </div>\n    \n  </div>\n</nav>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/nav-bar/nav-bar.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
+var NavBarComponent = /** @class */ (function () {
+    function NavBarComponent(auth) {
+        this.auth = auth;
+        this.isAuthenticated = false;
+    }
+    NavBarComponent.prototype.ngOnInit = function () {
+        // this.isAuthenticated = this.auth.isAuthenticated();
+    };
+    NavBarComponent.prototype.login = function () {
+        this.auth.login();
+        return false;
+    };
+    NavBarComponent.prototype.logout = function () {
+        // this.auth.logout();
+        window.alert("logout-disabled for now");
+        return false;
+    };
+    NavBarComponent = __decorate([
+        core_1.Component({
+            selector: 'app-nav-bar',
+            template: __webpack_require__("../../../../../src/app/shared/components/nav-bar/nav-bar.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/shared/components/nav-bar/nav-bar.component.css")]
+        }),
+        __metadata("design:paramtypes", [auth_service_1.AuthService])
+    ], NavBarComponent);
+    return NavBarComponent;
+}());
+exports.NavBarComponent = NavBarComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/page-not-found/page-not-found.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/page-not-found/page-not-found.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  page-not-found works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var PageNotFoundComponent = /** @class */ (function () {
+    function PageNotFoundComponent() {
+    }
+    PageNotFoundComponent.prototype.ngOnInit = function () {
+    };
+    PageNotFoundComponent = __decorate([
+        core_1.Component({
+            selector: 'app-page-not-found',
+            template: __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], PageNotFoundComponent);
+    return PageNotFoundComponent;
+}());
+exports.PageNotFoundComponent = PageNotFoundComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/models/problem.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Problem = /** @class */ (function () {
+    function Problem() {
+    }
+    return Problem;
+}());
+exports.Problem = Problem;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/services/auth/auth.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// src/app/auth/auth.service.ts
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var http_service_1 = __webpack_require__("../../../../../src/app/shared/services/http/http.service.ts");
+var auth0 = __webpack_require__("../../../../auth0-js/src/index.js");
+var AuthService = /** @class */ (function () {
+    function AuthService(router, http) {
+        this.router = router;
+        this.http = http;
+        this.auth0 = new auth0.WebAuth({
+            clientID: 'h1uq5F5EKHK836lMXelhIRWpnIypelD0',
+            domain: 'lihanqi.auth0.com',
+            responseType: 'token id_token',
+            audience: 'https://lihanqi.auth0.com/userinfo',
+            redirectUri: 'http://localhost:3000',
+            scope: 'openid profile'
+        });
+        this.isLoggedin = false;
+    }
+    AuthService.prototype.login = function () {
+        this.auth0.authorize();
+        // return false;
+    };
+    AuthService.prototype.initService = function () {
+        if (this.isAuthenticated()) {
+            this.isLoggedin = true;
+            this.getProfile();
+        }
+        else {
+            this.handleAuthentication();
+        }
+    };
+    // Looks for the result of authentication in the URL has  h. 
+    // Then, the result is processed with the parseHash method from auth0.js.
+    AuthService.prototype.handleAuthentication = function () {
+        var _this = this;
+        this.auth0.parseHash(function (err, authResult) {
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                window.location.hash = '';
+                _this.setSession(authResult);
+                _this.router.navigate(['/']);
+                _this.isLoggedin = true;
+                _this.getProfile();
+            }
+            else if (err) {
+                _this.router.navigate(['/']);
+                console.log(err);
+            }
+        });
+    };
+    // stores the user's Access Token, ID Token, and the Access Token's expiry time in browser storage.
+    AuthService.prototype.setSession = function (authResult) {
+        // Set the time that the Access Token will expire at
+        var expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+        localStorage.setItem('access_token', authResult.accessToken);
+        localStorage.setItem('id_token', authResult.idToken);
+        localStorage.setItem('expires_at', expiresAt);
+    };
+    AuthService.prototype.logout = function () {
+        // Remove tokens and expiry time from localStorage
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('id_token');
+        localStorage.removeItem('expires_at');
+        // Go back to the home route
+        this.isLoggedin = false;
+        this.router.navigate(['/']);
+    };
+    AuthService.prototype.isAuthenticated = function () {
+        // Check whether the current time is past the
+        // Access Token's expiry time
+        var expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+        if (!expiresAt) {
+            return false;
+        }
+        // console.log(new Date().getTime() < expiresAt);
+        return new Date().getTime() < expiresAt;
+    };
+    AuthService.prototype.getProfile = function () {
+        var _this = this;
+        var accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+            throw new Error('Access Token must exist to fetch profile');
+        }
+        this.auth0.client.userInfo(accessToken, function (err, profile) {
+            if (profile) {
+                _this.userProfile = profile;
+            }
+        });
+    };
+    AuthService.prototype.test = function () {
+        console.log("new test");
+        // // this.getPhotoUrl();
+        // if (this.userProfile) {
+        //   console.log(JSON.stringify(this.userProfile));
+        // } else {
+        //   this.getProfile((err, profile) => {
+        //     console.log(JSON.stringify(this.userProfile));
+        //   })
+        // }
+        console.log(this.userProfile.picture);
+        // console.log("test: " + this.getPhotoUrl());
+    };
+    AuthService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [router_1.Router, http_service_1.HttpService])
+    ], AuthService);
+    return AuthService;
+}());
+exports.AuthService = AuthService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/services/http/http.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var ErrorObservable_1 = __webpack_require__("../../../../rxjs/_esm5/observable/ErrorObservable.js");
+var operators_1 = __webpack_require__("../../../../rxjs/_esm5/operators.js");
+var HttpService = /** @class */ (function () {
+    function HttpService(http) {
+        this.http = http;
+    }
+    HttpService.prototype.get = function (url, headers) {
+        if (headers === void 0) { headers = null; }
+        var option = {};
+        if (headers) {
+            var header_1 = new http_1.HttpHeaders;
+            Object.keys(headers).forEach(function (key) { return header_1.set(key, headers[key]); });
+            option["headers"] = headers;
+            // console.log(JSON.stringify(option["headers"]));
+        }
+        return this.http
+            .get(url, option)
+            .pipe(operators_1.catchError(this.handleError));
+    };
+    // Http error handler
+    HttpService.prototype.handleError = function (error) {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error("An error occurred:", error.error.message);
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error("Backend returned code " + error.status + ", " + ("body was: " + error.error));
+        }
+        // return an ErrorObservable with a user-facing error message
+        return new ErrorObservable_1.ErrorObservable("Something bad happened; please try again later.");
+    };
+    HttpService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], HttpService);
+    return HttpService;
+}());
+exports.HttpService = HttpService;
 
 
 /***/ }),
