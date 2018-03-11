@@ -20,10 +20,14 @@
   </div>
   <div class="login-out">
     <a *ngIf="!auth.isLoggedin" href="#" (click)="login()">Login | Register</a>
-    <div *ngIf="auth.isLoggedin">
-      <img *ngIf="auth.userProfile" id="user-picture" [src]="auth.userProfile.picture">
-      <a href="#" (click)="logout();">{{auth.userProfile.name}}</a>
-    </div>
+    <div *ngIf="auth.isLoggedin" class="nav-item dropdown">
+      <img id="user-picture" [src]="auth.userProfile?.picture" class="dropdown-toggle" data-toggle="dropdown">
+      <a class="nav-item" id="user-name">{{auth.userProfile?.name}}</a>
+        <div class="dropdown-menu">
+          <button class="dropdown-item" type="button">Profile</button>
+          <button class="dropdown-item" type="button" (click)="logout();">Logout</button>
+        </div>
+      </div>
     
   </div>
 </nav>

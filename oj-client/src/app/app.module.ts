@@ -6,15 +6,16 @@ import { HttpClientModule } from "@angular/common/http";
 import { RoutingModule } from "./app-routing.module";
 // Feature Modules
 import { ProblemModule } from "./problem/problem.module";
+import { ProfileModule } from "./profile/profile.module";
 // Components
 import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./shared/components/nav-bar/nav-bar.component";
 import { NewProblemComponent } from "./components/new-problem/new-problem.component";
 import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
-import { FooterComponent } from './shared/components/footer/footer.component';
+import { FooterComponent } from "./shared/components/footer/footer.component";
 // Services
-import { HttpService } from './shared/services/http/http.service';
-import { AuthService } from './shared/services/auth/auth.service'
+import { HttpService } from "./shared/services/http/http.service";
+import { AuthService } from "./shared/services/auth/auth.service";
 
 @NgModule({
   declarations: [
@@ -24,12 +25,16 @@ import { AuthService } from './shared/services/auth/auth.service'
     PageNotFoundComponent,
     FooterComponent
   ],
-  imports: [BrowserModule, FormsModule, HttpClientModule, ProblemModule, RoutingModule],
-  providers: [
-
-    HttpService,
-    AuthService
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    ProblemModule,
+    ProfileModule,
+    // WARNING: Dont move! (RoutingModule must stay the last.)
+    RoutingModule
   ],
+  providers: [HttpService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

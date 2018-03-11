@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NgModule } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
-import { CoEditingService } from "../../../services/co-editing/co-editing.service";
-import { ExecutionService } from "../../../services/execution/execution.service";
+import { CoEditingService } from "../../services/co-editing/co-editing.service";
+import { ExecutionService } from "../../services/execution/execution.service";
 import { ParamMap } from "@angular/router/src/shared";
 import { not } from "@angular/compiler/src/output/output_ast";
 
@@ -99,9 +99,8 @@ export class EditorComponent implements OnInit, OnDestroy {
   submit() {
     this.executionDisplay = true;
     this.executionResult = {};
-    // todo: add animation for running
+    // TODO: add animation for running
     this.executionResult['build'] = "running";
-    // this.executionResult.setProperty()
     const language = this.language;
     const code = this.editor.getValue();
     this.executionService.execute(language, code)
@@ -118,12 +117,16 @@ export class EditorComponent implements OnInit, OnDestroy {
    * @param activity contains userId and its action(join, left)
    */
   popNotify(activity: object) {
+    // TODO: this part will be update using Angular animation
+    // jQuery will be depricated in this project
     const POP_TIME_OUT: number = 1500;
     let notice = document.createElement("div");
     notice.className = "alert alert-primary";
     notice.id = activity["id"];
     notice.innerHTML = activity["id"] + activity["action"];
     notice.style.display = "none";
+    notice.style.marginTop = "5px";
+    notice.style.marginBottom = "5px";
     document.getElementById("notice").appendChild(notice);
     $(`#${notice.id}`)
       .fadeIn()

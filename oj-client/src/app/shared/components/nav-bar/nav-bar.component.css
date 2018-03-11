@@ -28,6 +28,13 @@
     width: 36px;
     border-radius: 50%
 }
+#user-picture:hover {
+    border: 1px solid lightgray;
+}
+#user-name {
+    color: rgba(255,255,255,0.75);
+    cursor: default;
+}
 /* #split {
     color: white;
     margin: 0 8px;

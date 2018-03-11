@@ -21,7 +21,8 @@ export class NavBarComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logout();
+    // this.auth.logout();
+    window.alert("logout-disabled for now");
     return false;
   }
 

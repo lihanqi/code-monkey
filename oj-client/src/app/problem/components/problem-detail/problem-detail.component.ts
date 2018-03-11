@@ -4,7 +4,7 @@ import { Location } from "@angular/common";
 
 import { Problem } from "../../../shared/models/problem";
 
-import { DataService } from "../../../services/data/data.service";
+import { DataService } from "../../services/data/data.service";
 
 @Component({
   selector: "app-problem-detail",
