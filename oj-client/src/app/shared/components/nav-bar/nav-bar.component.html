@@ -20,8 +20,9 @@
       <img id="user-picture" [src]="auth.userProfile?.picture" class="dropdown-toggle" data-toggle="dropdown">
       <a class="nav-item" id="user-name">{{auth.userProfile?.name}}</a>
         <div class="dropdown-menu">
-          <button class="dropdown-item" type="button">Profile</button>
-          <button class="dropdown-item" type="button" (click)="logout();">Logout</button>
+          <button class="dropdown-item" type="button" routerLink="/profile">Profile</button>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" type="button" (click)="logout();">Sign out</button>
         </div>
       </div>
     

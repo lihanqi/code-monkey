@@ -23,7 +23,6 @@ export class AuthService {
   userProfile: any;
 
   constructor(public router: Router, private http: HttpService) {
-    
   }
 
   public login() {
@@ -89,6 +88,7 @@ export class AuthService {
   }
 
   public getProfile(): void {
+    // console.log("!!!!!");
     const accessToken = localStorage.getItem('access_token');
     if (!accessToken) {
       throw new Error('Access Token must exist to fetch profile');
@@ -97,6 +97,7 @@ export class AuthService {
     this.auth0.client.userInfo(accessToken, (err, profile) => {
       if (profile) {
         this.userProfile = profile;
+        // console.log(JSON.stringify(profile));
       }
     })
   }

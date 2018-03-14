@@ -2,8 +2,11 @@
 fuser -k 3000/tcp
 fuser -k 5000/tcp
 redis-server &
-cd ./executor_server
-sudo python server.py &
+cd ./execution-server
+python server.py &
+cd ..
+cd ./oj-client
+ng build --watch &
 cd ..
 cd ./oj-server
 #npm install

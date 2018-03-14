@@ -1,0 +1,24 @@
+.panel {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+
+
+#basic-profile-panel img {
+    margin: 20px;
+    border-radius: 6px;
+    max-width: 90%;
+    width: auto;
+    height: auto;
+}
+
+#username {
+    padding-bottom: 6px;
+    border-bottom: 1px solid red;
+}
+
+#activity-log-panel {
+    height: 600px;
+}
