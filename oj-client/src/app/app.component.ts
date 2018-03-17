@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './shared/services/auth/auth.service';
 
 @Component({
@@ -6,12 +6,16 @@ import { AuthService } from './shared/services/auth/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
 
   constructor(public auth: AuthService) {
-    console.log("APP ROOT CONSTRUCTED");
-    auth.initService();
   }
+
+  ngOnInit() {
+    this.auth.initService().then();
+  }
+
+
 
 }

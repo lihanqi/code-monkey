@@ -35,7 +35,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.log("editor initialzed first");
     this.languages = Object.keys(LANGUAGE_DEFAULTS);
     this.language = "Python";
     this.route.paramMap.subscribe((paramMap: ParamMap) => {

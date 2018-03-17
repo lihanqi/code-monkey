@@ -15,6 +15,7 @@ import { FooterComponent } from "./shared/components/footer/footer.component";
 // Services
 import { HttpService } from "./shared/services/http/http.service";
 import { AuthService } from "./shared/services/auth/auth.service";
+import { AuthGuard } from "./shared/services/auth-guard/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { AuthService } from "./shared/services/auth/auth.service";
     // WARNING: Dont move! (RoutingModule must stay the last.)
     RoutingModule
   ],
-  providers: [HttpService, AuthService],
+  providers: [HttpService, AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

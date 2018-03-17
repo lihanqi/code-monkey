@@ -41,18 +41,25 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var page_not_found_component_1 = __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts");
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
+var auth_guard_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts");
 var routes = [
-    { path: 'profile', loadChildren: 'app/profile/profile.module#ProfileModule' },
-    { path: 'contribute', component: new_problem_component_1.NewProblemComponent },
-    { path: '', redirectTo: '/problems', pathMatch: 'full' },
-    { path: '**', component: page_not_found_component_1.PageNotFoundComponent }
+    {
+        path: "profile",
+        loadChildren: "app/profile/profile.module#ProfileModule",
+        canLoad: [auth_guard_service_1.AuthGuard]
+    },
+    { path: "contribute", component: new_problem_component_1.NewProblemComponent },
+    { path: "", redirectTo: "/problems", pathMatch: "full" },
+    { path: "**", component: page_not_found_component_1.PageNotFoundComponent }
 ];
 var RoutingModule = /** @class */ (function () {
     function RoutingModule() {
     }
     RoutingModule = __decorate([
         core_1.NgModule({
-            imports: [router_1.RouterModule.forRoot(routes)],
+            imports: [
+                router_1.RouterModule.forRoot(routes, { preloadingStrategy: router_1.PreloadAllModules })
+            ],
             exports: [router_1.RouterModule]
         })
     ], RoutingModule);
@@ -109,9 +116,10 @@ var AppComponent = /** @class */ (function () {
     function AppComponent(auth) {
         this.auth = auth;
         this.title = 'app';
-        console.log("APP ROOT CONSTRUCTED");
-        auth.initService();
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.auth.initService().then();
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'app-root',
@@ -156,6 +164,7 @@ var footer_component_1 = __webpack_require__("../../../../../src/app/shared/comp
 // Services
 var http_service_1 = __webpack_require__("../../../../../src/app/shared/services/http/http.service.ts");
 var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
+var auth_guard_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -176,7 +185,7 @@ var AppModule = /** @class */ (function () {
                 // WARNING: Dont move! (RoutingModule must stay the last.)
                 app_routing_module_1.RoutingModule
             ],
-            providers: [http_service_1.HttpService, auth_service_1.AuthService],
+            providers: [http_service_1.HttpService, auth_service_1.AuthService, auth_guard_service_1.AuthGuard],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
@@ -338,7 +347,6 @@ var EditorComponent = /** @class */ (function () {
     }
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log("editor initialzed first");
         this.languages = Object.keys(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS);
         this.language = "Python";
         this.route.paramMap.subscribe(function (paramMap) {
@@ -1305,6 +1313,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
 __webpack_require__("../../../../rxjs/_esm5/add/operator/take.js");
+__webpack_require__("../../../../rxjs/_esm5/add/operator/toPromise.js");
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var data_service_1 = __webpack_require__("../../../../../src/app/problem/services/data/data.service.ts");
@@ -1315,16 +1324,19 @@ var ProblemDetailResolver = /** @class */ (function () {
     }
     ProblemDetailResolver.prototype.resolve = function (route, state) {
         var _this = this;
-        var id = +route.paramMap.get('id');
-        return this.data.getProblemById(id).take(1).map(function (problem) {
+        var id = +route.paramMap.get("id");
+        return this.data
+            .getProblemById(id)
+            .toPromise()
+            .then(function (problem) {
             if (problem) {
                 return problem;
             }
-            else {
-                _this.router.navigate(['/']);
-                console.log("problem does not exist");
-                return null;
-            }
+        })
+            .catch(function (error) {
+            _this.router.navigate(["/"]);
+            console.log("problem does not exist");
+            return null;
         });
     };
     ProblemDetailResolver = __decorate([
@@ -1580,6 +1592,54 @@ exports.Problem = Problem;
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
+var AuthGuard = /** @class */ (function () {
+    function AuthGuard(auth, router) {
+        this.auth = auth;
+        this.router = router;
+    }
+    AuthGuard.prototype.canActivate = function () {
+        if (this.auth.isAuthenticated()) {
+            return true;
+        }
+        else {
+            // TODO: login page later
+            this.router.navigate(['/problems']);
+            console.log("redirect to login page");
+            return false;
+        }
+    };
+    AuthGuard.prototype.canLoad = function () {
+        return this.canActivate();
+    };
+    AuthGuard = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [auth_service_1.AuthService, router_1.Router])
+    ], AuthGuard);
+    return AuthGuard;
+}());
+exports.AuthGuard = AuthGuard;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/shared/services/auth/auth.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1605,12 +1665,12 @@ var AuthService = /** @class */ (function () {
         this.router = router;
         this.http = http;
         this.auth0 = new auth0.WebAuth({
-            clientID: 'h1uq5F5EKHK836lMXelhIRWpnIypelD0',
-            domain: 'lihanqi.auth0.com',
-            responseType: 'token id_token',
-            audience: 'https://lihanqi.auth0.com/userinfo',
-            redirectUri: 'http://localhost:3000',
-            scope: 'openid profile'
+            clientID: "h1uq5F5EKHK836lMXelhIRWpnIypelD0",
+            domain: "lihanqi.auth0.com",
+            responseType: "token id_token",
+            audience: "https://lihanqi.auth0.com/userinfo",
+            redirectUri: "http://localhost:3000",
+            scope: "openid profile"
         });
         this.isLoggedin = false;
     }
@@ -1619,88 +1679,92 @@ var AuthService = /** @class */ (function () {
         // return false;
     };
     AuthService.prototype.initService = function () {
-        if (this.isAuthenticated()) {
-            this.isLoggedin = true;
-            this.getProfile();
-            console.log("get profile done");
-        }
-        else {
-            this.handleAuthentication();
-            console.log("called");
-        }
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            if (_this.isAuthenticated()) {
+                _this.isLoggedin = true;
+                _this.getProfile().then(function (profile) {
+                    _this.userProfile = profile;
+                    resolve(_this.userProfile);
+                });
+            }
+            else {
+                _this.handleAuthentication().then(function () {
+                    resolve(_this.userProfile);
+                });
+            }
+        });
     };
-    // Looks for the result of authentication in the URL has  h. 
+    // Looks for the result of authentication in the URL has  h.
     // Then, the result is processed with the parseHash method from auth0.js.
     AuthService.prototype.handleAuthentication = function () {
         var _this = this;
-        this.auth0.parseHash(function (err, authResult) {
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                window.location.hash = '';
-                _this.setSession(authResult);
-                _this.router.navigate(['/']);
-                _this.isLoggedin = true;
-                _this.getProfile();
-                console.log("get profile done");
-            }
-            else if (err) {
-                _this.router.navigate(['/']);
-                console.log(err);
-            }
+        return new Promise(function (resolve, reject) {
+            _this.auth0.parseHash(function (err, authResult) {
+                if (authResult && authResult.accessToken && authResult.idToken) {
+                    window.location.hash = "";
+                    _this.setSession(authResult);
+                    _this.router.navigate(["/"]);
+                    _this.isLoggedin = true;
+                    _this.getProfile()
+                        .then(function (profile) {
+                        _this.userProfile = profile;
+                        resolve();
+                    })
+                        .catch(function (err) {
+                        reject(err);
+                    });
+                }
+                else if (err) {
+                    _this.router.navigate(["/"]);
+                    reject(err);
+                }
+            });
         });
     };
     // stores the user's Access Token, ID Token, and the Access Token's expiry time in browser storage.
     AuthService.prototype.setSession = function (authResult) {
         // Set the time that the Access Token will expire at
-        var expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-        localStorage.setItem('access_token', authResult.accessToken);
-        localStorage.setItem('id_token', authResult.idToken);
-        localStorage.setItem('expires_at', expiresAt);
+        var expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
+        localStorage.setItem("access_token", authResult.accessToken);
+        localStorage.setItem("id_token", authResult.idToken);
+        localStorage.setItem("expires_at", expiresAt);
     };
     AuthService.prototype.logout = function () {
         // Remove tokens and expiry time from localStorage
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('id_token');
-        localStorage.removeItem('expires_at');
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("expires_at");
         // Go back to the home route
         this.isLoggedin = false;
-        this.router.navigate(['/']);
+        this.router.navigate(["/"]);
     };
     AuthService.prototype.isAuthenticated = function () {
         // Check whether the current time is past the Access Token's expiry time
-        var expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+        var expiresAt = JSON.parse(localStorage.getItem("expires_at"));
         if (!expiresAt) {
             return false;
         }
         // console.log(new Date().getTime() < expiresAt);
         return new Date().getTime() < expiresAt;
     };
+    // This is Aysnc function.
     AuthService.prototype.getProfile = function () {
         var _this = this;
-        // console.log("!!!!!");
-        var accessToken = localStorage.getItem('access_token');
-        if (!accessToken) {
-            throw new Error('Access Token must exist to fetch profile');
-        }
-        this.auth0.client.userInfo(accessToken, function (err, profile) {
-            if (profile) {
-                _this.userProfile = profile;
-                // console.log("get profile actually done");
-                // console.log(JSON.stringify(profile));
+        return new Promise(function (resolve, reject) {
+            var accessToken = localStorage.getItem("access_token");
+            if (!accessToken) {
+                reject("Access Token must exist to fetch profile");
             }
+            _this.auth0.client.userInfo(accessToken, function (err, profile) {
+                if (profile) {
+                    resolve(profile);
+                }
+                if (err) {
+                    reject(err);
+                }
+            });
         });
-    };
-    AuthService.prototype.test = function () {
-        console.log("new test");
-        // // this.getPhotoUrl();
-        // if (this.userProfile) {
-        //   console.log(JSON.stringify(this.userProfile));
-        // } else {
-        //   this.getProfile((err, profile) => {
-        //     console.log(JSON.stringify(this.userProfile));
-        //   })
-        // }
-        console.log(this.userProfile.picture);
-        // console.log("test: " + this.getPhotoUrl());
     };
     AuthService = __decorate([
         core_1.Injectable(),
