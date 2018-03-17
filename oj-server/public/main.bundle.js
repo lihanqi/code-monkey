@@ -322,22 +322,25 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/problem/services/co-editing/co-editing.service.ts");
 var execution_service_1 = __webpack_require__("../../../../../src/app/problem/services/execution/execution.service.ts");
+var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
 var LANGUAGE_DEFAULT_1 = __webpack_require__("../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts");
 var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
 var EditorComponent = /** @class */ (function () {
-    function EditorComponent(coEditingService, route, executionService) {
+    function EditorComponent(coEditingService, route, executionService, auth) {
         this.coEditingService = coEditingService;
         this.route = route;
         this.executionService = executionService;
+        this.auth = auth;
         this.executionDisplay = false;
     }
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
+        console.log("editor initialzed first");
         this.languages = Object.keys(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS);
         this.language = "Python";
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
-            _this.coEditingService.init(paramMap.get("id"), _this.editor);
+            _this.coEditingService.init(paramMap.get("id"), _this.editor, _this.auth.userProfile);
             _this.coEditingService.attachEditorListeners(_this.editor);
             _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) { return _this.popNotify(activity); });
         });
@@ -435,7 +438,8 @@ var EditorComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [co_editing_service_1.CoEditingService,
             router_1.ActivatedRoute,
-            execution_service_1.ExecutionService])
+            execution_service_1.ExecutionService,
+            auth_service_1.AuthService])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -539,7 +543,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/problem/components/problem-detail/problem-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"card\" *ngIf=\"problem\">\n  <div class=\"card-header\">\n    <ul class=\"nav nav-tabs card-header-tabs\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link active\" disabled>Description</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Link</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Disabled</a>\n      </li>\n    </ul>\n  </div>\n  <div class=\"card-body\">\n    <h5 class=\"card-title\">{{problem.title}}</h5>\n    <p class=\"card-text\">{{problem.description}}</p>\n  </div>\n</div>\n<!-- <div id=\"seperate-line\"></div> -->\n<app-editor></app-editor>\n"
+module.exports = "\n<div class=\"card\" *ngIf=\"problem\">\n  <div class=\"card-header\">\n    <ul class=\"nav nav-tabs card-header-tabs\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link active\" disabled>Description</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Hints</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" disabled>Solution</a>\n      </li>\n    </ul>\n  </div>\n  <div class=\"card-body\">\n    <h5 class=\"card-title\">{{problem.title}}</h5>\n    <p class=\"card-text\">{{problem.description}}</p>\n  </div>\n</div>\n<!-- <div id=\"seperate-line\"></div> -->\n<app-editor></app-editor>\n"
 
 /***/ }),
 
@@ -569,14 +573,11 @@ var ProblemDetailComponent = /** @class */ (function () {
         this.location = location;
     }
     ProblemDetailComponent.prototype.ngOnInit = function () {
-        this.getProblem();
-    };
-    ProblemDetailComponent.prototype.getProblem = function () {
         var _this = this;
-        var id = +this.route.snapshot.paramMap.get("id");
-        this.dataService.getProblemById(id).subscribe(function (problem) {
-            _this.problem = problem;
-        }, function (error) { return console.log(error); });
+        // this.getProblem();
+        this.route.data.subscribe(function (data) {
+            _this.problem = data.problem;
+        });
     };
     ProblemDetailComponent = __decorate([
         core_1.Component({
@@ -853,19 +854,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var problem_detail_resolver_service_1 = __webpack_require__("../../../../../src/app/problem/services/problem-detail-resolver.service.ts");
 var problem_component_1 = __webpack_require__("../../../../../src/app/problem/problem.component.ts");
 var problem_detail_component_1 = __webpack_require__("../../../../../src/app/problem/components/problem-detail/problem-detail.component.ts");
 var problems_component_1 = __webpack_require__("../../../../../src/app/problem/components/problems/problems.component.ts");
 var problemRoutes = [
     {
-        path: 'problems',
+        path: "problems",
         component: problem_component_1.ProblemComponent,
         children: [
             {
-                path: ':id', component: problem_detail_component_1.ProblemDetailComponent
+                path: ":id",
+                component: problem_detail_component_1.ProblemDetailComponent,
+                resolve: {
+                    problem: problem_detail_resolver_service_1.ProblemDetailResolver
+                }
             },
             {
-                path: '', component: problems_component_1.ProblemsComponent
+                path: "",
+                component: problems_component_1.ProblemsComponent
             }
         ]
     }
@@ -876,7 +883,8 @@ var ProblemRoutingModule = /** @class */ (function () {
     ProblemRoutingModule = __decorate([
         core_1.NgModule({
             imports: [router_1.RouterModule.forChild(problemRoutes)],
-            exports: [router_1.RouterModule]
+            exports: [router_1.RouterModule],
+            providers: [problem_detail_resolver_service_1.ProblemDetailResolver]
         })
     ], ProblemRoutingModule);
     return ProblemRoutingModule;
@@ -969,7 +977,7 @@ var ProblemModule = /** @class */ (function () {
                 data_service_1.DataService,
                 co_editing_service_1.CoEditingService,
                 websocket_service_1.WebsocketService,
-                execution_service_1.ExecutionService
+                execution_service_1.ExecutionService,
             ]
         })
     ], ProblemModule);
@@ -1035,9 +1043,16 @@ var CoEditingService = /** @class */ (function () {
      * Service Initializer
      * @param sessionId the co-editing service session
      */
-    CoEditingService.prototype.init = function (sessionId, editor) {
+    CoEditingService.prototype.init = function (sessionId, editor, profile) {
         this.sessionId = sessionId;
-        this.socket = io(window.location.origin, { query: { session: sessionId } });
+        if (profile && profile['name']) {
+            console.log("name detected!");
+            var name_1 = profile['name'];
+            this.socket = io(window.location.origin, { query: { session: sessionId, username: name_1 } });
+        }
+        else {
+            this.socket = io(window.location.origin, { query: { session: sessionId } });
+        }
         this.editor = editor;
         this.restoreBuffer();
     };
@@ -1221,6 +1236,8 @@ var DataService = /** @class */ (function () {
     return DataService;
 }());
 exports.DataService = DataService;
+var problem_1 = __webpack_require__("../../../../../src/app/shared/models/problem.ts");
+exports.Problem = problem_1.Problem;
 
 
 /***/ }),
@@ -1264,6 +1281,56 @@ var ExecutionService = /** @class */ (function () {
     return ExecutionService;
 }());
 exports.ExecutionService = ExecutionService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/problem/services/problem-detail-resolver.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+__webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
+__webpack_require__("../../../../rxjs/_esm5/add/operator/take.js");
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var data_service_1 = __webpack_require__("../../../../../src/app/problem/services/data/data.service.ts");
+var ProblemDetailResolver = /** @class */ (function () {
+    function ProblemDetailResolver(data, router) {
+        this.data = data;
+        this.router = router;
+    }
+    ProblemDetailResolver.prototype.resolve = function (route, state) {
+        var _this = this;
+        var id = +route.paramMap.get('id');
+        return this.data.getProblemById(id).map(function (problem) {
+            if (problem) {
+                return problem;
+            }
+            else {
+                _this.router.navigate(['/']);
+                console.log("problem does not exist");
+                return null;
+            }
+        });
+    };
+    ProblemDetailResolver = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [data_service_1.DataService, router_1.Router])
+    ], ProblemDetailResolver);
+    return ProblemDetailResolver;
+}());
+exports.ProblemDetailResolver = ProblemDetailResolver;
 
 
 /***/ }),
@@ -1375,6 +1442,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var auth_guard_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts");
 // Root component
 var profile_component_1 = __webpack_require__("../../../../../src/app/profile/profile.component.ts");
 /////////////////
@@ -1383,6 +1451,7 @@ var profileRoutes = [
     {
         path: 'profile',
         component: profile_component_1.ProfileComponent,
+        canActivate: [auth_guard_service_1.AuthGuard],
         children: [
             {
                 path: '', component: profile_home_component_1.ProfileHomeComponent
@@ -1461,12 +1530,14 @@ var common_1 = __webpack_require__("../../../common/esm5/common.js");
 var profile_routing_module_1 = __webpack_require__("../../../../../src/app/profile/profile-routing.module.ts");
 var profile_component_1 = __webpack_require__("../../../../../src/app/profile/profile.component.ts");
 var profile_home_component_1 = __webpack_require__("../../../../../src/app/profile/components/profile-home/profile-home.component.ts");
+var auth_guard_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts");
 var ProfileModule = /** @class */ (function () {
     function ProfileModule() {
     }
     ProfileModule = __decorate([
         core_1.NgModule({
             imports: [common_1.CommonModule, profile_routing_module_1.ProfileRoutingModule],
+            providers: [auth_guard_service_1.AuthGuard],
             declarations: [profile_component_1.ProfileComponent, profile_home_component_1.ProfileHomeComponent],
         })
     ], ProfileModule);
@@ -1689,6 +1760,51 @@ exports.Problem = Problem;
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
+var AuthGuard = /** @class */ (function () {
+    function AuthGuard(auth, router) {
+        this.auth = auth;
+        this.router = router;
+    }
+    AuthGuard.prototype.canActivate = function () {
+        if (this.auth.isAuthenticated()) {
+            return true;
+        }
+        else {
+            // TODO: login page later
+            this.router.navigate(['/']);
+            console.log("redirect to login page");
+            return false;
+        }
+    };
+    AuthGuard = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [auth_service_1.AuthService, router_1.Router])
+    ], AuthGuard);
+    return AuthGuard;
+}());
+exports.AuthGuard = AuthGuard;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/shared/services/auth/auth.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1731,9 +1847,11 @@ var AuthService = /** @class */ (function () {
         if (this.isAuthenticated()) {
             this.isLoggedin = true;
             this.getProfile();
+            console.log("get profile done");
         }
         else {
             this.handleAuthentication();
+            console.log("called");
         }
     };
     // Looks for the result of authentication in the URL has  h. 
@@ -1747,6 +1865,7 @@ var AuthService = /** @class */ (function () {
                 _this.router.navigate(['/']);
                 _this.isLoggedin = true;
                 _this.getProfile();
+                console.log("get profile done");
             }
             else if (err) {
                 _this.router.navigate(['/']);
@@ -1772,8 +1891,7 @@ var AuthService = /** @class */ (function () {
         this.router.navigate(['/']);
     };
     AuthService.prototype.isAuthenticated = function () {
-        // Check whether the current time is past the
-        // Access Token's expiry time
+        // Check whether the current time is past the Access Token's expiry time
         var expiresAt = JSON.parse(localStorage.getItem('expires_at'));
         if (!expiresAt) {
             return false;
@@ -1791,6 +1909,7 @@ var AuthService = /** @class */ (function () {
         this.auth0.client.userInfo(accessToken, function (err, profile) {
             if (profile) {
                 _this.userProfile = profile;
+                // console.log("get profile actually done");
                 // console.log(JSON.stringify(profile));
             }
         });

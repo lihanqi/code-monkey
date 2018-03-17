@@ -63,3 +63,5 @@ export class DataService {
     );
   }
 }
+
+export { Problem } from "../../../shared/models/problem";

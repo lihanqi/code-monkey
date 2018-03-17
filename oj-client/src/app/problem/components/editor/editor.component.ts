@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 
 import { CoEditingService } from "../../services/co-editing/co-editing.service";
 import { ExecutionService } from "../../services/execution/execution.service";
+import { AuthService } from '../../../shared/services/auth/auth.service';
 import { ParamMap } from "@angular/router/src/shared";
 import { not } from "@angular/compiler/src/output/output_ast";
 
@@ -29,15 +30,17 @@ export class EditorComponent implements OnInit, OnDestroy {
   constructor(
     private coEditingService: CoEditingService,
     private route: ActivatedRoute,
-    private executionService: ExecutionService
+    private executionService: ExecutionService,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
+    console.log("editor initialzed first");
     this.languages = Object.keys(LANGUAGE_DEFAULTS);
     this.language = "Python";
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.initEditor();
-      this.coEditingService.init(paramMap.get("id"), this.editor);
+      this.coEditingService.init(paramMap.get("id"), this.editor, this.auth.userProfile);
       this.coEditingService.attachEditorListeners(this.editor);
       this.userAcitivitySubscrpiton = this.coEditingService.userLogin$.subscribe(
         activity => this.popNotify(activity)

@@ -34,8 +34,10 @@ export class AuthService {
     if (this.isAuthenticated()) {
       this.isLoggedin = true;
       this.getProfile();
+      console.log("get profile done");
     } else {
       this.handleAuthentication();
+      console.log("called");
     }
   }
 
@@ -49,6 +51,7 @@ export class AuthService {
         this.router.navigate(['/']);
         this.isLoggedin = true;
         this.getProfile();
+        console.log("get profile done");
       } else if (err) {
         this.router.navigate(['/']);
         console.log(err);
@@ -77,8 +80,7 @@ export class AuthService {
 
   public isAuthenticated(): boolean {
 
-    // Check whether the current time is past the
-    // Access Token's expiry time
+    // Check whether the current time is past the Access Token's expiry time
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     if (!expiresAt) {
       return false;
@@ -97,6 +99,7 @@ export class AuthService {
     this.auth0.client.userInfo(accessToken, (err, profile) => {
       if (profile) {
         this.userProfile = profile;
+        // console.log("get profile actually done");
         // console.log(JSON.stringify(profile));
       }
     })

@@ -35,7 +35,7 @@ import { ExecutionService } from "./services/execution/execution.service";
     DataService,
     CoEditingService,
     WebsocketService,
-    ExecutionService
+    ExecutionService,
   ]
 })
 export class ProblemModule {}

@@ -2,9 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 
-import { Problem } from "../../../shared/models/problem";
-
-import { DataService } from "../../services/data/data.service";
+import { Problem, DataService } from "../../services/data/data.service";
 
 @Component({
   selector: "app-problem-detail",
@@ -21,16 +19,19 @@ export class ProblemDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getProblem();
+    // this.getProblem();
+    this.route.data.subscribe((data: {problem: Problem}) => {
+      this.problem = data.problem;
+    })
   }
 
-  getProblem() {
-    const id = +this.route.snapshot.paramMap.get("id");
-    this.dataService.getProblemById(id).subscribe(
-      problem => {
-        this.problem = problem;
-      },
-      error => console.log(error)
-    );
-  }
+  // getProblem() {
+  //   const id = +this.route.snapshot.paramMap.get("id");
+  //   this.dataService.getProblemById(id).subscribe(
+  //     problem => {
+  //       this.problem = problem;
+  //     },
+  //     error => console.log(error)
+  //   );
+  // }
 }

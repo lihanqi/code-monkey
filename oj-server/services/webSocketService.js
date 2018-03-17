@@ -4,11 +4,11 @@ const TIMEOUT_IN_SECONDS = 300;
 const websocketService = function(io) {
 	let buffer = {}; // key: sessionId, value: the changed content buffer
 	io.on("connection", function(socket) {
-		const userId = socket.id;
+		const userId = socket.handshake.query.username || socket.id;
 		const sessionId = socket.handshake.query.session;
 
 		socket.join(sessionId, () => {
-			console.log(userId + "joined room " + sessionId);
+			console.log(userId + " joined room " + sessionId);
 			socket.to(sessionId).broadcast.emit("userJoin", userId);
 			if (!(sessionId in buffer)) {
 				buffer[sessionId] = {};

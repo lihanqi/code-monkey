@@ -30,9 +30,16 @@ export class CoEditingService {
    * Service Initializer
    * @param sessionId the co-editing service session
    */
-  init(sessionId: string, editor: any) {
+  init(sessionId: string, editor: any, profile: object) {
     this.sessionId = sessionId;
-    this.socket = io(window.location.origin, {query: {session: sessionId}});
+    if (profile && profile['name']) {
+      console.log("name detected!");
+      const name = profile['name'];
+      this.socket = io(window.location.origin, {query: {session: sessionId, username: name}});
+    } else {
+      this.socket = io(window.location.origin, {query: {session: sessionId}});
+    }
+    
     this.editor = editor;
     this.restoreBuffer();
   }
