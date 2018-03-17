@@ -22,7 +22,8 @@ export class AuthService {
   isLoggedin: boolean = false;
   userProfile: any;
 
-  constructor(public router: Router, private http: HttpService) {}
+  constructor(public router: Router, private http: HttpService) {
+  }
 
   public login() {
     this.auth0.authorize();

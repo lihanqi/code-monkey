@@ -7,13 +7,12 @@ import { AuthService } from './shared/services/auth/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'app';
+  title = 'Codecola - Online Judge';
 
-  constructor(public auth: AuthService) {
-  }
+  constructor(public auth: AuthService) {}
 
-  ngOnInit() {
-    this.auth.initService().then();
+  ngOnInit(){
+    this.auth.initService().then(() => console.log("finished"));
   }
 
 

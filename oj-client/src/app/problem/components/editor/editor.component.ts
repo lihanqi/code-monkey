@@ -9,7 +9,6 @@ import { ParamMap } from "@angular/router/src/shared";
 import { not } from "@angular/compiler/src/output/output_ast";
 
 import { LANGUAGE_DEFAULTS } from "./LANGUAGE_DEFAULT";
-import * as $ from "jquery";
 
 declare const ace: any;
 
@@ -35,14 +34,20 @@ export class EditorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+	  console.log("editor init");
     this.languages = Object.keys(LANGUAGE_DEFAULTS);
     this.language = "Python";
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.initEditor();
+	  this.initEditor();
+	  if (!this.auth.userProfile) {
+		  console.log("!!!!!!!!");
+	  }
       this.coEditingService.init(paramMap.get("id"), this.editor, this.auth.userProfile);
       this.coEditingService.attachEditorListeners(this.editor);
       this.userAcitivitySubscrpiton = this.coEditingService.userLogin$.subscribe(
-        activity => this.popNotify(activity)
+        activity => {
+			this.popNotify(activity);
+		}
       );
     });
   }
@@ -119,22 +124,19 @@ export class EditorComponent implements OnInit, OnDestroy {
    * @param activity contains userId and its action(join, left)
    */
   popNotify(activity: object) {
+	  console.log(JSON.stringify(activity));
     // TODO: this part will be update using Angular animation
     // jQuery will be depricated in this project
-    const POP_TIME_OUT: number = 1500;
+    const POP_TIME_OUT: number = 1000;
     let notice = document.createElement("div");
     notice.className = "alert alert-primary";
-    notice.id = activity["id"];
-    notice.innerHTML = activity["id"] + activity["action"];
-    notice.style.display = "none";
+    notice.innerHTML = activity["id"] + " " + activity["action"];
     notice.style.marginTop = "5px";
-    notice.style.marginBottom = "5px";
-    document.getElementById("notice").appendChild(notice);
-    $(`#${notice.id}`)
-      .fadeIn()
-      .delay(POP_TIME_OUT)
-      .fadeOut(() => {
-        notice.remove();
-      });
+	notice.style.marginBottom = "5px";
+	const noticeContainer = document.getElementById("notice");
+    noticeContainer.appendChild(notice);
+	setTimeout(()=>{
+		noticeContainer.removeChild(notice);
+	}, POP_TIME_OUT);
   }
 }

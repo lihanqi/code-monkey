@@ -89,19 +89,23 @@ export class CoEditingService {
    * @param editor the editor object that needed to update
    */
   private listenParticipantsActivities(editor) {
-    this.socket.on('userJoin', userId => {
+    this.socket.on('userJoin', user => {
       let activity = {
-        id: userId,
+        id: user.name,
         action: "joined"
       };
       this.userLogin$.next(activity);
     })
-    this.socket.on('userLeft', userId => {
+    this.socket.on('userLeft', user => {
       let activity = {
-        id: userId,
+        id: user.name,
         action: "left"
       };
       this.userLogin$.next(activity);
+      // remove cursor:
+      if (user.id in this.participants) {
+        editor.getSession().removeMarker(this.participants[user.id]['marker']);
+      } 
     })
   }
 

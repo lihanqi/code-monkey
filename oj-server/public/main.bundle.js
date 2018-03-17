@@ -115,10 +115,10 @@ var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services
 var AppComponent = /** @class */ (function () {
     function AppComponent(auth) {
         this.auth = auth;
-        this.title = 'app';
+        this.title = 'Codecola - Online Judge';
     }
     AppComponent.prototype.ngOnInit = function () {
-        this.auth.initService().then();
+        this.auth.initService().then(function () { return console.log("finished"); });
     };
     AppComponent = __decorate([
         core_1.Component({
@@ -336,7 +336,6 @@ var co_editing_service_1 = __webpack_require__("../../../../../src/app/problem/s
 var execution_service_1 = __webpack_require__("../../../../../src/app/problem/services/execution/execution.service.ts");
 var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
 var LANGUAGE_DEFAULT_1 = __webpack_require__("../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts");
-var $ = __webpack_require__("../../../../jquery/dist/jquery.js");
 var EditorComponent = /** @class */ (function () {
     function EditorComponent(coEditingService, route, executionService, auth) {
         this.coEditingService = coEditingService;
@@ -347,13 +346,19 @@ var EditorComponent = /** @class */ (function () {
     }
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
+        console.log("editor init");
         this.languages = Object.keys(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS);
         this.language = "Python";
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
+            if (!_this.auth.userProfile) {
+                console.log("!!!!!!!!");
+            }
             _this.coEditingService.init(paramMap.get("id"), _this.editor, _this.auth.userProfile);
             _this.coEditingService.attachEditorListeners(_this.editor);
-            _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) { return _this.popNotify(activity); });
+            _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) {
+                _this.popNotify(activity);
+            });
         });
     };
     EditorComponent.prototype.ngOnDestroy = function () {
@@ -423,23 +428,20 @@ var EditorComponent = /** @class */ (function () {
      * @param activity contains userId and its action(join, left)
      */
     EditorComponent.prototype.popNotify = function (activity) {
+        console.log(JSON.stringify(activity));
         // TODO: this part will be update using Angular animation
         // jQuery will be depricated in this project
-        var POP_TIME_OUT = 1500;
+        var POP_TIME_OUT = 1000;
         var notice = document.createElement("div");
         notice.className = "alert alert-primary";
-        notice.id = activity["id"];
-        notice.innerHTML = activity["id"] + activity["action"];
-        notice.style.display = "none";
+        notice.innerHTML = activity["id"] + " " + activity["action"];
         notice.style.marginTop = "5px";
         notice.style.marginBottom = "5px";
-        document.getElementById("notice").appendChild(notice);
-        $("#" + notice.id)
-            .fadeIn()
-            .delay(POP_TIME_OUT)
-            .fadeOut(function () {
-            notice.remove();
-        });
+        var noticeContainer = document.getElementById("notice");
+        noticeContainer.appendChild(notice);
+        setTimeout(function () {
+            noticeContainer.removeChild(notice);
+        }, POP_TIME_OUT);
     };
     EditorComponent = __decorate([
         core_1.Component({
@@ -1107,19 +1109,23 @@ var CoEditingService = /** @class */ (function () {
      */
     CoEditingService.prototype.listenParticipantsActivities = function (editor) {
         var _this = this;
-        this.socket.on('userJoin', function (userId) {
+        this.socket.on('userJoin', function (user) {
             var activity = {
-                id: userId,
+                id: user.name,
                 action: "joined"
             };
             _this.userLogin$.next(activity);
         });
-        this.socket.on('userLeft', function (userId) {
+        this.socket.on('userLeft', function (user) {
             var activity = {
-                id: userId,
+                id: user.name,
                 action: "left"
             };
             _this.userLogin$.next(activity);
+            // remove cursor:
+            if (user.id in _this.participants) {
+                editor.getSession().removeMarker(_this.participants[user.id]['marker']);
+            }
         });
     };
     /**
