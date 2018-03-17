@@ -675,7 +675,7 @@ var ProblemListComponent = /** @class */ (function () {
             _this.loadingComplete = true;
             // console.log("loading complete" + this.lodingComplete);
             _this.problems = problems;
-            _this.numOfPages = Math.floor(_this.problems.length / _this.rowPerPage) + 1;
+            _this.numOfPages = Math.ceil(_this.problems.length / _this.rowPerPage);
             // todo: should have one line solution:
             _this.problemsDisplay = _this.problems.slice(0, _this.rowPerPage);
             // console.log(this.numOfPages);
@@ -695,7 +695,7 @@ var ProblemListComponent = /** @class */ (function () {
         return false;
     };
     ProblemListComponent.prototype.changeRowPerPage = function () {
-        this.numOfPages = Math.floor(this.problems.length / this.rowPerPage) + 1;
+        this.numOfPages = Math.ceil(this.problems.length / this.rowPerPage);
         console.log(this.numOfPages);
         this.showPage();
     };
@@ -739,7 +739,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".container {\n    padding-top: 50px;\n    margin-bottom: 150px;\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px;\n    /* max-width: 300px; */\n    margin-right: 15px;\n    \n}\n.progress-dashboard {\n    color: blueviolet;\n    background: aqua;\n    max-height: 400px;\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    border: 1px solid black ;\n    border-radius: 5px;\n    text-align: center;\n    line-height: 400px;\n    /* vertical-align: center; */\n}", ""]);
+exports.push([module.i, ".container {\n    padding-top: 50px;\n    margin-bottom: 150px;\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px;\n    /* max-width: 300px; */\n    margin-right: 15px;\n    \n}\n/* .progress-dashboard {\n    color: blueviolet;\n    background: aqua;\n    max-height: 400px;\n    box-sizing: border-box;\n    border: 1px solid black ;\n    border-radius: 5px;\n    text-align: center;\n    line-height: 400px;\n    vertical-align: center;\n} */", ""]);
 
 // exports
 
@@ -813,7 +813,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  48% - 32 todo\n</p>\n"
+module.exports = "<div id=\"progress-card\" class=\"card\">\n  <div class=\"card-header\">\n    Progress\n  </div>\n  <div class=\"card-body\">\n    <h5 class=\"card-title\">Special title treatment</h5>\n    <p class=\"card-text\">With supporting text below as a natural lead-in to additional content.</p>\n  </div>\n</div>"
 
 /***/ }),
 

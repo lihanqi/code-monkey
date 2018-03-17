@@ -39,7 +39,7 @@ export class ProblemListComponent implements OnInit {
       this.loadingComplete = true;
       // console.log("loading complete" + this.lodingComplete);
       this.problems = problems;
-      this.numOfPages = Math.floor(this.problems.length / this.rowPerPage) + 1;
+      this.numOfPages = Math.ceil(this.problems.length / this.rowPerPage);
       // todo: should have one line solution:
       this.problemsDisplay = this.problems.slice(0, this.rowPerPage);
       // console.log(this.numOfPages);
@@ -60,7 +60,7 @@ export class ProblemListComponent implements OnInit {
   }
 
   changeRowPerPage() {
-    this.numOfPages = Math.floor(this.problems.length / this.rowPerPage) + 1;
+    this.numOfPages = Math.ceil(this.problems.length / this.rowPerPage);
     console.log(this.numOfPages);
     this.showPage();
   }

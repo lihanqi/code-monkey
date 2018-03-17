@@ -1,19 +1,18 @@
-const cachingService = require('./cachingService');
+const cachingService = require("./cachingService");
 const TIMEOUT_IN_SECONDS = 300;
 
 const websocketService = function(io) {
 	let buffer = {}; // key: sessionId, value: the changed content buffer
-	let uid_to_sid = {}; // key: userId, value: socketID;
+
 	io.on("connection", function(socket) {
-		const userId = socket.handshake.query.username || socket.id;
 		const sessionId = socket.handshake.query.session;
 		const user = {
-			"name": socket.handshake.query.username || "Anonymous User",
-			"id": socket.id
+			name: socket.handshake.query.username || "Anonymous User",
+			id: socket.id
 		};
 
 		socket.join(sessionId, () => {
-			console.log(user.name + " joined room " + sessionId);
+			// console.log(user.name + " joined room " + sessionId);
 			socket.to(sessionId).broadcast.emit("userJoin", user);
 			if (!(sessionId in buffer)) {
 				buffer[sessionId] = {};
@@ -27,7 +26,6 @@ const websocketService = function(io) {
 					}
 				});
 			}
-			// uid_to_sid[userId] = socket.id;
 			buffer[sessionId]["participants"]++;
 		});
 
@@ -54,7 +52,7 @@ const websocketService = function(io) {
 		});
 
 		socket.on("disconnect", function() {
-			console.log(userId + " disconnected");
+			console.log(user.id + " disconnected");
 			socket.to(sessionId).broadcast.emit("userLeft", user);
 			buffer[sessionId]["participants"]--;
 			if (buffer[sessionId]["participants"] == 0) {
