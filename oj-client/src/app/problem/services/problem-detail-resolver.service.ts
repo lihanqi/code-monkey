@@ -16,7 +16,7 @@ export class ProblemDetailResolver implements Resolve<Problem> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Problem> {
         let id = +route.paramMap.get('id');
-        return this.data.getProblemById(id).map(problem => {
+        return this.data.getProblemById(id).take(1).map(problem => {
             if (problem) {
                 return problem;
             } else {

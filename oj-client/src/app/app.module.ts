@@ -6,7 +6,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { RoutingModule } from "./app-routing.module";
 // Feature Modules
 import { ProblemModule } from "./problem/problem.module";
-import { ProfileModule } from "./profile/profile.module";
 // Components
 import { AppComponent } from "./app.component";
 import { NavBarComponent } from "./shared/components/nav-bar/nav-bar.component";
@@ -30,7 +29,6 @@ import { AuthService } from "./shared/services/auth/auth.service";
     FormsModule,
     HttpClientModule,
     ProblemModule,
-    ProfileModule,
     // WARNING: Dont move! (RoutingModule must stay the last.)
     RoutingModule
   ],

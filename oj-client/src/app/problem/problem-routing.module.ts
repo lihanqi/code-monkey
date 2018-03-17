@@ -15,10 +15,10 @@ const problemRoutes: Routes = [
     children: [
       {
         path: ":id",
-		component: ProblemDetailComponent,
-		resolve: {
-			problem: ProblemDetailResolver
-		}
+        component: ProblemDetailComponent,
+        resolve: {
+          problem: ProblemDetailResolver
+        }
       },
       {
         path: "",
