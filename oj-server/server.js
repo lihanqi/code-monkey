@@ -17,5 +17,5 @@ app.use(function(req, res, next) {
 });
 
 server.listen(80, ()=> {
-    console.log('Example app listening on port 80!');
+    console.log('Codecola lanuched at port 80');
 })
