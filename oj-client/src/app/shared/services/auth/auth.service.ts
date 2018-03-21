@@ -15,7 +15,7 @@ export class AuthService {
     domain: "lihanqi.auth0.com",
     responseType: "token id_token",
     audience: "https://lihanqi.auth0.com/userinfo",
-    redirectUri: "http://www.lihanqi.com",
+    redirectUri: window.location.origin,
     scope: "openid profile"
   });
 
