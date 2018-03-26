@@ -33,7 +33,6 @@ export class CoEditingService {
   init(sessionId: string, editor: any, profile: object) {
     this.sessionId = sessionId;
     if (profile && profile['name']) {
-      console.log("name detected!");
       const name = profile['name'];
       this.socket = io(window.location.origin, {query: {session: sessionId, username: name}});
     } else {

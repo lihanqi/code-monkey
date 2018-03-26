@@ -16,6 +16,6 @@ app.use(function(req, res, next) {
     res.sendFile('./public/index.html' , { root : __dirname});
 });
 
-server.listen(80, ()=> {
-    console.log('Codecola lanuched at port 80');
+server.listen(3000, ()=> {
+    console.log('Codecola lanuched at port 3000');
 })

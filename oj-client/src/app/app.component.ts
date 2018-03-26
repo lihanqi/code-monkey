@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   constructor(public auth: AuthService) {}
 
   ngOnInit(){
-    this.auth.initService().then(() => console.log("finished"));
+    this.auth.initService();
   }
 
 

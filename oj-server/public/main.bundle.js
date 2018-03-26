@@ -91,7 +91,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-nav-bar></app-nav-bar>\n<!-- <app-problems></app-problems> -->\n<div class=\"page-body\">\n    <div class=\"container\">\n        <router-outlet></router-outlet>\n    </div>\n</div>\n<app-footer></app-footer>"
+module.exports = "<app-nav-bar></app-nav-bar>\n<!-- <app-problems></app-problems> -->\n<div class=\"page-body\" *ngIf=\"auth.loadFinished\">\n    <div class=\"container\">\n        <router-outlet></router-outlet>\n    </div>\n</div>\n<app-footer></app-footer>"
 
 /***/ }),
 
@@ -118,7 +118,7 @@ var AppComponent = /** @class */ (function () {
         this.title = 'Codecola - Online Judge';
     }
     AppComponent.prototype.ngOnInit = function () {
-        this.auth.initService().then(function () { return console.log("finished"); });
+        this.auth.initService();
     };
     AppComponent = __decorate([
         core_1.Component({
@@ -346,7 +346,6 @@ var EditorComponent = /** @class */ (function () {
     }
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log("editor init");
         this.languages = Object.keys(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS);
         this.language = "Python";
         this.route.paramMap.subscribe(function (paramMap) {
@@ -1059,7 +1058,6 @@ var CoEditingService = /** @class */ (function () {
     CoEditingService.prototype.init = function (sessionId, editor, profile) {
         this.sessionId = sessionId;
         if (profile && profile['name']) {
-            console.log("name detected!");
             var name_1 = profile['name'];
             this.socket = io(window.location.origin, { query: { session: sessionId, username: name_1 } });
         }
@@ -1679,53 +1677,32 @@ var AuthService = /** @class */ (function () {
             scope: "openid profile"
         });
         this.isLoggedin = false;
+        this.loadFinished = false;
     }
     AuthService.prototype.login = function () {
         this.auth0.authorize();
-        // return false;
     };
     AuthService.prototype.initService = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this.isAuthenticated()) {
-                _this.isLoggedin = true;
-                _this.getProfile().then(function (profile) {
-                    _this.userProfile = profile;
-                    resolve(_this.userProfile);
-                });
-            }
-            else {
-                _this.handleAuthentication().then(function () {
-                    resolve(_this.userProfile);
-                });
-            }
-        });
+        if (this.isAuthenticated()) {
+            this.getProfile();
+        }
+        else {
+            this.handleAuthentication();
+        }
     };
-    // Looks for the result of authentication in the URL has  h.
-    // Then, the result is processed with the parseHash method from auth0.js.
     AuthService.prototype.handleAuthentication = function () {
         var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.auth0.parseHash(function (err, authResult) {
-                if (authResult && authResult.accessToken && authResult.idToken) {
-                    window.location.hash = "";
-                    _this.setSession(authResult);
-                    _this.router.navigate(["/"]);
-                    _this.isLoggedin = true;
-                    _this.getProfile()
-                        .then(function (profile) {
-                        _this.userProfile = profile;
-                        resolve();
-                    })
-                        .catch(function (err) {
-                        reject(err);
-                    });
-                }
-                else if (err) {
-                    _this.router.navigate(["/"]);
-                    reject(err);
-                }
-            });
+        this.auth0.parseHash(function (err, authResult) {
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                window.location.hash = '';
+                _this.setSession(authResult);
+                _this.getProfile();
+                _this.router.navigate(['/']);
+            }
+            else if (err) {
+                _this.router.navigate(['/']);
+                console.log(err);
+            }
         });
     };
     // stores the user's Access Token, ID Token, and the Access Token's expiry time in browser storage.
@@ -1746,30 +1723,30 @@ var AuthService = /** @class */ (function () {
         this.router.navigate(["/"]);
     };
     AuthService.prototype.isAuthenticated = function () {
-        // Check whether the current time is past the Access Token's expiry time
-        var expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-        if (!expiresAt) {
+        var expiresAt = localStorage.getItem("expires_at");
+        if (expiresAt) {
+            return new Date().getTime() < JSON.parse(expiresAt);
+        }
+        else {
             return false;
         }
-        // console.log(new Date().getTime() < expiresAt);
-        return new Date().getTime() < expiresAt;
     };
-    // This is Aysnc function.
     AuthService.prototype.getProfile = function () {
         var _this = this;
-        return new Promise(function (resolve, reject) {
-            var accessToken = localStorage.getItem("access_token");
-            if (!accessToken) {
-                reject("Access Token must exist to fetch profile");
+        var accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+            this.loadFinished = true;
+            throw new Error('Access Token must exist to fetch profile');
+        }
+        this.auth0.client.userInfo(accessToken, function (err, profile) {
+            if (profile) {
+                _this.userProfile = profile;
+                _this.loadFinished = true;
+                _this.isLoggedin = true;
             }
-            _this.auth0.client.userInfo(accessToken, function (err, profile) {
-                if (profile) {
-                    resolve(profile);
-                }
-                if (err) {
-                    reject(err);
-                }
-            });
+            if (err) {
+                throw new Error("Failure from Auth0.");
+            }
         });
     };
     AuthService = __decorate([

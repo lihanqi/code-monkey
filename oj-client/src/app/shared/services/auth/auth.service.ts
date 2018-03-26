@@ -5,8 +5,7 @@ import { Router } from "@angular/router";
 import { filter } from "rxjs/operators";
 import { HttpService } from "../http/http.service";
 import * as auth0 from "auth0-js";
-import { promise } from "protractor";
-import { resolve, reject } from "q";
+
 
 @Injectable()
 export class AuthService {
@@ -20,6 +19,7 @@ export class AuthService {
   });
 
   isLoggedin: boolean = false;
+  loadFinished = false;
   userProfile: any;
 
   constructor(public router: Router, private http: HttpService) {
@@ -27,51 +27,31 @@ export class AuthService {
 
   public login() {
     this.auth0.authorize();
-    // return false;
   }
 
-  public initService(): Promise<any> {
-    return new Promise((resolve, reject) =>{
-      if (this.isAuthenticated()) {
-        this.isLoggedin = true;
-        this.getProfile().then(profile => {
-          this.userProfile = profile;
-          resolve(this.userProfile);
-        });
-      } else {
-        this.handleAuthentication().then(()=> {
-          resolve(this.userProfile);
-        });
+  public initService() {
+    if (this.isAuthenticated()) {
+      this.getProfile();
+    } else {
+      this.handleAuthentication();
+    }
+  }
+
+  public handleAuthentication(): void {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        window.location.hash = '';
+        this.setSession(authResult);
+        this.getProfile();
+        this.router.navigate(['/']);
+      } else if (err) {
+        this.router.navigate(['/']);
+        console.log(err);
       }
     });
   }
 
-  // Looks for the result of authentication in the URL has  h.
-  // Then, the result is processed with the parseHash method from auth0.js.
-  public handleAuthentication(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.auth0.parseHash((err, authResult) => {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-          window.location.hash = "";
-          this.setSession(authResult);
-          this.router.navigate(["/"]);
-          this.isLoggedin = true;
-          this.getProfile()
-            .then((profile) => {
-              this.userProfile = profile;
-              resolve();
-            })
-            .catch(err => {
-              reject(err);
-            });
-        } else if (err) {
-          this.router.navigate(["/"]);
-          reject(err);
-        }
-      });
-    });
-  }
-
+  
   // stores the user's Access Token, ID Token, and the Access Token's expiry time in browser storage.
   private setSession(authResult): void {
     // Set the time that the Access Token will expire at
@@ -94,30 +74,33 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    // Check whether the current time is past the Access Token's expiry time
-    const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-    if (!expiresAt) {
+    const expiresAt = localStorage.getItem("expires_at");
+
+    if (expiresAt) {
+      return new Date().getTime() < JSON.parse(expiresAt);
+    } else {
       return false;
     }
-    // console.log(new Date().getTime() < expiresAt);
-    return new Date().getTime() < expiresAt;
+    
   }
 
-  // This is Aysnc function.
-  public getProfile(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const accessToken = localStorage.getItem("access_token");
-      if (!accessToken) {
-        reject("Access Token must exist to fetch profile");
+  public getProfile(): void {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      this.loadFinished = true;
+      throw new Error('Access Token must exist to fetch profile');
+    }
+
+    this.auth0.client.userInfo(accessToken, (err, profile) => {
+      if (profile) {
+        this.userProfile = profile;
+        this.loadFinished = true;
+        this.isLoggedin = true;
       }
-      this.auth0.client.userInfo(accessToken, (err, profile) => {
-        if (profile) {
-          resolve(profile);
-        }
-        if (err) {
-          reject(err);
-        }
-      });
+      if (err) {
+        throw new Error("Failure from Auth0.")
+      }
     });
+
   }
 }

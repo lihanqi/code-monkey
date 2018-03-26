@@ -12,14 +12,14 @@ const websocketService = function(io) {
 		};
 
 		socket.join(sessionId, () => {
-			// console.log(user.name + " joined room " + sessionId);
+			console.log(user.name + " joined room " + sessionId);
 			socket.to(sessionId).broadcast.emit("userJoin", user);
 			if (!(sessionId in buffer)) {
 				buffer[sessionId] = {};
 				buffer[sessionId]["participants"] = 0;
 				cachingService.get(sessionId, data => {
 					if (data) {
-						console.log("getting data from redis");
+						// console.log("getting data from redis");
 						buffer[sessionId]["content"] = JSON.parse(data);
 					} else {
 						buffer[sessionId]["content"] = [];
