@@ -22,3 +22,9 @@
 #activity-log-panel {
     height: 600px;
 }
+
+#edit-gear {
+    text-align: end; 
+    width: 20px;
+    height: 20px;
+}

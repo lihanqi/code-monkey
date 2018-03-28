@@ -3,21 +3,23 @@
   <div class="col-md-3">
     <!-- Basic Profile Panel -->
     <div id="basic-profile-panel" class="card panel">
-      <h5 class="card-header">Basic profile</h5>
+      <h5 class="card-header">
+        <span>Basic profile</span>
+        <button routerLink="/profile/detail">Edit</button>
+      </h5>
       <img class="card-img-top" [src]="auth.userProfile?.picture" alt="user picture">
       <div class="card-body">
         <h5 id="username" class="card-title">{{auth.userProfile?.name}}</h5>
         <p class="card-text"> user@gmail.com</p>
       </div>
     </div>
-    <!-- Progress -->
+    <!-- Progress Panel -->
     <div id="progress-panel" class="card panel">
       <h5 class="card-header">Progress</h5>
       <div class="card-body">
         <p class="card-text">Saved for d3 to display. Developing</p>
       </div>
     </div>
-
   </div>
   <!-- Right part -->
   <div class="col-md-8">
@@ -26,6 +28,4 @@
       <h5 class="card-header">Activities</h5>
     </div>
   </div>
-
-
 </div>

@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes, PreloadAllModules } from "@angular/router";
 import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
 import { NewProblemComponent } from "./components/new-problem/new-problem.component";
-import { AuthGuard } from "./shared/services/auth-guard/auth-guard.service";
+import { AuthGuard } from "./services/auth-guard/auth-guard.service";
 
 const routes: Routes = [
   {

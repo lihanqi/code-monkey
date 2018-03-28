@@ -1,7 +1,4 @@
-
-<div *ngIf="!loadingComplete" class="loader-wrapper">
-    <div class="loader"></div>
-</div>
+<app-loading-indicator [display]="!loadingComplete"></app-loading-indicator>
 <!-- Table -->
 <div *ngIf="loadingComplete">
   <table class="table table-hover">

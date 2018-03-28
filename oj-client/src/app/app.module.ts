@@ -13,9 +13,9 @@ import { NewProblemComponent } from "./components/new-problem/new-problem.compon
 import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
 import { FooterComponent } from "./shared/components/footer/footer.component";
 // Services
-import { HttpService } from "./shared/services/http/http.service";
-import { AuthService } from "./shared/services/auth/auth.service";
-import { AuthGuard } from "./shared/services/auth-guard/auth-guard.service";
+import { HttpService } from "./services/http/http.service";
+import { AuthService } from "./services/auth/auth.service";
+import { AuthGuard } from "./services/auth-guard/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { AuthGuard } from "./shared/services/auth-guard/auth-guard.service";
     NavBarComponent,
     NewProblemComponent,
     PageNotFoundComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

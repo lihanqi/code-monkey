@@ -47,6 +47,8 @@ export class AuthService {
       } else if (err) {
         this.router.navigate(['/']);
         console.log(err);
+      } else {
+        this.loadFinished = true;
       }
     });
   }
@@ -75,7 +77,6 @@ export class AuthService {
 
   public isAuthenticated(): boolean {
     const expiresAt = localStorage.getItem("expires_at");
-
     if (expiresAt) {
       return new Date().getTime() < JSON.parse(expiresAt);
     } else {
@@ -84,7 +85,7 @@ export class AuthService {
     
   }
 
-  public getProfile(): void {
+  private getProfile(): void {
     const accessToken = localStorage.getItem('access_token');
     if (!accessToken) {
       this.loadFinished = true;
@@ -98,9 +99,18 @@ export class AuthService {
         this.isLoggedin = true;
       }
       if (err) {
-        throw new Error("Failure from Auth0.")
+        throw new Error("Failure from Auth0:" + err);
       }
     });
-
   }
+
+  public updateProfile(profile): Promise<any> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.userProfile = profile;
+        resolve(profile);
+      }, 2000);
+    })
+  }
+
 }

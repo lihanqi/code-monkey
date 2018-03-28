@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ProblemRoutingModule } from "../problem/problem-routing.module";
+import { SharedModule } from "../shared/shared.module";
 
 // Root-Component
 import { ProblemComponent } from '../problem/problem.component';
@@ -20,8 +21,9 @@ import { CoEditingService } from "./services/co-editing/co-editing.service";
 import { WebsocketService } from "./services/websocket/websocket.service";
 import { ExecutionService } from "./services/execution/execution.service";
 
+
 @NgModule({
-  imports: [CommonModule, FormsModule, ProblemRoutingModule],
+  imports: [CommonModule, FormsModule, ProblemRoutingModule, SharedModule],
   declarations: [
     ProblemsComponent,
     ProgressDashboardComponent,
