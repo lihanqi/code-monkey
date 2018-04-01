@@ -24,11 +24,11 @@ export class ProblemListComponent implements OnInit {
     this.currentPage = 1;
     this.rowPerPage = DEFAULT_ROW_PER_PAGE;
     this.problemsDisplay = [];
-    // todo: remove this in the future
-    setTimeout(() => {
-      this.getProblems();
-    }, 500);
-    // this.getProblems();
+    this.getProblems();
+    // TODO: remove this in the future
+    // setTimeout(() => {
+    //   this.getProblems();
+    // }, 500);
   }
 
   

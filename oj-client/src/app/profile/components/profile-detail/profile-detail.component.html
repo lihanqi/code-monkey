@@ -1,40 +1,45 @@
-<div class="container">
-  <app-loading-indicator [display]="savingState" [text]="'Saving'"></app-loading-indicator>
-  <form *ngIf="!savingState">
-    <!-- UserName -->
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" name="username" [(ngModel)]="profile.username" placeholder="{{profile.username}}">
-    </div>
-    <!-- Email -->
-    <div class="form-group">
-      <label for="email">Email address</label>
-      <input type="email" class="form-control" name="email" ngModal email [(ngModel)]="profile.email" placeholder="{{profile.email}}">
-      <small class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <!-- First Name -->
-    <div class="form-group">
-      <label for="first-name">First Name</label>
-      <input type="text" class="form-control" name="firstname" [(ngModel)]="profile.firstname" placeholder="{{profile.firstname}}">
-    </div>
-    <!-- Last Name -->
-    <div class="form-group">
-      <label for="last-name">Last Name</label>
-      <input type="text" class="form-control" name="lastname" [(ngModel)]="profile.lastname" placeholder="{{profile.lastname}}">
-    </div>
-    <!-- Birthday -->
-    <div class="form-group">
-      <label for="first-name">Birthday</label>
-      <input type="date" class="form-control" name="birthday" [(ngModel)]="profile.birthday" placeholder="{{profile.birthday}}">
-    </div>
-    <!-- Coding Language -->
-    <div class="form-group">
-      <label for="coding-language">Coding Language</label>
-      <input type="text" class="form-control" name="codingLanguage" [(ngModel)]="profile.codingLanguage" placeholder="{{profile.codingLanguage}}">
-      <small class="form-text text-muted">Setting the language preference will automatically set your default editor</small>
-    </div>
-    <!-- Button -->
-    <button (click)="save()" type="button" class="btn btn-primary">Save</button>
-    <button routerLink="/profile/password" type="button" class="btn btn-primary">Change Password</button>
-  </form>
+<div class="row justify-content-center">
+  <div class="col-auto" id="profile-detail">
+    <app-loading-indicator [display]="savingState" [text]="'Saving'"></app-loading-indicator>
+    <form *ngIf="!savingState">
+      <!-- UserName -->
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" name="username" [(ngModel)]="profile.name" placeholder="{{profile.username}}">
+      </div>
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" name="email" ngModal email [(ngModel)]="profile.email" placeholder="{{profile.email}}">
+        <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <!-- First Name -->
+      <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" class="form-control" name="firstname" [(ngModel)]="profile.firstname" placeholder="{{profile.firstname}}">
+      </div>
+      <!-- Last Name -->
+      <div class="form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" class="form-control" name="lastname" [(ngModel)]="profile.lastname" placeholder="{{profile.lastname}}">
+      </div>
+      <!-- Birthday -->
+      <div class="form-group">
+        <label for="first-name">Birthday</label>
+        <input type="date" class="form-control" name="birthday" [(ngModel)]="profile.birthday" placeholder="{{profile.birthday}}">
+      </div>
+      <!-- Coding Language -->
+      <div class="form-group">
+        <label for="coding-language">Coding Language</label>
+        <input type="text" class="form-control" name="codingLanguage" [(ngModel)]="profile.codingLanguage" placeholder="{{profile.codingLanguage}}">
+        <small class="form-text text-muted">Setting the language preference will automatically set your default editor</small>
+      </div>
+      <!-- Button -->
+      <div id="button-group">
+          <button (click)="save()" type="button" class="btn btn-primary">Save</button>
+          <button routerLink="/profile/password" type="button" class="btn btn-primary">Change Password</button>
+      </div>
+
+    </form>
+  </div>
 </div>

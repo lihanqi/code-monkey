@@ -81,7 +81,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".page-body {\n    /* background: linear-gradient(to bottom, #18453b, #97A2A2); */\n}", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -94,7 +94,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-nav-bar></app-nav-bar>\n<!-- <app-problems></app-problems> -->\n<div class=\"page-body\" *ngIf=\"auth.loadFinished\">\n    <div class=\"container\">\n        <router-outlet></router-outlet>\n    </div>\n</div>\n<app-footer></app-footer>"
+module.exports = "<app-nav-bar></app-nav-bar>\n<div *ngIf=\"auth.loadFinished\" class=\"container\">\n    <router-outlet></router-outlet>\n</div>\n<app-footer></app-footer>"
 
 /***/ }),
 
@@ -660,16 +660,15 @@ var ProblemListComponent = /** @class */ (function () {
         this.DEFAULT_NUM_OF_TAGS = 5;
     }
     ProblemListComponent.prototype.ngOnInit = function () {
-        var _this = this;
         var DEFAULT_ROW_PER_PAGE = 20;
         this.currentPage = 1;
         this.rowPerPage = DEFAULT_ROW_PER_PAGE;
         this.problemsDisplay = [];
-        // todo: remove this in the future
-        setTimeout(function () {
-            _this.getProblems();
-        }, 500);
-        // this.getProblems();
+        this.getProblems();
+        // TODO: remove this in the future
+        // setTimeout(() => {
+        //   this.getProblems();
+        // }, 500);
     };
     ProblemListComponent.prototype.getProblems = function () {
         var _this = this;
@@ -1565,6 +1564,8 @@ var AuthService = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
                 _this.userProfile = profile;
+                console.log(JSON.stringify(profile));
+                console.log(JSON.stringify(_this.userProfile));
                 resolve(profile);
             }, 2000);
         });

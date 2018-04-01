@@ -7,6 +7,7 @@ export class ProfileManagementService {
   constructor(private auth: AuthService) { }
 
   getUserProfile() {
+    
     return this.auth.userProfile;
   }
 

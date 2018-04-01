@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { filter } from "rxjs/operators";
 import { HttpService } from "../http/http.service";
 import * as auth0 from "auth0-js";
+import { debug } from "util";
 
 
 @Injectable()
@@ -108,6 +109,8 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.userProfile = profile;
+        console.log(JSON.stringify(profile));
+        console.log(JSON.stringify(this.userProfile));
         resolve(profile);
       }, 2000);
     })

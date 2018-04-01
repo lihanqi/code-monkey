@@ -74,7 +74,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#profile-detail {\n    margin-top: 40px;\n    max-width: 600px;\n}\n\n#button-group {\n    text-align: center;\n}", ""]);
 
 // exports
 
@@ -87,7 +87,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/profile/components/profile-detail/profile-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <app-loading-indicator [display]=\"savingState\" [text]=\"'Saving'\"></app-loading-indicator>\n  <form *ngIf=\"!savingState\">\n    <!-- UserName -->\n    <div class=\"form-group\">\n      <label for=\"username\">Username</label>\n      <input type=\"text\" class=\"form-control\" name=\"username\" [(ngModel)]=\"profile.username\" placeholder=\"{{profile.username}}\">\n    </div>\n    <!-- Email -->\n    <div class=\"form-group\">\n      <label for=\"email\">Email address</label>\n      <input type=\"email\" class=\"form-control\" name=\"email\" ngModal email [(ngModel)]=\"profile.email\" placeholder=\"{{profile.email}}\">\n      <small class=\"form-text text-muted\">We'll never share your email with anyone else.</small>\n    </div>\n    <!-- First Name -->\n    <div class=\"form-group\">\n      <label for=\"first-name\">First Name</label>\n      <input type=\"text\" class=\"form-control\" name=\"firstname\" [(ngModel)]=\"profile.firstname\" placeholder=\"{{profile.firstname}}\">\n    </div>\n    <!-- Last Name -->\n    <div class=\"form-group\">\n      <label for=\"last-name\">Last Name</label>\n      <input type=\"text\" class=\"form-control\" name=\"lastname\" [(ngModel)]=\"profile.lastname\" placeholder=\"{{profile.lastname}}\">\n    </div>\n    <!-- Birthday -->\n    <div class=\"form-group\">\n      <label for=\"first-name\">Birthday</label>\n      <input type=\"date\" class=\"form-control\" name=\"birthday\" [(ngModel)]=\"profile.birthday\" placeholder=\"{{profile.birthday}}\">\n    </div>\n    <!-- Coding Language -->\n    <div class=\"form-group\">\n      <label for=\"coding-language\">Coding Language</label>\n      <input type=\"text\" class=\"form-control\" name=\"codingLanguage\" [(ngModel)]=\"profile.codingLanguage\" placeholder=\"{{profile.codingLanguage}}\">\n      <small class=\"form-text text-muted\">Setting the language preference will automatically set your default editor</small>\n    </div>\n    <!-- Button -->\n    <button (click)=\"save()\" type=\"button\" class=\"btn btn-primary\">Save</button>\n    <button routerLink=\"/profile/password\" type=\"button\" class=\"btn btn-primary\">Change Password</button>\n  </form>\n</div>"
+module.exports = "<div class=\"row justify-content-center\">\n  <div class=\"col-auto\" id=\"profile-detail\">\n    <app-loading-indicator [display]=\"savingState\" [text]=\"'Saving'\"></app-loading-indicator>\n    <form *ngIf=\"!savingState\">\n      <!-- UserName -->\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input type=\"text\" class=\"form-control\" name=\"username\" [(ngModel)]=\"profile.name\" placeholder=\"{{profile.username}}\">\n      </div>\n      <!-- Email -->\n      <div class=\"form-group\">\n        <label for=\"email\">Email address</label>\n        <input type=\"email\" class=\"form-control\" name=\"email\" ngModal email [(ngModel)]=\"profile.email\" placeholder=\"{{profile.email}}\">\n        <small class=\"form-text text-muted\">We'll never share your email with anyone else.</small>\n      </div>\n      <!-- First Name -->\n      <div class=\"form-group\">\n        <label for=\"first-name\">First Name</label>\n        <input type=\"text\" class=\"form-control\" name=\"firstname\" [(ngModel)]=\"profile.firstname\" placeholder=\"{{profile.firstname}}\">\n      </div>\n      <!-- Last Name -->\n      <div class=\"form-group\">\n        <label for=\"last-name\">Last Name</label>\n        <input type=\"text\" class=\"form-control\" name=\"lastname\" [(ngModel)]=\"profile.lastname\" placeholder=\"{{profile.lastname}}\">\n      </div>\n      <!-- Birthday -->\n      <div class=\"form-group\">\n        <label for=\"first-name\">Birthday</label>\n        <input type=\"date\" class=\"form-control\" name=\"birthday\" [(ngModel)]=\"profile.birthday\" placeholder=\"{{profile.birthday}}\">\n      </div>\n      <!-- Coding Language -->\n      <div class=\"form-group\">\n        <label for=\"coding-language\">Coding Language</label>\n        <input type=\"text\" class=\"form-control\" name=\"codingLanguage\" [(ngModel)]=\"profile.codingLanguage\" placeholder=\"{{profile.codingLanguage}}\">\n        <small class=\"form-text text-muted\">Setting the language preference will automatically set your default editor</small>\n      </div>\n      <!-- Button -->\n      <div id=\"button-group\">\n          <button (click)=\"save()\" type=\"button\" class=\"btn btn-primary\">Save</button>\n          <button routerLink=\"/profile/password\" type=\"button\" class=\"btn btn-primary\">Change Password</button>\n      </div>\n\n    </form>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -114,17 +114,15 @@ var ProfileDetailComponent = /** @class */ (function () {
         this.savingState = false;
     }
     ProfileDetailComponent.prototype.ngOnInit = function () {
-        this.profile = this.profileService.getUserProfile();
-        this.profile['username'] = this.profile['name'];
+        var profileFromAuth = this.profileService.getUserProfile();
+        this.profile = JSON.parse(JSON.stringify(profileFromAuth));
     };
     ProfileDetailComponent.prototype.save = function () {
         var _this = this;
-        // console.log("saving");
         this.savingState = true;
         this.profileService.save(this.profile).then(function (profile) {
             _this.profile = profile;
             _this.savingState = false;
-            // console.log("saved");
         });
     };
     ProfileDetailComponent = __decorate([
@@ -286,7 +284,7 @@ var ProfileComponent = /** @class */ (function () {
     ProfileComponent = __decorate([
         core_1.Component({
             selector: 'app-profile',
-            template: "\n    <router-outlet></router-outlet>\n  ",
+            template: "\n  <div class=\"container\">\n    <router-outlet></router-outlet>\n  </div>\n  ",
             styles: []
         }),
         __metadata("design:paramtypes", [])

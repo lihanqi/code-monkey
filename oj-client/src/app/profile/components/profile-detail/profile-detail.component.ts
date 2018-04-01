@@ -13,17 +13,15 @@ export class ProfileDetailComponent implements OnInit {
   savingState: boolean = false;
 
   ngOnInit() {
-    this.profile = this.profileService.getUserProfile();
-    this.profile['username'] = this.profile['name'];
+    var profileFromAuth = this.profileService.getUserProfile();
+    this.profile =  JSON.parse(JSON.stringify(profileFromAuth));
   }
 
   save() {
-    // console.log("saving");
     this.savingState = true
     this.profileService.save(this.profile).then(profile => {
       this.profile = profile;
       this.savingState = false;
-      // console.log("saved");
     })
   }
   
