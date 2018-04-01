@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Problem } from "../../../shared/models/problem";
-import { DataService } from "../../services/data/data.service";
+import { Problem, DataService } from "../../services/data/data.service";
 
 @Component({
   selector: 'app-problem-list',
@@ -10,7 +9,7 @@ import { DataService } from "../../services/data/data.service";
 export class ProblemListComponent implements OnInit {
   problems: Problem[];          // All problems
   problemsDisplay: Problem[];   // Problems displayed 
-  paginationPages: number[];    // Nums arrary [1,2,3,...,the_last_page]
+  paginationPages: number[];    // Nums array [1,2,3,...,the_last_page]
   currentPage: number;
   rowPerPage: number;           // Pagination config: problems each page
   numOfPages: number;

@@ -39,9 +39,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var page_not_found_component_1 = __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts");
+// import { SharedModule } from './shared/shared.module';
+// import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
-var auth_guard_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts");
+var auth_guard_service_1 = __webpack_require__("../../../../../src/app/services/auth-guard/auth-guard.service.ts");
+var page_not_found_component_1 = __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts");
 var routes = [
     {
         path: "profile",
@@ -58,6 +60,7 @@ var RoutingModule = /** @class */ (function () {
     RoutingModule = __decorate([
         core_1.NgModule({
             imports: [
+                // SharedModule,
                 router_1.RouterModule.forRoot(routes, { preloadingStrategy: router_1.PreloadAllModules })
             ],
             exports: [router_1.RouterModule]
@@ -111,7 +114,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
+var auth_service_1 = __webpack_require__("../../../../../src/app/services/auth/auth.service.ts");
 var AppComponent = /** @class */ (function () {
     function AppComponent(auth) {
         this.auth = auth;
@@ -157,14 +160,15 @@ var app_routing_module_1 = __webpack_require__("../../../../../src/app/app-routi
 var problem_module_1 = __webpack_require__("../../../../../src/app/problem/problem.module.ts");
 // Components
 var app_component_1 = __webpack_require__("../../../../../src/app/app.component.ts");
-var nav_bar_component_1 = __webpack_require__("../../../../../src/app/shared/components/nav-bar/nav-bar.component.ts");
+// import { NavBarComponent } from "./shared/components/nav-bar/nav-bar.component";
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
-var page_not_found_component_1 = __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts");
-var footer_component_1 = __webpack_require__("../../../../../src/app/shared/components/footer/footer.component.ts");
+// import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
+// import { FooterComponent } from "./shared/components/footer/footer.component";
 // Services
-var http_service_1 = __webpack_require__("../../../../../src/app/shared/services/http/http.service.ts");
-var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
-var auth_guard_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts");
+var http_service_1 = __webpack_require__("../../../../../src/app/services/http/http.service.ts");
+var auth_service_1 = __webpack_require__("../../../../../src/app/services/auth/auth.service.ts");
+var auth_guard_service_1 = __webpack_require__("../../../../../src/app/services/auth-guard/auth-guard.service.ts");
+var shared_module_1 = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -172,15 +176,14 @@ var AppModule = /** @class */ (function () {
         core_1.NgModule({
             declarations: [
                 app_component_1.AppComponent,
-                nav_bar_component_1.NavBarComponent,
+                // NavBarComponent,
                 new_problem_component_1.NewProblemComponent,
-                page_not_found_component_1.PageNotFoundComponent,
-                footer_component_1.FooterComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpClientModule,
+                shared_module_1.SharedModule,
                 problem_module_1.ProblemModule,
                 // WARNING: Dont move! (RoutingModule must stay the last.)
                 app_routing_module_1.RoutingModule
@@ -616,7 +619,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".diff-Easy {\n  color: #fff;\n  background-color: #28a745;\n}\n\n.diff-Medium {\n  color: #fff;\n  background-color: #ffc107;\n}\n\n.diff-Hard {\n  color: #fff;\n  background-color: #dc3545;\n}\n\na {\n  color: black;\n}\n\na:hover {\n  color: blue;\n  text-decoration: none;\n}\n\n.loader-wrapper {\n  width: 100%;\n  height: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n\n.loader {\n  border: 4px solid #f3f3f3; /* Light grey */\n  border-top: 4px solid #555; /* Blue */\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  -webkit-animation: spin 2s linear infinite;\n          animation: spin 2s linear infinite;\n  text-align: center;\n}\n\n@-webkit-keyframes spin {\n  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\n  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\n}\n\n@keyframes spin {\n  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\n  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\n}\n", ""]);
+exports.push([module.i, ".diff-Easy {\n  color: #fff;\n  background-color: #28a745;\n}\n\n.diff-Medium {\n  color: #fff;\n  background-color: #ffc107;\n}\n\n.diff-Hard {\n  color: #fff;\n  background-color: #dc3545;\n}\n\na {\n  color: black;\n}\n\na:hover {\n  color: blue;\n  text-decoration: none;\n}\n\n", ""]);
 
 // exports
 
@@ -629,7 +632,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/problem/components/problem-list/problem-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"!loadingComplete\" class=\"loader-wrapper\">\n    <div class=\"loader\"></div>\n</div>\n<!-- Table -->\n<div *ngIf=\"loadingComplete\">\n  <table class=\"table table-hover\">\n    <thead>\n      <tr>\n        <th scope=\"col\">#</th>\n        <th scope=\"col\">Name</th>\n        <th scope=\"col\">Difficulty</th>\n        <th scopr=\"col\">Acc</th>\n        <th scopr=\"col\">Quality</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let problem of problemsDisplay\">\n        <th scope=\"row\">{{problem.id}}</th>\n        <td>\n          <a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a>\n        </td>\n        <td>\n          <span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span>\n        </td>\n        <td>32.23%</td>\n        <td>Good</td>\n      </tr>\n    </tbody>\n  </table>\n\n  <!-- Pagination -->\n  <nav aria-label=\"Page navigation\">\n    <!-- Row per page settings -->\n    <label>row per page:</label>\n    <select [(ngModel)]=\"rowPerPage\" (change)=\"changeRowPerPage()\">\n      <!-- <select> -->\n      <option value=\"10\">10</option>\n      <option value=\"20\">20</option>\n      <option value=\"50\">50</option>\n    </select>\n\n    <ul *ngIf=\"numOfPages != 1\" class=\"pagination justify-content-center\">\n      <!-- Previous Link -->\n      <li class=\"page-item \">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage - 1)\">Previous</a>\n      </li>\n      <!-- Dynamic changed page links -->\n      <li *ngFor=\"let i of paginationPages\" class=\"page-item\" [class.active]=\"i==currentPage\">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(i)\">{{i}}</a>\n      </li>\n      <!-- Next Link -->\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage + 1)\">Next</a>\n      </li>\n    </ul>\n  </nav>\n</div>"
+module.exports = "<app-loading-indicator [display]=\"!loadingComplete\"></app-loading-indicator>\n<!-- Table -->\n<div *ngIf=\"loadingComplete\">\n  <table class=\"table table-hover\">\n    <thead>\n      <tr>\n        <th scope=\"col\">#</th>\n        <th scope=\"col\">Name</th>\n        <th scope=\"col\">Difficulty</th>\n        <th scopr=\"col\">Acc</th>\n        <th scopr=\"col\">Quality</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let problem of problemsDisplay\">\n        <th scope=\"row\">{{problem.id}}</th>\n        <td>\n          <a routerLink=\"/problems/{{problem.id}}\">{{problem.title}}</a>\n        </td>\n        <td>\n          <span class=\"badge diff-{{problem.difficulty}}\">{{problem.difficulty}}</span>\n        </td>\n        <td>32.23%</td>\n        <td>Good</td>\n      </tr>\n    </tbody>\n  </table>\n\n  <!-- Pagination -->\n  <nav aria-label=\"Page navigation\">\n    <!-- Row per page settings -->\n    <label>row per page:</label>\n    <select [(ngModel)]=\"rowPerPage\" (change)=\"changeRowPerPage()\">\n      <!-- <select> -->\n      <option value=\"10\">10</option>\n      <option value=\"20\">20</option>\n      <option value=\"50\">50</option>\n    </select>\n\n    <ul *ngIf=\"numOfPages != 1\" class=\"pagination justify-content-center\">\n      <!-- Previous Link -->\n      <li class=\"page-item \">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage - 1)\">Previous</a>\n      </li>\n      <!-- Dynamic changed page links -->\n      <li *ngFor=\"let i of paginationPages\" class=\"page-item\" [class.active]=\"i==currentPage\">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(i)\">{{i}}</a>\n      </li>\n      <!-- Next Link -->\n      <li class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" (click)=\"showPage(currentPage + 1)\">Next</a>\n      </li>\n    </ul>\n  </nav>\n</div>"
 
 /***/ }),
 
@@ -852,6 +855,22 @@ exports.ProgressDashboardComponent = ProgressDashboardComponent;
 
 /***/ }),
 
+/***/ "../../../../../src/app/problem/models/problem.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Problem = /** @class */ (function () {
+    function Problem() {
+    }
+    return Problem;
+}());
+exports.Problem = Problem;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/problem/problem-routing.module.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -955,6 +974,7 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var common_1 = __webpack_require__("../../../common/esm5/common.js");
 var forms_1 = __webpack_require__("../../../forms/esm5/forms.js");
 var problem_routing_module_1 = __webpack_require__("../../../../../src/app/problem/problem-routing.module.ts");
+var shared_module_1 = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
 // Root-Component
 var problem_component_1 = __webpack_require__("../../../../../src/app/problem/problem.component.ts");
 // Sub-root component
@@ -975,7 +995,7 @@ var ProblemModule = /** @class */ (function () {
     }
     ProblemModule = __decorate([
         core_1.NgModule({
-            imports: [common_1.CommonModule, forms_1.FormsModule, problem_routing_module_1.ProblemRoutingModule],
+            imports: [common_1.CommonModule, forms_1.FormsModule, problem_routing_module_1.ProblemRoutingModule, shared_module_1.SharedModule],
             declarations: [
                 problems_component_1.ProblemsComponent,
                 progress_dashboard_component_1.ProgressDashboardComponent,
@@ -1251,7 +1271,7 @@ var DataService = /** @class */ (function () {
     return DataService;
 }());
 exports.DataService = DataService;
-var problem_1 = __webpack_require__("../../../../../src/app/shared/models/problem.ts");
+var problem_1 = __webpack_require__("../../../../../src/app/problem/models/problem.ts");
 exports.Problem = problem_1.Problem;
 
 
@@ -1384,6 +1404,243 @@ exports.WebsocketService = WebsocketService;
 
 /***/ }),
 
+/***/ "../../../../../src/app/services/auth-guard/auth-guard.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var auth_service_1 = __webpack_require__("../../../../../src/app/services/auth/auth.service.ts");
+var AuthGuard = /** @class */ (function () {
+    function AuthGuard(auth, router) {
+        this.auth = auth;
+        this.router = router;
+    }
+    AuthGuard.prototype.canActivate = function () {
+        if (this.auth.isAuthenticated()) {
+            return true;
+        }
+        else {
+            // TODO: login page later
+            this.router.navigate(['/problems']);
+            console.log("redirect to login page");
+            return false;
+        }
+    };
+    AuthGuard.prototype.canLoad = function () {
+        return this.canActivate();
+    };
+    AuthGuard = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [auth_service_1.AuthService, router_1.Router])
+    ], AuthGuard);
+    return AuthGuard;
+}());
+exports.AuthGuard = AuthGuard;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/auth/auth.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// src/app/auth/auth.service.ts
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var http_service_1 = __webpack_require__("../../../../../src/app/services/http/http.service.ts");
+var auth0 = __webpack_require__("../../../../auth0-js/src/index.js");
+var AuthService = /** @class */ (function () {
+    function AuthService(router, http) {
+        this.router = router;
+        this.http = http;
+        this.auth0 = new auth0.WebAuth({
+            clientID: "h1uq5F5EKHK836lMXelhIRWpnIypelD0",
+            domain: "lihanqi.auth0.com",
+            responseType: "token id_token",
+            audience: "https://lihanqi.auth0.com/userinfo",
+            redirectUri: window.location.origin,
+            scope: "openid profile"
+        });
+        this.isLoggedin = false;
+        this.loadFinished = false;
+    }
+    AuthService.prototype.login = function () {
+        this.auth0.authorize();
+    };
+    AuthService.prototype.initService = function () {
+        if (this.isAuthenticated()) {
+            this.getProfile();
+        }
+        else {
+            this.handleAuthentication();
+        }
+    };
+    AuthService.prototype.handleAuthentication = function () {
+        var _this = this;
+        this.auth0.parseHash(function (err, authResult) {
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                window.location.hash = '';
+                _this.setSession(authResult);
+                _this.getProfile();
+                _this.router.navigate(['/']);
+            }
+            else if (err) {
+                _this.router.navigate(['/']);
+                console.log(err);
+            }
+            else {
+                _this.loadFinished = true;
+            }
+        });
+    };
+    // stores the user's Access Token, ID Token, and the Access Token's expiry time in browser storage.
+    AuthService.prototype.setSession = function (authResult) {
+        // Set the time that the Access Token will expire at
+        var expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
+        localStorage.setItem("access_token", authResult.accessToken);
+        localStorage.setItem("id_token", authResult.idToken);
+        localStorage.setItem("expires_at", expiresAt);
+    };
+    AuthService.prototype.logout = function () {
+        // Remove tokens and expiry time from localStorage
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("expires_at");
+        // Go back to the home route
+        this.isLoggedin = false;
+        this.router.navigate(["/"]);
+    };
+    AuthService.prototype.isAuthenticated = function () {
+        var expiresAt = localStorage.getItem("expires_at");
+        if (expiresAt) {
+            return new Date().getTime() < JSON.parse(expiresAt);
+        }
+        else {
+            return false;
+        }
+    };
+    AuthService.prototype.getProfile = function () {
+        var _this = this;
+        var accessToken = localStorage.getItem('access_token');
+        if (!accessToken) {
+            this.loadFinished = true;
+            throw new Error('Access Token must exist to fetch profile');
+        }
+        this.auth0.client.userInfo(accessToken, function (err, profile) {
+            if (profile) {
+                _this.userProfile = profile;
+                _this.loadFinished = true;
+                _this.isLoggedin = true;
+            }
+            if (err) {
+                throw new Error("Failure from Auth0:" + err);
+            }
+        });
+    };
+    AuthService.prototype.updateProfile = function (profile) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                _this.userProfile = profile;
+                resolve(profile);
+            }, 2000);
+        });
+    };
+    AuthService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [router_1.Router, http_service_1.HttpService])
+    ], AuthService);
+    return AuthService;
+}());
+exports.AuthService = AuthService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/http/http.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var ErrorObservable_1 = __webpack_require__("../../../../rxjs/_esm5/observable/ErrorObservable.js");
+var operators_1 = __webpack_require__("../../../../rxjs/_esm5/operators.js");
+var HttpService = /** @class */ (function () {
+    function HttpService(http) {
+        this.http = http;
+    }
+    HttpService.prototype.get = function (url, headers) {
+        if (headers === void 0) { headers = null; }
+        var option = {};
+        if (headers) {
+            var header_1 = new http_1.HttpHeaders;
+            Object.keys(headers).forEach(function (key) { return header_1.set(key, headers[key]); });
+            option["headers"] = headers;
+            // console.log(JSON.stringify(option["headers"]));
+        }
+        return this.http
+            .get(url, option)
+            .pipe(operators_1.catchError(this.handleError));
+    };
+    // Http error handler
+    HttpService.prototype.handleError = function (error) {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error("An error occurred:", error.error.message);
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error("Backend returned code " + error.status + ", " + ("body was: " + error.error));
+        }
+        // return an ErrorObservable with a user-facing error message
+        return new ErrorObservable_1.ErrorObservable("Something bad happened; please try again later.");
+    };
+    HttpService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], HttpService);
+    return HttpService;
+}());
+exports.HttpService = HttpService;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/shared/components/footer/footer.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1445,6 +1702,51 @@ exports.FooterComponent = FooterComponent;
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/components/loading-indicator/loading-indicator.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var LoadingIndicatorComponent = /** @class */ (function () {
+    function LoadingIndicatorComponent() {
+    }
+    LoadingIndicatorComponent.prototype.ngOnInit = function () { };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], LoadingIndicatorComponent.prototype, "display", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], LoadingIndicatorComponent.prototype, "text", void 0);
+    LoadingIndicatorComponent = __decorate([
+        core_1.Component({
+            selector: "app-loading-indicator",
+            template: "\n  <div *ngIf=\"display\" class=\"loader-wrapper\">\n    <div class=\"loader\"></div>\n    <p *ngIf=\"text\">{{text}}</p>\n  </div>\n  ",
+            styles: [
+                "\n  .loader-wrapper {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n  }\n  \n  .loader {\n    border: 4px solid #f3f3f3; /* Light grey */\n    border-top: 4px solid #555; /* Blue */\n    border-radius: 50%;\n    width: 40px;\n    height: 40px;\n    animation: spin 2s linear infinite;\n    text-align: center;\n  }\n  \n  @keyframes spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n  }"
+            ]
+        }),
+        __metadata("design:paramtypes", [])
+    ], LoadingIndicatorComponent);
+    return LoadingIndicatorComponent;
+}());
+exports.LoadingIndicatorComponent = LoadingIndicatorComponent;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/shared/components/nav-bar/nav-bar.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1486,7 +1788,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
+var auth_service_1 = __webpack_require__("../../../../../src/app/services/auth/auth.service.ts");
 var NavBarComponent = /** @class */ (function () {
     function NavBarComponent(auth) {
         this.auth = auth;
@@ -1596,54 +1898,6 @@ exports.Problem = Problem;
 
 /***/ }),
 
-/***/ "../../../../../src/app/shared/services/auth-guard/auth-guard.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
-var AuthGuard = /** @class */ (function () {
-    function AuthGuard(auth, router) {
-        this.auth = auth;
-        this.router = router;
-    }
-    AuthGuard.prototype.canActivate = function () {
-        if (this.auth.isAuthenticated()) {
-            return true;
-        }
-        else {
-            // TODO: login page later
-            this.router.navigate(['/problems']);
-            console.log("redirect to login page");
-            return false;
-        }
-    };
-    AuthGuard.prototype.canLoad = function () {
-        return this.canActivate();
-    };
-    AuthGuard = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [auth_service_1.AuthService, router_1.Router])
-    ], AuthGuard);
-    return AuthGuard;
-}());
-exports.AuthGuard = AuthGuard;
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/shared/services/auth/auth.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1748,8 +2002,17 @@ var AuthService = /** @class */ (function () {
                 _this.isLoggedin = true;
             }
             if (err) {
-                throw new Error("Failure from Auth0.");
+                throw new Error("Failure from Auth0:" + err);
             }
+        });
+    };
+    AuthService.prototype.updateProfile = function (profile) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                _this.userProfile = profile;
+                resolve(profile);
+            }, 2000);
         });
     };
     AuthService = __decorate([
@@ -1820,6 +2083,45 @@ var HttpService = /** @class */ (function () {
     return HttpService;
 }());
 exports.HttpService = HttpService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/shared.module.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var common_1 = __webpack_require__("../../../common/esm5/common.js");
+var loading_indicator_component_1 = __webpack_require__("../../../../../src/app/shared/components/loading-indicator/loading-indicator.component.ts");
+var footer_component_1 = __webpack_require__("../../../../../src/app/shared/components/footer/footer.component.ts");
+var nav_bar_component_1 = __webpack_require__("../../../../../src/app/shared/components/nav-bar/nav-bar.component.ts");
+var page_not_found_component_1 = __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var SharedModule = /** @class */ (function () {
+    function SharedModule() {
+    }
+    SharedModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+                router_1.RouterModule
+            ],
+            declarations: [loading_indicator_component_1.LoadingIndicatorComponent, footer_component_1.FooterComponent, nav_bar_component_1.NavBarComponent, page_not_found_component_1.PageNotFoundComponent],
+            exports: [loading_indicator_component_1.LoadingIndicatorComponent, footer_component_1.FooterComponent, nav_bar_component_1.NavBarComponent, page_not_found_component_1.PageNotFoundComponent]
+        })
+    ], SharedModule);
+    return SharedModule;
+}());
+exports.SharedModule = SharedModule;
 
 
 /***/ }),

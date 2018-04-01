@@ -5,6 +5,7 @@ import { Component, OnInit, Input } from "@angular/core";
   template: `
   <div *ngIf="display" class="loader-wrapper">
     <div class="loader"></div>
+    <p *ngIf="text">{{text}}</p>
   </div>
   `,
   styles: [
@@ -35,6 +36,7 @@ import { Component, OnInit, Input } from "@angular/core";
 })
 export class LoadingIndicatorComponent implements OnInit {
   @Input() display: boolean;
+  @Input() text: string;
 
   constructor() {}
 

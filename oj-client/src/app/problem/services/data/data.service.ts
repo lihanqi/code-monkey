@@ -9,8 +9,7 @@ import { Observable } from "rxjs/Observable";
 import { ErrorObservable } from "rxjs/observable/ErrorObservable";
 import { catchError, map, tap } from "rxjs/operators";
 import { of } from "rxjs/observable/of";
-
-import { Problem } from "../../../shared/models/problem";
+import { Problem } from "../../models/problem";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -64,4 +63,4 @@ export class DataService {
   }
 }
 
-export { Problem } from "../../../shared/models/problem";
+export { Problem } from "../../models/problem";
