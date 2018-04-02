@@ -337,7 +337,7 @@ var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/problem/services/co-editing/co-editing.service.ts");
 var execution_service_1 = __webpack_require__("../../../../../src/app/problem/services/execution/execution.service.ts");
-var auth_service_1 = __webpack_require__("../../../../../src/app/shared/services/auth/auth.service.ts");
+var auth_service_1 = __webpack_require__("../../../../../src/app/services/auth/auth.service.ts");
 var LANGUAGE_DEFAULT_1 = __webpack_require__("../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts");
 var EditorComponent = /** @class */ (function () {
     function EditorComponent(coEditingService, route, executionService, auth) {
@@ -1564,8 +1564,6 @@ var AuthService = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
                 _this.userProfile = profile;
-                console.log(JSON.stringify(profile));
-                console.log(JSON.stringify(_this.userProfile));
                 resolve(profile);
             }, 2000);
         });
@@ -1895,195 +1893,6 @@ var Problem = /** @class */ (function () {
     return Problem;
 }());
 exports.Problem = Problem;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/shared/services/auth/auth.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// src/app/auth/auth.service.ts
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var router_1 = __webpack_require__("../../../router/esm5/router.js");
-var http_service_1 = __webpack_require__("../../../../../src/app/shared/services/http/http.service.ts");
-var auth0 = __webpack_require__("../../../../auth0-js/src/index.js");
-var AuthService = /** @class */ (function () {
-    function AuthService(router, http) {
-        this.router = router;
-        this.http = http;
-        this.auth0 = new auth0.WebAuth({
-            clientID: "h1uq5F5EKHK836lMXelhIRWpnIypelD0",
-            domain: "lihanqi.auth0.com",
-            responseType: "token id_token",
-            audience: "https://lihanqi.auth0.com/userinfo",
-            redirectUri: window.location.origin,
-            scope: "openid profile"
-        });
-        this.isLoggedin = false;
-        this.loadFinished = false;
-    }
-    AuthService.prototype.login = function () {
-        this.auth0.authorize();
-    };
-    AuthService.prototype.initService = function () {
-        if (this.isAuthenticated()) {
-            this.getProfile();
-        }
-        else {
-            this.handleAuthentication();
-        }
-    };
-    AuthService.prototype.handleAuthentication = function () {
-        var _this = this;
-        this.auth0.parseHash(function (err, authResult) {
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                window.location.hash = '';
-                _this.setSession(authResult);
-                _this.getProfile();
-                _this.router.navigate(['/']);
-            }
-            else if (err) {
-                _this.router.navigate(['/']);
-                console.log(err);
-            }
-            else {
-                _this.loadFinished = true;
-            }
-        });
-    };
-    // stores the user's Access Token, ID Token, and the Access Token's expiry time in browser storage.
-    AuthService.prototype.setSession = function (authResult) {
-        // Set the time that the Access Token will expire at
-        var expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime());
-        localStorage.setItem("access_token", authResult.accessToken);
-        localStorage.setItem("id_token", authResult.idToken);
-        localStorage.setItem("expires_at", expiresAt);
-    };
-    AuthService.prototype.logout = function () {
-        // Remove tokens and expiry time from localStorage
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("id_token");
-        localStorage.removeItem("expires_at");
-        // Go back to the home route
-        this.isLoggedin = false;
-        this.router.navigate(["/"]);
-    };
-    AuthService.prototype.isAuthenticated = function () {
-        var expiresAt = localStorage.getItem("expires_at");
-        if (expiresAt) {
-            return new Date().getTime() < JSON.parse(expiresAt);
-        }
-        else {
-            return false;
-        }
-    };
-    AuthService.prototype.getProfile = function () {
-        var _this = this;
-        var accessToken = localStorage.getItem('access_token');
-        if (!accessToken) {
-            this.loadFinished = true;
-            throw new Error('Access Token must exist to fetch profile');
-        }
-        this.auth0.client.userInfo(accessToken, function (err, profile) {
-            if (profile) {
-                _this.userProfile = profile;
-                _this.loadFinished = true;
-                _this.isLoggedin = true;
-            }
-            if (err) {
-                throw new Error("Failure from Auth0:" + err);
-            }
-        });
-    };
-    AuthService.prototype.updateProfile = function (profile) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                _this.userProfile = profile;
-                resolve(profile);
-            }, 2000);
-        });
-    };
-    AuthService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [router_1.Router, http_service_1.HttpService])
-    ], AuthService);
-    return AuthService;
-}());
-exports.AuthService = AuthService;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/shared/services/http/http.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var http_1 = __webpack_require__("../../../common/esm5/http.js");
-var ErrorObservable_1 = __webpack_require__("../../../../rxjs/_esm5/observable/ErrorObservable.js");
-var operators_1 = __webpack_require__("../../../../rxjs/_esm5/operators.js");
-var HttpService = /** @class */ (function () {
-    function HttpService(http) {
-        this.http = http;
-    }
-    HttpService.prototype.get = function (url, headers) {
-        if (headers === void 0) { headers = null; }
-        var option = {};
-        if (headers) {
-            var header_1 = new http_1.HttpHeaders;
-            Object.keys(headers).forEach(function (key) { return header_1.set(key, headers[key]); });
-            option["headers"] = headers;
-            // console.log(JSON.stringify(option["headers"]));
-        }
-        return this.http
-            .get(url, option)
-            .pipe(operators_1.catchError(this.handleError));
-    };
-    // Http error handler
-    HttpService.prototype.handleError = function (error) {
-        if (error.error instanceof ErrorEvent) {
-            // A client-side or network error occurred. Handle it accordingly.
-            console.error("An error occurred:", error.error.message);
-        }
-        else {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong,
-            console.error("Backend returned code " + error.status + ", " + ("body was: " + error.error));
-        }
-        // return an ErrorObservable with a user-facing error message
-        return new ErrorObservable_1.ErrorObservable("Something bad happened; please try again later.");
-    };
-    HttpService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], HttpService);
-    return HttpService;
-}());
-exports.HttpService = HttpService;
 
 
 /***/ }),

@@ -109,8 +109,6 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.userProfile = profile;
-        console.log(JSON.stringify(profile));
-        console.log(JSON.stringify(this.userProfile));
         resolve(profile);
       }, 2000);
     })

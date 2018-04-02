@@ -4,7 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 
 import { CoEditingService } from "../../services/co-editing/co-editing.service";
 import { ExecutionService } from "../../services/execution/execution.service";
-import { AuthService } from '../../../shared/services/auth/auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 import { ParamMap } from "@angular/router/src/shared";
 import { not } from "@angular/compiler/src/output/output_ast";
 

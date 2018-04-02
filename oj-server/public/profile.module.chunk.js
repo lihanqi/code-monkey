@@ -8,7 +8,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#password-change {\n  margin-top: 40px;\n  width: 600px;\n}\n\n.button-group {\n    text-align: center;\n}", ""]);
 
 // exports
 
@@ -21,7 +21,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/profile/components/password-change/password-change.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form>\n  <!-- Current Password -->\n  <div class=\"form-group\">\n    <label for=\"current-password\">Current password</label>\n    <input type=\"password\" class=\"form-control\" placeholder=\"Enter your current password\">\n  </div>\n  <!-- New Password -->\n  <div class=\"form-group\">\n    <label for=\"new-password\">New password</label>\n    <input type=\"text\" class=\"form-control\" placeholder=\"Enter your new password\">\n  </div>\n  <!-- Repeat New Password -->\n  <div class=\"form-group\">\n    <label for=\"repeat-password\">Re-enter your new password</label>\n    <input type=\"text\" class=\"form-control\" placeholder=\"Re-enter your new password\">\n  </div>\n  <button (click)=\"submit()\" type=\"button\" class=\"btn btn-primary\">Submit</button>\n  <button (click)=\"cancel()\" type=\"button\" class=\"btn btn-primary\">Cancel</button>\n</form>"
+module.exports = "<div class=\"row justify-content-center\">\n  <div class=\"col-auto\" id=\"password-change\">\n    <form>\n      <!-- Current Password -->\n      <div class=\"form-group\">\n        <label for=\"current-password\">Current password</label>\n        <input type=\"password\" class=\"form-control\" placeholder=\"Enter your current password\">\n      </div>\n      <!-- New Password -->\n      <div class=\"form-group\">\n        <label for=\"new-password\">New password</label>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Enter your new password\">\n      </div>\n      <!-- Repeat New Password -->\n      <div class=\"form-group\">\n        <label for=\"repeat-password\">Confirm password</label>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Confirm your new password\">\n      </div>\n      <!-- Button Group -->\n      <div class=\"button-group\">\n          <button (click)=\"submit()\" type=\"button\" class=\"btn btn-primary\">Submit</button>\n          <button (click)=\"cancel()\" type=\"button\" class=\"btn btn-primary\">Cancel</button>\n      </div>\n    </form>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -121,7 +121,7 @@ var ProfileDetailComponent = /** @class */ (function () {
         var _this = this;
         this.savingState = true;
         this.profileService.save(this.profile).then(function (profile) {
-            _this.profile = profile;
+            _this.profile = JSON.parse(JSON.stringify(profile));
             _this.savingState = false;
         });
     };
@@ -352,6 +352,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+// import { AuthService } from '../../../services/auth/auth.service';
 var auth_service_1 = __webpack_require__("../../../../../src/app/services/auth/auth.service.ts");
 var ProfileManagementService = /** @class */ (function () {
     function ProfileManagementService(auth) {
