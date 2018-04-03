@@ -9,6 +9,12 @@
     margin-right: 15px;
     
 }
+
+#contribute-button {
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+}
 /* .progress-dashboard {
     color: blueviolet;
     background: aqua;

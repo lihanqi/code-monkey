@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 })
 export class NavBarComponent implements OnInit {
   isAuthenticated: boolean = false;
+  currentActivatedLink: any = null;
 
   constructor(private auth: AuthService) { }
 
@@ -22,9 +23,17 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.auth.logout();
-    // window.alert("logout-disabled for now");
     return false;
   }
+
+  activateLink(linkElement: any) {
+    if (this.currentActivatedLink) {
+      this.currentActivatedLink.removeAttribute('id');
+    }
+    this.currentActivatedLink = linkElement;
+    this.currentActivatedLink.id = "activateLink";
+  }
+
 
 
 }

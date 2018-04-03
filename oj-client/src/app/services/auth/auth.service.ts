@@ -106,11 +106,25 @@ export class AuthService {
   }
 
   public updateProfile(profile): Promise<any> {
+    // TODO:
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.userProfile = profile;
         resolve(profile);
       }, 2000);
+    })
+  }
+
+  public changePassword(oldPassword: string, newPassword: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      // TODO: MOCK TIME OUT
+      setTimeout(() => {
+        if (newPassword == oldPassword) {
+          reject("Failure")
+        } else {
+          resolve("Success!");
+        }
+      }, 1000);
     })
   }
 

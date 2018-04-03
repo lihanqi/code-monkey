@@ -19,7 +19,7 @@ export class ProfileDetailComponent implements OnInit {
 
   save() {
     this.savingState = true
-    this.profileService.save(this.profile).then(profile => {
+    this.profileService.updateProfile(this.profile).then(profile => {
       this.profile =  JSON.parse(JSON.stringify(profile));
       this.savingState = false;
     })

@@ -740,7 +740,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".container {\n    padding-top: 50px;\n    margin-bottom: 150px;\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px;\n    /* max-width: 300px; */\n    margin-right: 15px;\n    \n}\n/* .progress-dashboard {\n    color: blueviolet;\n    background: aqua;\n    max-height: 400px;\n    box-sizing: border-box;\n    border: 1px solid black ;\n    border-radius: 5px;\n    text-align: center;\n    line-height: 400px;\n    vertical-align: center;\n} */", ""]);
+exports.push([module.i, ".container {\n    padding-top: 50px;\n    margin-bottom: 150px;\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px;\n    /* max-width: 300px; */\n    margin-right: 15px;\n    \n}\n#contribute-button {\n    margin-top: 20px;\n    text-align: center;\n    width: 100%;\n}\n/* .progress-dashboard {\n    color: blueviolet;\n    background: aqua;\n    max-height: 400px;\n    box-sizing: border-box;\n    border: 1px solid black ;\n    border-radius: 5px;\n    text-align: center;\n    line-height: 400px;\n    vertical-align: center;\n} */", ""]);
 
 // exports
 
@@ -753,7 +753,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/problem/components/problems/problems.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <div class=\"row justify-content-md-center\">\n        <div class=\"col problem-list\">\n            <app-problem-list></app-problem-list>\n        </div>\n        <div class=\"col-lg-3 progress-dashboard align-items-center\">\n            <app-progress-dashboard></app-progress-dashboard>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"container\">\n    <div class=\"row justify-content-md-center\">\n        <div class=\"col problem-list\">\n            <app-problem-list></app-problem-list>\n        </div>\n        <div class=\"col-lg-3 progress-dashboard align-items-center\">\n            <app-progress-dashboard></app-progress-dashboard>\n            <button id=\"contribute-button\" type=\"button\" class=\"btn btn-info\" routerLink=\"/contribute\">Contribute problem</button>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -1561,11 +1561,25 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.updateProfile = function (profile) {
         var _this = this;
+        // TODO:
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
                 _this.userProfile = profile;
                 resolve(profile);
             }, 2000);
+        });
+    };
+    AuthService.prototype.changePassword = function (oldPassword, newPassword) {
+        return new Promise(function (resolve, reject) {
+            // TODO: MOCK TIME OUT
+            setTimeout(function () {
+                if (newPassword == oldPassword) {
+                    reject("Failure");
+                }
+                else {
+                    resolve("Success!");
+                }
+            }, 1000);
         });
     };
     AuthService = __decorate([
@@ -1754,7 +1768,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".navbar {\n    padding-left: 100px;\n    background: #24292e;\n    \n}\n.navbar a {\n    /* color: #97A2A2; */\n    font-family: Helvetica,Arial,sans-serif;\n    color: rgba(255,255,255,0.75);\n    /* font-f   amily: 'Gotham SSm A', 'Gotham SSm B'; */\n    /* font-family: 'Gotham SSm A', 'Gotham SSm B'; */\n    /* font-style: normal; */\n}\n.navbar a:hover {\n    color: white;\n}\n.navbar .navbar-brand img{\n    margin-right: 15px;\n}\n.login-out {\n    margin-right: 100px;\n}\n#user-picture {\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    height: 36px;\n    width: 36px;\n    border-radius: 50%\n}\n#user-picture:hover {\n    border: 1px solid lightgray;\n}\n#user-name {\n    color: rgba(255,255,255,0.75);\n    cursor: default;\n}\n/* #split {\n    color: white;\n    margin: 0 8px;\n} */", ""]);
+exports.push([module.i, ".navbar {\n    padding-left: 100px;\n    background: #24292e;\n    \n}\n.navbar a {\n    font-family: Helvetica,Arial,sans-serif;\n    color: rgba(255,255,255,0.75);\n    /* color: red; */\n}\n.navbar a:hover {\n    color: white;\n}\n/* TODO: Add RWD */\n#activateLink {\n    color: white;\n    height: 100%;\n    border-bottom: 2px solid white;\n}\n.navbar .navbar-brand img{\n    margin-right: 15px;\n}\n.login-out {\n    margin-right: 100px;\n}\n#user-picture {\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    height: 36px;\n    width: 36px;\n    border-radius: 50%\n}\n#user-picture:hover {\n    border: 1px solid lightgray;\n}\n#user-name {\n    color: rgba(255,255,255,0.75);\n    cursor: default;\n}\n", ""]);
 
 // exports
 
@@ -1767,7 +1781,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/shared/components/nav-bar/nav-bar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-faded\">\n  <a class=\"navbar-brand\" href=\"#\">\n    [codecola]\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\">Home</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/problems\">Problems</a></li>\n      <li class=\"nav-item\"><a class=\"nav-link\" routerLink=\"/contribute\">Contribution</a></li>\n      <!-- <li class=\"nav-item\"><button (click)=\"auth.test()\">Test</button></li> -->\n    </ul>\n  </div>\n  <div class=\"login-out\">\n    <a *ngIf=\"!auth.isLoggedin\" href=\"#\" (click)=\"login()\">Login | Register</a>\n    <div *ngIf=\"auth.isLoggedin\" class=\"nav-item dropdown\">\n      <img id=\"user-picture\" [src]=\"auth.userProfile?.picture\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n      <a class=\"nav-item\" id=\"user-name\">{{auth.userProfile?.name}}</a>\n        <div class=\"dropdown-menu\">\n          <button class=\"dropdown-item\" type=\"button\" routerLink=\"/profile\">Profile</button>\n          <div class=\"dropdown-divider\"></div>\n          <button class=\"dropdown-item\" type=\"button\" (click)=\"logout();\">Sign out</button>\n        </div>\n      </div>\n    \n  </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-faded\">\n  <a class=\"navbar-brand\" disable>\n    [codecola]\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\"\n    aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" #home (click)=\"activateLink(home)\" routerLink=\"/problems\">Home</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" #problems (click)=\"activateLink(problems)\" routerLink=\"/problems\">Problems</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" #sets (click)=\"activateLink(sets)\" routerLink=\"/problems\">Sets</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" #contribution (click)=\"activateLink(contribution)\"\n          routerLink=\"/contribute\">Contribution</a>\n      </li>\n    </ul>\n  </div>\n  <div class=\"login-out\">\n    <a *ngIf=\"!auth.isLoggedin\" href=\"#\" (click)=\"login()\">Login | Register</a>\n    <div *ngIf=\"auth.isLoggedin\" class=\"nav-item dropdown\">\n      <img id=\"user-picture\" [src]=\"auth.userProfile?.picture\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n      <a class=\"nav-item\" id=\"user-name\">{{auth.userProfile?.name}}</a>\n      <div class=\"dropdown-menu\">\n        <button class=\"dropdown-item\" type=\"button\" routerLink=\"/profile\">Profile</button>\n        <button class=\"dropdown-item\" type=\"button\" routerLink=\"/profile/password\">Change Password</button>\n        <div class=\"dropdown-divider\"></div>\n        <button class=\"dropdown-item\" type=\"button\" (click)=\"logout();\">Sign out</button>\n      </div>\n    </div>\n\n  </div>\n</nav>"
 
 /***/ }),
 
@@ -1792,6 +1806,7 @@ var NavBarComponent = /** @class */ (function () {
     function NavBarComponent(auth) {
         this.auth = auth;
         this.isAuthenticated = false;
+        this.currentActivatedLink = null;
     }
     NavBarComponent.prototype.ngOnInit = function () {
         // this.isAuthenticated = this.auth.isAuthenticated();
@@ -1802,8 +1817,14 @@ var NavBarComponent = /** @class */ (function () {
     };
     NavBarComponent.prototype.logout = function () {
         this.auth.logout();
-        // window.alert("logout-disabled for now");
         return false;
+    };
+    NavBarComponent.prototype.activateLink = function (linkElement) {
+        if (this.currentActivatedLink) {
+            this.currentActivatedLink.removeAttribute('id');
+        }
+        this.currentActivatedLink = linkElement;
+        this.currentActivatedLink.id = "activateLink";
     };
     NavBarComponent = __decorate([
         core_1.Component({

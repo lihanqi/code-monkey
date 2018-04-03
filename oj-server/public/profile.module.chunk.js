@@ -21,7 +21,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/profile/components/password-change/password-change.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row justify-content-center\">\n  <div class=\"col-auto\" id=\"password-change\">\n    <form>\n      <!-- Current Password -->\n      <div class=\"form-group\">\n        <label for=\"current-password\">Current password</label>\n        <input type=\"password\" class=\"form-control\" placeholder=\"Enter your current password\">\n      </div>\n      <!-- New Password -->\n      <div class=\"form-group\">\n        <label for=\"new-password\">New password</label>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Enter your new password\">\n      </div>\n      <!-- Repeat New Password -->\n      <div class=\"form-group\">\n        <label for=\"repeat-password\">Confirm password</label>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Confirm your new password\">\n      </div>\n      <!-- Button Group -->\n      <div class=\"button-group\">\n          <button (click)=\"submit()\" type=\"button\" class=\"btn btn-primary\">Submit</button>\n          <button (click)=\"cancel()\" type=\"button\" class=\"btn btn-primary\">Cancel</button>\n      </div>\n    </form>\n  </div>\n</div>"
+module.exports = "<div class=\"row justify-content-center\">\n  <div class=\"col-auto\" id=\"password-change\">\n    <form>\n      <!-- Current Password -->\n      <div class=\"form-group\">\n        <label for=\"current-password\">Current password</label>\n        <input type=\"password\" name=\"oldPassword\" [(ngModel)]=\"oldPassword\" class=\"form-control\" placeholder=\"Enter your current password\">\n      </div>\n      <!-- New Password -->\n      <div class=\"form-group\">\n        <label for=\"new-password\">New password</label>\n        <input type=\"text\" name=\"newPassword\" [(ngModel)]=\"newPassword\" class=\"form-control\" placeholder=\"Enter your new password\">\n      </div>\n      <!-- Repeat New Password -->\n      <div class=\"form-group\">\n        <label for=\"repeat-password\">Confirm password</label>\n        <input type=\"text\"  class=\"form-control\" placeholder=\"Confirm your new password\">\n      </div>\n      <!-- Button Group -->\n      <div class=\"button-group\">\n          <button (click)=\"submit()\" type=\"button\" class=\"btn btn-primary\">Submit</button>\n          <button (click)=\"cancel()\" type=\"button\" class=\"btn btn-primary\">Cancel</button>\n      </div>\n    </form>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -41,12 +41,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var profile_management_service_1 = __webpack_require__("../../../../../src/app/profile/services/profile-management/profile-management.service.ts");
 var PasswordChangeComponent = /** @class */ (function () {
-    function PasswordChangeComponent() {
+    function PasswordChangeComponent(profileService) {
+        this.profileService = profileService;
     }
     PasswordChangeComponent.prototype.ngOnInit = function () {
     };
     PasswordChangeComponent.prototype.submit = function () {
+        // TODO: 改善提示效果, 根据不同情况有不同的提示, 在保存过程中有Indicator
+        this.profileService.changePassword(this.oldPassword, this.newPassword)
+            .then(function (msg) {
+            window.alert(msg);
+        })
+            .catch(function (err) {
+            window.alert(err);
+        });
     };
     PasswordChangeComponent.prototype.cancel = function () {
         window.history.back();
@@ -57,7 +67,7 @@ var PasswordChangeComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/profile/components/password-change/password-change.component.html"),
             styles: [__webpack_require__("../../../../../src/app/profile/components/password-change/password-change.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [profile_management_service_1.ProfileManagementService])
     ], PasswordChangeComponent);
     return PasswordChangeComponent;
 }());
@@ -120,7 +130,7 @@ var ProfileDetailComponent = /** @class */ (function () {
     ProfileDetailComponent.prototype.save = function () {
         var _this = this;
         this.savingState = true;
-        this.profileService.save(this.profile).then(function (profile) {
+        this.profileService.updateProfile(this.profile).then(function (profile) {
             _this.profile = JSON.parse(JSON.stringify(profile));
             _this.savingState = false;
         });
@@ -361,8 +371,11 @@ var ProfileManagementService = /** @class */ (function () {
     ProfileManagementService.prototype.getUserProfile = function () {
         return this.auth.userProfile;
     };
-    ProfileManagementService.prototype.save = function (profile) {
+    ProfileManagementService.prototype.updateProfile = function (profile) {
         return this.auth.updateProfile(profile);
+    };
+    ProfileManagementService.prototype.changePassword = function (oldPassword, newPassword) {
+        return this.auth.changePassword(oldPassword, newPassword);
     };
     ProfileManagementService = __decorate([
         core_1.Injectable(),

@@ -4,15 +4,18 @@
     
 }
 .navbar a {
-    /* color: #97A2A2; */
     font-family: Helvetica,Arial,sans-serif;
     color: rgba(255,255,255,0.75);
-    /* font-f   amily: 'Gotham SSm A', 'Gotham SSm B'; */
-    /* font-family: 'Gotham SSm A', 'Gotham SSm B'; */
-    /* font-style: normal; */
+    /* color: red; */
 }
 .navbar a:hover {
     color: white;
+}
+/* TODO: Add RWD */
+#activateLink {
+    color: white;
+    height: 100%;
+    border-bottom: 2px solid white;
 }
 
 .navbar .navbar-brand img{
@@ -36,7 +39,3 @@
     color: rgba(255,255,255,0.75);
     cursor: default;
 }
-/* #split {
-    color: white;
-    margin: 0 8px;
-} */
