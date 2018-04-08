@@ -1,12 +1,14 @@
 .container {
-    padding-top: 50px;
-    margin-bottom: 150px;
+    padding: 50px 0;
+    border: 10px solid red;
 }
 .problem-list {
     border: 1px solid rgba(0, 0, 0, 0.125) ;
     border-radius: 5px;
+    /* height: auto; */
+    /* height: inherit; */
     /* max-width: 300px; */
-    margin-right: 15px;
+    /* margin-right: 15px; */
     
 }
 
@@ -15,14 +17,3 @@
     text-align: center;
     width: 100%;
 }
-/* .progress-dashboard {
-    color: blueviolet;
-    background: aqua;
-    max-height: 400px;
-    box-sizing: border-box;
-    border: 1px solid black ;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 400px;
-    vertical-align: center;
-} */

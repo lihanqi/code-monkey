@@ -81,7 +81,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#wrapper {\n  min-height: 100%;\n  margin-bottom: -56px;\n}\nfooter {\n  margin: 0;\n  height: 56px;\n  background: #24292e;\n}\n", ""]);
 
 // exports
 
@@ -94,7 +94,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-nav-bar></app-nav-bar>\n<div *ngIf=\"auth.loadFinished\" class=\"container\">\n    <router-outlet></router-outlet>\n</div>\n<app-footer></app-footer>"
+module.exports = "<div id=\"wrapper\">\n    <app-nav-bar></app-nav-bar>\n    <div id=\"body\" *ngIf=\"auth.loadFinished\" class=\"container\">\n        <router-outlet></router-outlet>\n    </div>\n</div>\n<footer>\n    <app-footer></app-footer>\n</footer>\n"
 
 /***/ }),
 
@@ -241,7 +241,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var data_service_1 = __webpack_require__("../../../../../src/app/problem/services/data/data.service.ts");
-var problem_1 = __webpack_require__("../../../../../src/app/shared/models/problem.ts");
+var problem_1 = __webpack_require__("../../../../../src/app/problem/models/problem.ts");
 var NewProblemComponent = /** @class */ (function () {
     function NewProblemComponent(dataService) {
         this.dataService = dataService;
@@ -740,7 +740,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".container {\n    padding-top: 50px;\n    margin-bottom: 150px;\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px;\n    /* max-width: 300px; */\n    margin-right: 15px;\n    \n}\n#contribute-button {\n    margin-top: 20px;\n    text-align: center;\n    width: 100%;\n}\n/* .progress-dashboard {\n    color: blueviolet;\n    background: aqua;\n    max-height: 400px;\n    box-sizing: border-box;\n    border: 1px solid black ;\n    border-radius: 5px;\n    text-align: center;\n    line-height: 400px;\n    vertical-align: center;\n} */", ""]);
+exports.push([module.i, ".container {\n    padding: 50px 0;\n    border: 10px solid red;\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px;\n    /* height: auto; */\n    /* height: inherit; */\n    /* max-width: 300px; */\n    /* margin-right: 15px; */\n    \n}\n#contribute-button {\n    margin-top: 20px;\n    text-align: center;\n    width: 100%;\n}", ""]);
 
 // exports
 
@@ -1662,7 +1662,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "p {\n    /* position:absolute; */\n    /* bottom:0; */\n    margin-top: 40px;\n    width:100%;\n    /* margin-bottom: 0; */\n    /* padding-bottom: 0; */\n    color: white;\n    text-align: center;\n    height: 56px;\n    line-height: 56px; /* <-- this is what you must define */\n    background: #24292e;\n    /* line-height: 56px; */\n}", ""]);
+exports.push([module.i, "p {\n    margin: 0;\n    color: white;\n    text-align: center;\n    line-height: 56px; /* <-- for vertical center purpose */\n}", ""]);
 
 // exports
 
@@ -1898,22 +1898,6 @@ var PageNotFoundComponent = /** @class */ (function () {
     return PageNotFoundComponent;
 }());
 exports.PageNotFoundComponent = PageNotFoundComponent;
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/shared/models/problem.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Problem = /** @class */ (function () {
-    function Problem() {
-    }
-    return Problem;
-}());
-exports.Problem = Problem;
 
 
 /***/ }),

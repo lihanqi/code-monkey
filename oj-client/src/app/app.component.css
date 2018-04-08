@@ -1,0 +1,9 @@
+#wrapper {
+  min-height: 100%;
+  margin-bottom: -56px;
+}
+footer {
+  margin: 0;
+  height: 56px;
+  background: #24292e;
+}

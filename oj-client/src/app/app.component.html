@@ -1,5 +1,9 @@
-<app-nav-bar></app-nav-bar>
-<div *ngIf="auth.loadFinished" class="container">
-    <router-outlet></router-outlet>
+<div id="wrapper">
+    <app-nav-bar></app-nav-bar>
+    <div id="body" *ngIf="auth.loadFinished" class="container">
+        <router-outlet></router-outlet>
+    </div>
 </div>
-<app-footer></app-footer>
+<footer>
+    <app-footer></app-footer>
+</footer>
