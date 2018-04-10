@@ -1,41 +1,25 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-faded">
-  <a class="navbar-brand" disable>
-    [codecola]
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+<nav>
+  <!-- Nav Logo -->
+  <div class="nav-logo">
+    <p>Codecola</p>
+  </div>
+  <!-- Nav links -->
+  <div class="nav-content">
+    <ul class="nav-list">
       <li class="nav-item">
-        <a class="nav-link" #home (click)="activateLink(home)" routerLink="/problems">Home</a>
+        <a #home (click)="activateLink(home)" routerLink="/problems">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" #problems (click)="activateLink(problems)" routerLink="/problems">Problems</a>
+        <a #problems (click)="activateLink(problems)" routerLink="/problems">Problems</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" #sets (click)="activateLink(sets)" routerLink="/problems">Sets</a>
+        <a #sets (click)="activateLink(sets)" routerLink="/problems">Sets</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" #contribution (click)="activateLink(contribution)"
-          routerLink="/contribute">Contribution</a>
+        <a #contribution (click)="activateLink(contribution)" routerLink="/contribute">Contribution</a>
       </li>
     </ul>
   </div>
-  <div class="login-out">
-    <a *ngIf="!auth.isLoggedin" href="#" (click)="login()">Login | Register</a>
-    <div *ngIf="auth.isLoggedin" class="nav-item dropdown">
-      <img id="user-picture" [src]="auth.userProfile?.picture" class="dropdown-toggle" data-toggle="dropdown">
-      <a class="nav-item" id="user-name">{{auth.userProfile?.name}}</a>
-      <div class="dropdown-menu">
-        <button class="dropdown-item" type="button" routerLink="/profile">Profile</button>
-        <button class="dropdown-item" type="button" routerLink="/profile/password">Change Password</button>
-        <div class="dropdown-divider"></div>
-        <button class="dropdown-item" type="button" (click)="logout();">Sign out</button>
-      </div>
-    </div>
-
-  </div>
+  <!-- Register/Login-port -->
+  <div class="nav-login"></div>
 </nav>

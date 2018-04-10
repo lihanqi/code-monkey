@@ -96,6 +96,8 @@ export class EditorComponent implements OnInit, OnDestroy {
    */
   setLanguage(language: string) {
     this.language = language;
+    this.editor.session.setMode(`ace/mode/${language.toLowerCase()}`);
+    console.log(`ace/mode/${language.toLowerCase()}`);
     this.reset();
   }
 

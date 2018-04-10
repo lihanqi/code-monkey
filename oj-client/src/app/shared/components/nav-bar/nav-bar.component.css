@@ -1,41 +1,28 @@
-.navbar {
-    padding-left: 100px;
+nav {
     background: #24292e;
-    
+    height: 60px;
+    margin: 0;
+    padding: 0;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
 }
-.navbar a {
-    font-family: Helvetica,Arial,sans-serif;
-    color: rgba(255,255,255,0.75);
-    /* color: red; */
+.nav-list {
+    list-style-type: none;
+    overflow: hidden;
 }
-.navbar a:hover {
-    color: white;
-}
-/* TODO: Add RWD */
-#activateLink {
-    color: white;
+
+.nav-item {
+    float: left;
     height: 100%;
-    border-bottom: 2px solid white;
 }
-
-.navbar .navbar-brand img{
-    margin-right: 15px;
-}
-
-.login-out {
-    margin-right: 100px;
-}
-
-#user-picture {
-    box-sizing: border-box;
-    height: 36px;
-    width: 36px;
-    border-radius: 50%
-}
-#user-picture:hover {
-    border: 1px solid lightgray;
-}
-#user-name {
+.nav-item > a {
+    display: block;
     color: rgba(255,255,255,0.75);
-    cursor: default;
+    text-align: center;
+    text-decoration: none;
+}
+.nav-item > a:hover {
+    color: blue;
+    background-color: lightcyan;
 }
