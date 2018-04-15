@@ -39,8 +39,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var router_1 = __webpack_require__("../../../router/esm5/router.js");
-// import { SharedModule } from './shared/shared.module';
-// import { PageNotFoundComponent } from "./shared/components/page-not-found/page-not-found.component";
 var new_problem_component_1 = __webpack_require__("../../../../../src/app/components/new-problem/new-problem.component.ts");
 var auth_guard_service_1 = __webpack_require__("../../../../../src/app/services/auth-guard/auth-guard.service.ts");
 var page_not_found_component_1 = __webpack_require__("../../../../../src/app/shared/components/page-not-found/page-not-found.component.ts");
@@ -60,7 +58,6 @@ var RoutingModule = /** @class */ (function () {
     RoutingModule = __decorate([
         core_1.NgModule({
             imports: [
-                // SharedModule,
                 router_1.RouterModule.forRoot(routes, { preloadingStrategy: router_1.PreloadAllModules })
             ],
             exports: [router_1.RouterModule]
@@ -81,7 +78,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#wrapper {\n  min-height: 100%;\n  margin-bottom: -56px;\n}\nfooter {\n  margin: 0;\n  height: 56px;\n  background: #24292e;\n}\n", ""]);
+exports.push([module.i, "#wrapper {\n  min-height: 100%;\n  padding-bottom: 40px;\n  margin-bottom: -56px;\n}\nfooter {\n  margin: 0;\n  height: 56px;\n  background: #24292e;\n}\n", ""]);
 
 // exports
 
@@ -118,7 +115,7 @@ var auth_service_1 = __webpack_require__("../../../../../src/app/services/auth/a
 var AppComponent = /** @class */ (function () {
     function AppComponent(auth) {
         this.auth = auth;
-        this.title = 'Codecola - Online Judge';
+        this.title = 'Codecola';
     }
     AppComponent.prototype.ngOnInit = function () {
         this.auth.initService();
@@ -358,9 +355,6 @@ var EditorComponent = /** @class */ (function () {
         this.language = "Python";
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
-            if (!_this.auth.userProfile) {
-                console.log("!!!!!!!!");
-            }
             _this.coEditingService.init(paramMap.get("id"), _this.editor, _this.auth.userProfile);
             _this.coEditingService.attachEditorListeners(_this.editor);
             _this.userAcitivitySubscrpiton = _this.coEditingService.userLogin$.subscribe(function (activity) {
@@ -421,10 +415,11 @@ var EditorComponent = /** @class */ (function () {
         this.executionDisplay = true;
         this.executionResult = {};
         // TODO: add animation for running
-        this.executionResult['build'] = "running";
+        this.executionResult["build"] = "running";
         var language = this.language;
         var code = this.editor.getValue();
-        this.executionService.execute(language, code)
+        this.executionService
+            .execute(language, code)
             .then(function (data) {
             _this.executionResult = JSON.parse(data);
         })
@@ -747,7 +742,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".container {\n    padding: 50px 0;\n    border: 10px solid red;\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px;\n    /* height: auto; */\n    /* height: inherit; */\n    /* max-width: 300px; */\n    /* margin-right: 15px; */\n    \n}\n#contribute-button {\n    margin-top: 20px;\n    text-align: center;\n    width: 100%;\n}", ""]);
+exports.push([module.i, ".container {\n    padding: 50px 0;\n\n}\n.problem-list {\n    border: 1px solid rgba(0, 0, 0, 0.125) ;\n    border-radius: 5px; \n}\n#contribute-button {\n    margin-top: 20px;\n    text-align: center;\n    width: 100%;\n}", ""]);
 
 // exports
 
@@ -821,7 +816,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/problem/components/progress-dashboard/progress-dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"progress-card\" class=\"card\">\n  <div class=\"card-header\">\n    Progress\n  </div>\n  <div class=\"card-body\">\n    <h5 class=\"card-title\">Special title treatment</h5>\n    <p class=\"card-text\">With supporting text below as a natural lead-in to additional content.</p>\n  </div>\n</div>"
+module.exports = "<div id=\"progress-card\" class=\"card\">\n  <div class=\"card-header\">\n    Progress\n  </div>\n  <div class=\"card-body\">\n    <h5 class=\"card-title\">Session</h5>\n    <p class=\"card-text\">You have complete 95% problems</p>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -1682,7 +1677,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/shared/components/footer/footer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  Copyright© By Hanqi Li\n</p>\n"
+module.exports = "<p>By Hanqi Li</p>\n"
 
 /***/ }),
 
@@ -1775,7 +1770,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "nav {\n    background: #24292e;\n    height: 60px;\n    margin: 0;\n    padding: 0;\n    position: -webkit-sticky; /* Safari */\n    position: sticky;\n    top: 0;\n}\n.nav-list {\n    list-style-type: none;\n    overflow: hidden;\n}\n.nav-item {\n    float: left;\n    height: 100%;\n}\n.nav-item > a {\n    display: block;\n    color: rgba(255,255,255,0.75);\n    text-align: center;\n    text-decoration: none;\n}\n.nav-item > a:hover {\n    color: blue;\n    background-color: lightcyan;\n}", ""]);
+exports.push([module.i, ".navbar {\n    padding-left: 100px;\n    background: #24292e;\n    \n}\n.navbar a {\n    font-family: Helvetica,Arial,sans-serif;\n    color: rgba(255,255,255,0.75);\n    /* color: red; */\n}\n.navbar a:hover {\n    color: white;\n}\n/* TODO: Add RWD */\n#activateLink {\n    color: white;\n    height: 100%;\n    border-bottom: 2px solid white;\n}\n.navbar .navbar-brand img{\n    margin-right: 15px;\n}\n.login-out {\n    margin-right: 100px;\n}\n#user-picture {\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    height: 36px;\n    width: 36px;\n    border-radius: 50%\n}\n#user-picture:hover {\n    border: 1px solid lightgray;\n}\n#user-name {\n    color: rgba(255,255,255,0.75);\n    cursor: default;\n}\n", ""]);
 
 // exports
 
@@ -1788,7 +1783,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/shared/components/nav-bar/nav-bar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav>\n  <!-- Nav Logo -->\n  <div class=\"nav-logo\">\n    <p>Codecola</p>\n  </div>\n  <!-- Nav links -->\n  <div class=\"nav-content\">\n    <ul class=\"nav-list\">\n      <li class=\"nav-item\">\n        <a #home (click)=\"activateLink(home)\" routerLink=\"/problems\">Home</a>\n      </li>\n      <li class=\"nav-item\">\n        <a #problems (click)=\"activateLink(problems)\" routerLink=\"/problems\">Problems</a>\n      </li>\n      <li class=\"nav-item\">\n        <a #sets (click)=\"activateLink(sets)\" routerLink=\"/problems\">Sets</a>\n      </li>\n      <li class=\"nav-item\">\n        <a #contribution (click)=\"activateLink(contribution)\" routerLink=\"/contribute\">Contribution</a>\n      </li>\n    </ul>\n  </div>\n  <!-- Register/Login-port -->\n  <div class=\"nav-login\"></div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-light bg-faded\">\n  <a class=\"navbar-brand\" disable>\n    [codecola]\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\"\n    aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n\n  <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n    <ul class=\"navbar-nav mr-auto\">\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" #home (click)=\"activateLink(home)\" routerLink=\"/problems\">Home</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" #problems (click)=\"activateLink(problems)\" routerLink=\"/problems\">Problems</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" #sets (click)=\"activateLink(sets)\" routerLink=\"/problems\">Sets</a>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" #contribution (click)=\"activateLink(contribution)\"\n          routerLink=\"/contribute\">Contribution</a>\n      </li>\n    </ul>\n  </div>\n  <!-- Login part -->\n  <div class=\"login-out\">\n    <a *ngIf=\"!auth.isLoggedin\" href=\"#\" (click)=\"login()\">Login | Register</a>\n    <div *ngIf=\"auth.isLoggedin\" class=\"nav-item dropdown\">\n      <img id=\"user-picture\" [src]=\"auth.userProfile?.picture\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n      <a class=\"nav-item\" id=\"user-name\">{{auth.userProfile?.name}}</a>\n      <div class=\"dropdown-menu\">\n        <button class=\"dropdown-item\" type=\"button\" routerLink=\"/profile\">Profile</button>\n        <button class=\"dropdown-item\" type=\"button\" routerLink=\"/profile/password\">Change Password</button>\n        <div class=\"dropdown-divider\"></div>\n        <button class=\"dropdown-item\" type=\"button\" (click)=\"logout();\">Sign out</button>\n      </div>\n    </div>\n\n  </div>\n</nav>"
 
 /***/ }),
 

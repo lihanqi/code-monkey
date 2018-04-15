@@ -7,15 +7,11 @@ import { AuthService } from './services/auth/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Codecola;
+  title = 'Codecola';
 
   constructor(public auth: AuthService) {}
 
   ngOnInit(){
-    // this.auth.initService();
-    con
+    this.auth.initService();
   }
-
-
-
 }
