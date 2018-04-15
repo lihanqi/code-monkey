@@ -4,14 +4,13 @@ import { ActivatedRoute } from "@angular/router";
 
 import { CoEditingService } from "../../services/co-editing/co-editing.service";
 import { ExecutionService } from "../../services/execution/execution.service";
-import { AuthService } from '../../../services/auth/auth.service';
+import { AuthService } from "../../../services/auth/auth.service";
 import { ParamMap } from "@angular/router/src/shared";
 import { not } from "@angular/compiler/src/output/output_ast";
 
-import { LANGUAGE_DEFAULTS } from "./LANGUAGE_DEFAULT";
+import { LANGUAGE_DEFAULTS, LANGUAGE_MODES } from "./DEFAULT";
 
 declare const ace: any;
-
 
 @Component({
   selector: "app-editor",
@@ -37,16 +36,18 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.languages = Object.keys(LANGUAGE_DEFAULTS);
     this.language = "Python";
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-	  this.initEditor();
-	  if (!this.auth.userProfile) {
-		  console.log("!!!!!!!!");
-	  }
-      this.coEditingService.init(paramMap.get("id"), this.editor, this.auth.userProfile);
+      this.initEditor();
+
+      this.coEditingService.init(
+        paramMap.get("id"),
+        this.editor,
+        this.auth.userProfile
+      );
       this.coEditingService.attachEditorListeners(this.editor);
       this.userAcitivitySubscrpiton = this.coEditingService.userLogin$.subscribe(
         activity => {
-			this.popNotify(activity);
-		}
+          this.popNotify(activity);
+        }
       );
     });
   }
@@ -108,10 +109,11 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.executionDisplay = true;
     this.executionResult = {};
     // TODO: add animation for running
-    this.executionResult['build'] = "running";
+    this.executionResult["build"] = "running";
     const language = this.language;
     const code = this.editor.getValue();
-    this.executionService.execute(language, code)
+    this.executionService
+      .execute(language, code)
       .then(data => {
         this.executionResult = JSON.parse(data);
       })
@@ -125,7 +127,7 @@ export class EditorComponent implements OnInit, OnDestroy {
    * @param activity contains userId and its action(join, left)
    */
   popNotify(activity: object) {
-	  console.log(JSON.stringify(activity));
+    console.log(JSON.stringify(activity));
     // TODO: this part will be update using Angular animation
     // jQuery will be depricated in this project
     const POP_TIME_OUT: number = 1000;
@@ -133,11 +135,11 @@ export class EditorComponent implements OnInit, OnDestroy {
     notice.className = "alert alert-primary";
     notice.innerHTML = activity["id"] + " " + activity["action"];
     notice.style.marginTop = "5px";
-	notice.style.marginBottom = "5px";
-	const noticeContainer = document.getElementById("notice");
+    notice.style.marginBottom = "5px";
+    const noticeContainer = document.getElementById("notice");
     noticeContainer.appendChild(notice);
-	setTimeout(()=>{
-		noticeContainer.removeChild(notice);
-	}, POP_TIME_OUT);
+    setTimeout(() => {
+      noticeContainer.removeChild(notice);
+    }, POP_TIME_OUT);
   }
 }

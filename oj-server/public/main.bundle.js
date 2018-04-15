@@ -277,7 +277,7 @@ exports.NewProblemComponent = NewProblemComponent;
 
 /***/ }),
 
-/***/ "../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts":
+/***/ "../../../../../src/app/problem/components/editor/DEFAULT.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -288,6 +288,11 @@ exports.LANGUAGE_DEFAULTS = {
     'Java': 'Java: Type your code here...',
     'C++': 'Cpp: Type your code here...',
     'Alien Language': "hahaha"
+};
+exports.LANGUAGE_MODES = {
+    'Python': 'ace/mode/python',
+    'Java': 'ace/mode/java',
+    'C++': 'ace/mode/c_cpp'
 };
 
 
@@ -338,7 +343,7 @@ var router_1 = __webpack_require__("../../../router/esm5/router.js");
 var co_editing_service_1 = __webpack_require__("../../../../../src/app/problem/services/co-editing/co-editing.service.ts");
 var execution_service_1 = __webpack_require__("../../../../../src/app/problem/services/execution/execution.service.ts");
 var auth_service_1 = __webpack_require__("../../../../../src/app/services/auth/auth.service.ts");
-var LANGUAGE_DEFAULT_1 = __webpack_require__("../../../../../src/app/problem/components/editor/LANGUAGE_DEFAULT.ts");
+var DEFAULT_1 = __webpack_require__("../../../../../src/app/problem/components/editor/DEFAULT.ts");
 var EditorComponent = /** @class */ (function () {
     function EditorComponent(coEditingService, route, executionService, auth) {
         this.coEditingService = coEditingService;
@@ -349,7 +354,7 @@ var EditorComponent = /** @class */ (function () {
     }
     EditorComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.languages = Object.keys(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS);
+        this.languages = Object.keys(DEFAULT_1.LANGUAGE_DEFAULTS);
         this.language = "Python";
         this.route.paramMap.subscribe(function (paramMap) {
             _this.initEditor();
@@ -376,7 +381,7 @@ var EditorComponent = /** @class */ (function () {
         this.editor.session.setMode("ace/mode/python");
         this.editor.getSession().setTabSize(4);
         this.editor.lastChange = null;
-        this.editor.setValue(LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS[this.language]);
+        this.editor.setValue(DEFAULT_1.LANGUAGE_DEFAULTS[this.language]);
         // listen for context change
         // emit the change onoly if the change is made by the user
         this.editor.session.on("change", function (delta) {
@@ -394,7 +399,7 @@ var EditorComponent = /** @class */ (function () {
      * Reset editor to initial state
      */
     EditorComponent.prototype.reset = function () {
-        var placeHolder = LANGUAGE_DEFAULT_1.LANGUAGE_DEFAULTS[this.language];
+        var placeHolder = DEFAULT_1.LANGUAGE_DEFAULTS[this.language];
         this.editor.setValue(placeHolder);
         this.executionResult = null;
     };
